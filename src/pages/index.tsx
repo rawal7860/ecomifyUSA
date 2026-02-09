@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
+import { USMap } from "@/components/USMap";
+import { TrustBadge } from "@/components/TrustBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building2, CheckCircle2, Star, ArrowRight, Shield, Clock, DollarSign } from "lucide-react";
@@ -35,69 +37,76 @@ export default function HomePage() {
 
         {/* Hero Section */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold">
-                <Star className="w-4 h-4 fill-current" />
-                5.0 Rating on Fiverr
-              </div>
-              
-              <h2 className="text-5xl font-bold text-slate-900 leading-tight">
-                Start Your Business Journey with Confidence
-              </h2>
-              
-              <p className="text-xl text-slate-600">
-                Join 300+ entrepreneurs who trust Salestaxus LLC for fast, reliable, and affordable business formation services across all 50 states.
-              </p>
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+              <Star className="w-4 h-4 fill-current" />
+              5.0 Rating on Fiverr
+            </div>
+            
+            <h2 className="text-5xl font-bold text-slate-900 leading-tight mb-6">
+              Start Your Business Journey with Confidence
+            </h2>
+            
+            <p className="text-xl text-slate-600 mb-8 max-w-3xl mx-auto">
+              Join 300+ entrepreneurs who trust Salestaxus LLC for fast, reliable, and affordable business formation services across all 50 states.
+            </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/signup">
-                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700 gap-2">
-                    Get Started Today
-                    <ArrowRight className="w-5 h-5" />
-                  </Button>
-                </Link>
-                <Link href="/login">
-                  <Button size="lg" variant="outline">
-                    Sign In to Dashboard
-                  </Button>
-                </Link>
-              </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <Link href="/signup">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 gap-2">
+                  Get Started Today
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
+              </Link>
+              <Link href="/login">
+                <Button size="lg" variant="outline">
+                  Sign In to Dashboard
+                </Button>
+              </Link>
             </div>
 
-            <div className="space-y-4">
-              <Card className="border-blue-200 bg-white/80 backdrop-blur">
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="flex -space-x-2">
-                      {[1, 2, 3, 4, 5].map((i) => (
-                        <Star key={i} className="w-6 h-6 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
-                    <span className="font-semibold text-slate-700">5.0 / 5.0</span>
-                  </div>
-                  <p className="text-2xl font-bold text-slate-900 mb-2">300+ Happy Clients</p>
-                  <p className="text-slate-600">Trusted entrepreneurs building successful businesses</p>
-                </CardContent>
-              </Card>
-
-              <div className="grid grid-cols-2 gap-4">
-                <Card>
-                  <CardContent className="pt-6 text-center">
-                    <Clock className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                    <p className="font-bold text-2xl text-slate-900">24-48hrs</p>
-                    <p className="text-sm text-slate-600">Fast Processing</p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardContent className="pt-6 text-center">
-                    <Shield className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                    <p className="font-bold text-2xl text-slate-900">100%</p>
-                    <p className="text-sm text-slate-600">Satisfaction</p>
-                  </CardContent>
-                </Card>
-              </div>
+            {/* Trust Badge */}
+            <div className="max-w-2xl mx-auto">
+              <TrustBadge />
             </div>
+          </div>
+        </section>
+
+        {/* Interactive US Map Section */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="text-center mb-12">
+            <h3 className="text-4xl font-bold text-slate-900 mb-4">Select Your State</h3>
+            <p className="text-xl text-slate-600">Click any state to view formation fees and configure your LLC services</p>
+          </div>
+
+          <Card className="border-blue-200 shadow-xl">
+            <CardContent className="p-8">
+              <USMap />
+            </CardContent>
+          </Card>
+
+          <div className="grid md:grid-cols-3 gap-6 mt-12">
+            <Card className="text-center">
+              <CardContent className="pt-6">
+                <Clock className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+                <h4 className="font-bold text-xl mb-2">Fast Processing</h4>
+                <p className="text-slate-600">24-48 hour formation in most states</p>
+              </CardContent>
+            </Card>
+            <Card className="text-center">
+              <CardContent className="pt-6">
+                <Shield className="w-12 h-12 text-green-600 mx-auto mb-4" />
+                <h4 className="font-bold text-xl mb-2">Secure & Compliant</h4>
+                <p className="text-slate-600">Full compliance assistance included</p>
+              </CardContent>
+            </Card>
+            <Card className="text-center">
+              <CardContent className="pt-6">
+                <DollarSign className="w-12 h-12 text-purple-600 mx-auto mb-4" />
+                <h4 className="font-bold text-xl mb-2">Transparent Pricing</h4>
+                <p className="text-slate-600">No hidden fees, clear costs upfront</p>
+              </CardContent>
+            </Card>
           </div>
         </section>
 
