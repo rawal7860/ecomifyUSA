@@ -108,6 +108,11 @@ export function USMap() {
                       stroke: "#3b82f6",
                       strokeWidth: 0.75,
                       outline: "none",
+                      pointerEvents: "visiblePainted",
+                      willChange: "transform",
+                      WebkitBackfaceVisibility: "hidden",
+                      backfaceVisibility: "hidden",
+                      transition: "all 0.2s ease-out",
                     },
                     hover: {
                       fill: "#93c5fd",
@@ -115,14 +120,21 @@ export function USMap() {
                       strokeWidth: 1,
                       outline: "none",
                       cursor: "pointer",
+                      pointerEvents: "visiblePainted",
+                      willChange: "transform",
+                      WebkitBackfaceVisibility: "hidden",
+                      backfaceVisibility: "hidden",
                       transform: "scale(1.05)",
                       filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.3))",
+                      transition: "all 0.2s ease-out",
+                      transformOrigin: "center",
                     },
                     pressed: {
                       fill: "#60a5fa",
                       stroke: "#2563eb",
                       strokeWidth: 1,
                       outline: "none",
+                      pointerEvents: "visiblePainted",
                     },
                   }}
                 />
