@@ -114,7 +114,7 @@ export default function CheckoutPage() {
           addons: orderData.addons as any, // Cast to any to avoid Json type conflicts
           total_amount: orderData.total,
           status: "pending",
-        })
+        } as any)
         .select()
         .single();
 

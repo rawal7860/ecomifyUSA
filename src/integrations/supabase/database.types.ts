@@ -31,6 +31,7 @@ export type Database = {
           service_type: string
           state: string
           state_code: string | null
+          state_name: string | null
           status: string
           stripe_invoice_id: string | null
           updated_at: string | null
@@ -51,6 +52,7 @@ export type Database = {
           service_type: string
           state: string
           state_code?: string | null
+          state_name?: string | null
           status?: string
           stripe_invoice_id?: string | null
           updated_at?: string | null
@@ -71,6 +73,7 @@ export type Database = {
           service_type?: string
           state?: string
           state_code?: string | null
+          state_name?: string | null
           status?: string
           stripe_invoice_id?: string | null
           updated_at?: string | null
