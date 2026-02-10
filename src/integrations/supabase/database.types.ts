@@ -17,44 +17,62 @@ export type Database = {
     Tables: {
       orders: {
         Row: {
+          addons: Json | null
           amount: number
           business_name: string
           created_at: string | null
+          entity_type: string | null
+          formation_fee: number | null
           id: string
           notes: string | null
           order_number: string
           payment_status: string
+          service_fee: number | null
           service_type: string
           state: string
+          state_code: string | null
           status: string
+          stripe_invoice_id: string | null
           updated_at: string | null
           user_id: string
         }
         Insert: {
+          addons?: Json | null
           amount: number
           business_name: string
           created_at?: string | null
-          id?: string
-          notes?: string | null
-          order_number: string
-          payment_status?: string
-          service_type: string
-          state: string
-          status?: string
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          amount?: number
-          business_name?: string
-          created_at?: string | null
+          entity_type?: string | null
+          formation_fee?: number | null
           id?: string
           notes?: string | null
           order_number?: string
           payment_status?: string
+          service_fee?: number | null
+          service_type: string
+          state: string
+          state_code?: string | null
+          status?: string
+          stripe_invoice_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          addons?: Json | null
+          amount?: number
+          business_name?: string
+          created_at?: string | null
+          entity_type?: string | null
+          formation_fee?: number | null
+          id?: string
+          notes?: string | null
+          order_number?: string
+          payment_status?: string
+          service_fee?: number | null
           service_type?: string
           state?: string
+          state_code?: string | null
           status?: string
+          stripe_invoice_id?: string | null
           updated_at?: string | null
           user_id?: string
         }
@@ -70,28 +88,46 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address: string | null
           avatar_url: string | null
+          business_name: string | null
+          city: string | null
           created_at: string | null
           email: string | null
           full_name: string | null
           id: string
+          phone: string | null
+          state: string | null
           updated_at: string | null
+          zip_code: string | null
         }
         Insert: {
+          address?: string | null
           avatar_url?: string | null
+          business_name?: string | null
+          city?: string | null
           created_at?: string | null
           email?: string | null
           full_name?: string | null
           id: string
+          phone?: string | null
+          state?: string | null
           updated_at?: string | null
+          zip_code?: string | null
         }
         Update: {
+          address?: string | null
           avatar_url?: string | null
+          business_name?: string | null
+          city?: string | null
           created_at?: string | null
           email?: string | null
           full_name?: string | null
           id?: string
+          phone?: string | null
+          state?: string | null
           updated_at?: string | null
+          zip_code?: string | null
         }
         Relationships: []
       }
