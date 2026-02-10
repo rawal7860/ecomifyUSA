@@ -66,28 +66,77 @@ export default function CheckoutPage() {
     setProcessing(true);
 
     try {
-      // Step 1: Create user account
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      // Step 1: Check if user already exists
+      const { data: existingUser } = await supabase.auth.signInWithPassword({
         email,
         password,
-        options: {
-          data: {
-            full_name: fullName,
-          },
-        },
       });
 
-      if (authError) throw authError;
+      let userId: string;
 
-      if (!authData.user) {
-        throw new Error("Failed to create user account");
+      if (existingUser?.user) {
+        // User already exists and password is correct - use existing account
+        userId = existingUser.user.id;
+        
+        toast({
+          title: "Existing Account Found",
+          description: "Using your existing account to process this order.",
+        });
+      } else {
+        // User doesn't exist or password is wrong - try to create new account
+        try {
+          const { data: authData, error: authError } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              data: {
+                full_name: fullName,
+              },
+            },
+          });
+
+          if (authError) {
+            // Handle specific rate limit error
+            if (authError.message?.includes("rate limit") || authError.status === 429) {
+              toast({
+                title: "Rate Limit Exceeded",
+                description: "Too many signup attempts. Please wait a few minutes and try again, or try logging in if you already have an account.",
+                variant: "destructive",
+              });
+              setProcessing(false);
+              return;
+            }
+
+            // Handle "user already exists" error - try to login instead
+            if (authError.message?.includes("already registered") || authError.message?.includes("already exists")) {
+              toast({
+                title: "Account Already Exists",
+                description: "An account with this email already exists. Please use the correct password or reset your password.",
+                variant: "destructive",
+              });
+              setProcessing(false);
+              return;
+            }
+
+            throw authError;
+          }
+
+          if (!authData.user) {
+            throw new Error("Failed to create user account");
+          }
+
+          userId = authData.user.id;
+        } catch (signupError) {
+          console.error("Signup error:", signupError);
+          throw signupError;
+        }
       }
 
       // Step 2: Create/Update user profile
       const { error: profileError } = await supabase
         .from("profiles")
         .upsert({
-          id: authData.user.id,
+          id: userId,
           full_name: fullName,
           email: email,
           phone: phone,
@@ -105,13 +154,13 @@ export default function CheckoutPage() {
       const { data: orderRecord, error: orderError } = await supabase
         .from("orders")
         .insert({
-          user_id: authData.user.id,
+          user_id: userId,
           state_code: orderData.stateCode,
           state_name: orderData.state,
           entity_type: orderData.entityType,
           formation_fee: orderData.formationFee,
           service_fee: orderData.serviceFee,
-          addons: orderData.addons as any, // Cast to any to avoid Json type conflicts
+          addons: orderData.addons as any,
           total_amount: orderData.total,
           status: "pending",
         } as any)
@@ -131,7 +180,7 @@ export default function CheckoutPage() {
           description: `LLC Formation - ${orderData.state} (${orderData.entityType})`,
           metadata: {
             order_id: orderRecord.id,
-            user_id: authData.user.id,
+            user_id: userId,
             state: orderData.stateCode,
             entityType: orderData.entityType,
             businessName: businessName,
@@ -150,7 +199,7 @@ export default function CheckoutPage() {
       // Step 5: Update order with invoice ID
       await supabase
         .from("orders")
-        .update({ stripe_invoice_id: invoiceData.invoiceId } as any) // Type assertion for newly added column
+        .update({ stripe_invoice_id: invoiceData.invoiceId } as any)
         .eq("id", orderRecord.id);
 
       // Success!
@@ -162,20 +211,36 @@ export default function CheckoutPage() {
         description: "Check your email for the Stripe invoice. Your account has been created successfully.",
       });
 
-      // Auto-login the user
-      await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      // Auto-login the user if they're not already logged in
+      const { data: session } = await supabase.auth.getSession();
+      if (!session.session) {
+        await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+      }
 
       setTimeout(() => {
         router.push("/dashboard");
       }, 3000);
     } catch (error) {
       console.error("Checkout error:", error);
+      
+      let errorMessage = "Failed to process order. Please try again.";
+      
+      if (error instanceof Error) {
+        if (error.message.includes("rate limit")) {
+          errorMessage = "Too many requests. Please wait a few minutes before trying again.";
+        } else if (error.message.includes("already registered")) {
+          errorMessage = "This email is already registered. Please login instead.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       toast({
         title: "Order Processing Error",
-        description: error instanceof Error ? error.message : "Failed to process order. Please try again.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
