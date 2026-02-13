@@ -1,167 +1,133 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-import { Tooltip } from "react-tooltip";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { ukData } from "@/lib/ukData";
 
-// Using world-atlas which includes UK data with proper boundaries
-const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json";
+// Use TopoJSON with UK country subdivisions (England, Scotland, Wales, Northern Ireland)
+const geoUrl = "https://cdn.jsdelivr.net/npm/uk-atlas@2/countries-10m.json";
 
 export function UKMap() {
   const router = useRouter();
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
 
-  // Map ISO codes to our data keys
-  const isoToKey: Record<string, string> = {
-    "826": "england", // UK ISO code
-    "SCT": "scotland",
-    "WLS": "wales", 
-    "NIR": "northernireland"
-  };
-
-  const handleCountryClick = (geo: any) => {
-    const isoCode = geo.id || geo.properties.iso_a3;
-    const countryKey = isoToKey[isoCode];
-    if (countryKey && ukData[countryKey]) {
-      router.push(`/uk/${countryKey}`);
+  const handleCountryClick = (countryId: string) => {
+    const countryData = ukData[countryId];
+    if (countryData) {
+      router.push(`/uk/${countryId.toLowerCase()}`);
     }
   };
 
+  const getCountryData = (countryId: string) => {
+    return ukData[countryId];
+  };
+
   return (
-    <div className="w-full max-w-5xl mx-auto relative select-none">
-      <Card className="border-none shadow-xl bg-white/50 backdrop-blur-sm overflow-hidden">
+    <div className="w-full">
+      <Card className="border-2 border-blue-200 shadow-xl overflow-hidden">
         <CardContent className="p-0 relative">
           <ComposableMap
             projection="geoMercator"
             projectionConfig={{
-              center: [-2, 54],
-              scale: 2200
+              scale: 2400,
+              center: [-2, 54.5]
             }}
+            className="w-full h-[600px] bg-gradient-to-br from-blue-50 to-slate-100"
           >
             <Geographies geography={geoUrl}>
               {({ geographies }) =>
-                geographies
-                  .filter((geo) => {
-                    // Filter to only UK countries
-                    const isoCode = geo.id || geo.properties.iso_a3;
-                    return isoCode === "826"; // UK ISO code
-                  })
-                  .map((geo) => {
-                    const isoCode = geo.id || geo.properties.iso_a3;
-                    const countryKey = isoToKey[isoCode] || "england";
-                    const countryInfo = ukData[countryKey];
-                    const isHovered = hoveredCountry === countryKey;
+                geographies.map((geo) => {
+                  const countryName = geo.properties.name;
+                  const countryId = countryName?.toUpperCase();
+                  const countryData = countryId ? getCountryData(countryId) : null;
+                  const isHovered = hoveredCountry === countryId;
 
-                    return (
-                      <Geography
-                        key={geo.rsmKey}
-                        geography={geo}
-                        onMouseEnter={() => setHoveredCountry(countryKey)}
-                        onMouseLeave={() => setHoveredCountry(null)}
-                        onClick={() => handleCountryClick(geo)}
-                        data-tooltip-id="uk-tooltip"
-                        data-tooltip-content={countryKey}
-                        style={{
-                          default: {
-                            fill: "#DBEAFE",
-                            stroke: "#3B82F6",
-                            strokeWidth: 0.75,
-                            outline: "none",
-                            pointerEvents: "visiblePainted",
-                            willChange: "transform",
-                            WebkitBackfaceVisibility: "hidden",
-                            backfaceVisibility: "hidden",
-                            transition: "all 0.2s ease-out",
-                          },
-                          hover: {
-                            fill: "#2563EB",
-                            stroke: "#1E40AF",
-                            strokeWidth: 1.5,
-                            outline: "none",
-                            transform: "scale(1.05)",
-                            transformOrigin: "center",
-                            filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.3))",
-                            zIndex: 50,
-                          },
-                          pressed: {
-                            fill: "#1E40AF",
-                            stroke: "#1E3A8A",
-                            outline: "none",
-                          },
-                        }}
-                      />
-                    );
-                  })
+                  return (
+                    <Geography
+                      key={geo.rsmKey}
+                      geography={geo}
+                      onMouseEnter={() => {
+                        if (countryId && countryData) {
+                          setHoveredCountry(countryId);
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        setHoveredCountry(null);
+                      }}
+                      onClick={() => {
+                        if (countryId) {
+                          handleCountryClick(countryId);
+                        }
+                      }}
+                      style={{
+                        default: {
+                          fill: countryData ? "#3b82f6" : "#e2e8f0",
+                          stroke: "#ffffff",
+                          strokeWidth: 0.75,
+                          outline: "none",
+                          transition: "all 0.3s ease"
+                        },
+                        hover: {
+                          fill: countryData ? "#2563eb" : "#cbd5e1",
+                          stroke: "#1e40af",
+                          strokeWidth: 1.5,
+                          outline: "none",
+                          cursor: countryData ? "pointer" : "default"
+                        },
+                        pressed: {
+                          fill: "#1e40af",
+                          stroke: "#1e3a8a",
+                          strokeWidth: 1.5,
+                          outline: "none"
+                        }
+                      }}
+                    />
+                  );
+                })
               }
             </Geographies>
           </ComposableMap>
 
-          <Tooltip
-            id="uk-tooltip"
-            place="right"
-            float
-            style={{
-              backgroundColor: "transparent",
-              padding: 0,
-              opacity: 1,
-              zIndex: 100,
-            }}
-            render={({ content }) => {
-              if (!content) return null;
-              const countryInfo = ukData[content];
-              if (!countryInfo) return null;
+          {/* Hover Tooltip - Same as US Map */}
+          {hoveredCountry && (() => {
+            const data = getCountryData(hoveredCountry);
+            if (!data) return null;
 
-              return (
-                <div className="bg-white rounded-lg shadow-2xl border border-slate-200 p-4 min-w-[280px] text-left animate-in fade-in zoom-in-95 duration-200">
-                  <div className="flex justify-between items-center mb-3 pb-2 border-b border-slate-100">
-                    <h3 className="font-bold text-lg text-slate-900 capitalize">{content.replace('-', ' ')}</h3>
-                    <Badge variant="secondary" className="bg-blue-100 text-blue-700">
-                      {countryInfo.id}
-                    </Badge>
+            return (
+              <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-2xl border-2 border-blue-200 min-w-[280px] animate-in fade-in slide-in-from-top-2 duration-200">
+                <h3 className="font-bold text-lg text-blue-900 mb-3 border-b border-blue-100 pb-2">
+                  {data.name}
+                </h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-600">Formation Fee:</span>
+                    <span className="font-bold text-blue-600">£{data.formationFee}</span>
                   </div>
-                  
-                  <div className="space-y-2.5 text-sm">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-600">Annual Fee:</span>
+                    <span className="font-semibold text-slate-900">£{data.annualConfirmationFee}/yr</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-600">Corporation Tax:</span>
+                    <span className="font-semibold text-slate-900">{data.corporationTax}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-600">VAT Threshold:</span>
+                    <span className="font-semibold text-slate-900">{data.vatThreshold}</span>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-slate-200">
                     <div className="flex justify-between items-center">
-                      <span className="text-slate-500">Formation Fee</span>
-                      <span className="font-semibold text-slate-900">£{countryInfo.formationFee}</span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-500">Service Fee</span>
-                      <span className="font-semibold text-green-600">$150.00</span>
-                    </div>
-
-                    <div className="border-t border-dashed border-slate-200 my-2"></div>
-
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-500">Annual Fee</span>
-                      <span className="font-medium text-slate-700">£{countryInfo.annualConfirmationFee}/yr</span>
-                    </div>
-
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-500">Corporation Tax</span>
-                      <span className="font-medium text-slate-700">{countryInfo.corporationTax}</span>
-                    </div>
-
-                    <div className="flex justify-between items-start pt-1">
-                      <span className="text-slate-500 whitespace-nowrap mr-2">VAT Threshold</span>
-                      <span className="font-medium text-slate-700 text-right text-xs leading-tight">
-                        {countryInfo.vatThreshold}
-                      </span>
+                      <span className="text-slate-600">Service Fee:</span>
+                      <span className="font-bold text-green-600">$150</span>
                     </div>
                   </div>
-
-                  <div className="mt-4 pt-3 border-t border-slate-100 text-center">
-                    <span className="text-xs font-semibold text-blue-600 flex items-center justify-center gap-1">
-                      Click to Configure Service →
-                    </span>
-                  </div>
+                  <p className="text-xs text-slate-500 mt-2 italic text-center">
+                    Click to start your {data.name} formation
+                  </p>
                 </div>
-              );
-            }}
-          />
+              </div>
+            );
+          })()}
         </CardContent>
       </Card>
     </div>

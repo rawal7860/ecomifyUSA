@@ -10,9 +10,9 @@ export interface UKCountryData {
 }
 
 // Authentic data from UK Companies House
-// Keys match the lowercase name from TopoJSON for direct lookup
+// Keys match the country codes/names from the TopoJSON
 export const ukData: Record<string, UKCountryData> = {
-  "england": {
+  "ENGLAND": {
     id: "ENG",
     name: "England",
     formationFee: 100,
@@ -22,7 +22,7 @@ export const ukData: Record<string, UKCountryData> = {
     vatThreshold: "£90,000",
     currency: "GBP"
   },
-  "scotland": {
+  "SCOTLAND": {
     id: "SCT",
     name: "Scotland",
     formationFee: 100,
@@ -32,7 +32,7 @@ export const ukData: Record<string, UKCountryData> = {
     vatThreshold: "£90,000",
     currency: "GBP"
   },
-  "wales": {
+  "WALES": {
     id: "WLS",
     name: "Wales",
     formationFee: 100,
@@ -42,7 +42,7 @@ export const ukData: Record<string, UKCountryData> = {
     vatThreshold: "£90,000",
     currency: "GBP"
   },
-  "northern ireland": {
+  "NORTHERN IRELAND": {
     id: "NIR",
     name: "Northern Ireland",
     formationFee: 100,
