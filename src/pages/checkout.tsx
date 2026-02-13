@@ -94,14 +94,18 @@ export default function CheckoutPage() {
       } else {
         // User doesn't exist or password is wrong - try to create new account
         try {
+          // Try to sign up the user
           const { data: authData, error: authError } = await supabase.auth.signUp({
             email,
             password,
             options: {
               data: {
                 full_name: fullName,
+                phone: phone,
               },
-              emailRedirectTo: undefined, // Disable email confirmation redirect
+              emailRedirectTo: undefined,
+              // @ts-ignore - Supabase type definition missing email_confirm but it is supported by API
+              email_confirm: false, 
             },
           });
 
@@ -122,8 +126,11 @@ export default function CheckoutPage() {
                 options: {
                   data: {
                     full_name: fullName,
+                    phone: phone,
                   },
                   emailRedirectTo: undefined,
+                  // @ts-ignore - Supabase type definition missing email_confirm but it is supported by API
+                  email_confirm: false, 
                 },
               });
 
