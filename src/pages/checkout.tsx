@@ -92,6 +92,7 @@ export default function CheckoutPage() {
               data: {
                 full_name: fullName,
               },
+              emailRedirectTo: undefined, // Disable email confirmation redirect
             },
           });
 
@@ -99,16 +100,41 @@ export default function CheckoutPage() {
             // Handle specific rate limit error
             if (authError.message?.includes("rate limit") || authError.status === 429) {
               toast({
-                title: "Rate Limit Exceeded",
-                description: "Too many signup attempts. Please wait a few minutes and try again, or try logging in if you already have an account.",
-                variant: "destructive",
+                title: "Setting up your account...",
+                description: "Please wait a moment while we process your request. This may take a few seconds.",
               });
-              setProcessing(false);
-              return;
-            }
+              
+              // Wait 3 seconds and retry once
+              await new Promise(resolve => setTimeout(resolve, 3000));
+              
+              const { data: retryData, error: retryError } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                  data: {
+                    full_name: fullName,
+                  },
+                  emailRedirectTo: undefined,
+                },
+              });
 
-            // Handle "user already exists" error - try to login instead
-            if (authError.message?.includes("already registered") || authError.message?.includes("already exists")) {
+              if (retryError) {
+                toast({
+                  title: "Account Setup Issue",
+                  description: "We're experiencing high traffic. Please try again in a few minutes, or contact support if this persists.",
+                  variant: "destructive",
+                });
+                setProcessing(false);
+                return;
+              }
+
+              if (!retryData.user) {
+                throw new Error("Failed to create user account after retry");
+              }
+
+              userId = retryData.user.id;
+            } else if (authError.message?.includes("already registered") || authError.message?.includes("already exists")) {
+              // Handle "user already exists" error - try to login instead
               toast({
                 title: "Account Already Exists",
                 description: "An account with this email already exists. Please use the correct password or reset your password.",
@@ -116,16 +142,15 @@ export default function CheckoutPage() {
               });
               setProcessing(false);
               return;
+            } else {
+              throw authError;
             }
-
-            throw authError;
+          } else {
+            if (!authData.user) {
+              throw new Error("Failed to create user account");
+            }
+            userId = authData.user.id;
           }
-
-          if (!authData.user) {
-            throw new Error("Failed to create user account");
-          }
-
-          userId = authData.user.id;
         } catch (signupError) {
           console.error("Signup error:", signupError);
           throw signupError;
