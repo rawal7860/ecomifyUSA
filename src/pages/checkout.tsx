@@ -104,7 +104,7 @@ export default function CheckoutPage() {
                 phone: phone,
               },
               emailRedirectTo: undefined,
-              // @ts-ignore - Supabase type definition missing email_confirm but it is supported by API
+              // @ts-expect-error - Supabase type definition missing email_confirm but it is supported by API
               email_confirm: false, 
             },
           });
@@ -129,7 +129,7 @@ export default function CheckoutPage() {
                     phone: phone,
                   },
                   emailRedirectTo: undefined,
-                  // @ts-ignore - Supabase type definition missing email_confirm but it is supported by API
+                  // @ts-expect-error - Supabase type definition missing email_confirm but it is supported by API
                   email_confirm: false, 
                 },
               });
