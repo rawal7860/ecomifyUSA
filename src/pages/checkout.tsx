@@ -166,13 +166,11 @@ export default function CheckoutPage() {
         }
       }
 
-      // Step 2: Create/Update user profile
+      // Step 2: Update user profile (trigger handles creation)
       const { error: profileError } = await supabase
         .from("profiles")
-        .upsert({
-          id: userId,
+        .update({
           full_name: fullName,
-          email: email,
           phone: phone,
           address: address,
           city: city,
@@ -180,9 +178,13 @@ export default function CheckoutPage() {
           zip_code: zipCode,
           business_name: businessName,
           updated_at: new Date().toISOString(),
-        });
+        })
+        .eq("id", userId);
 
-      if (profileError) throw profileError;
+      // Profile update errors are non-critical (trigger creates basic profile)
+      if (profileError) {
+        console.warn("Profile update warning:", profileError);
+      }
 
       // Step 3: Create order record (handle both US and UK)
       const isUKOrder = orderData.region === "UK";
