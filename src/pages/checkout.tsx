@@ -10,15 +10,24 @@ import { Label } from "@/components/ui/label";
 import { Building2, ArrowLeft, CheckCircle2, Loader2, Mail, Phone, User, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { convertGBPtoUSD } from "@/lib/ukData";
 
 interface OrderData {
-  state: string;
-  stateCode: string;
+  state?: string;
+  stateCode?: string;
+  country?: string;
+  countryCode?: string;
+  region?: string;
   entityType: string;
   addons: string[];
   total: number;
-  formationFee: number;
+  totalGBP?: number;
+  totalUSD?: number;
+  formationFee?: number;
   serviceFee: number;
+  incorporationFee?: number;
+  confirmationStatementFee?: number;
+  currency?: string;
 }
 
 export default function CheckoutPage() {
@@ -175,26 +184,40 @@ export default function CheckoutPage() {
 
       if (profileError) throw profileError;
 
-      // Step 3: Create order record
-      const { data: orderRecord, error: orderError } = await supabase
-        .from("orders")
-        .insert({
-          user_id: userId,
+      // Step 3: Create order record (handle both US and UK)
+      const isUKOrder = orderData.region === "UK";
+      
+      const orderInsert = {
+        user_id: userId,
+        entity_type: orderData.entityType,
+        service_fee: orderData.serviceFee,
+        addons: orderData.addons as any,
+        total_amount: orderData.total,
+        status: "pending",
+        ...(isUKOrder ? {
+          state_code: orderData.countryCode,
+          state_name: orderData.country,
+          formation_fee: (orderData.incorporationFee || 0) + (orderData.confirmationStatementFee || 0),
+        } : {
           state_code: orderData.stateCode,
           state_name: orderData.state,
-          entity_type: orderData.entityType,
           formation_fee: orderData.formationFee,
-          service_fee: orderData.serviceFee,
-          addons: orderData.addons as any,
-          total_amount: orderData.total,
-          status: "pending",
-        } as any)
+        })
+      };
+
+      const { data: orderRecord, error: orderError } = await supabase
+        .from("orders")
+        .insert(orderInsert as any)
         .select()
         .single();
 
       if (orderError) throw orderError;
 
       // Step 4: Create and send Stripe invoice
+      const invoiceDescription = isUKOrder
+        ? `UK Company Formation - ${orderData.country} (${orderData.entityType})`
+        : `LLC Formation - ${orderData.state} (${orderData.entityType})`;
+
       const invoiceResponse = await fetch("/api/create-invoice", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -202,11 +225,12 @@ export default function CheckoutPage() {
           customerEmail: email,
           customerName: fullName,
           amount: orderData.total,
-          description: `LLC Formation - ${orderData.state} (${orderData.entityType})`,
+          description: invoiceDescription,
           metadata: {
             order_id: orderRecord.id,
             user_id: userId,
-            state: orderData.stateCode,
+            region: isUKOrder ? "UK" : "US",
+            location: isUKOrder ? orderData.country : orderData.state,
             entityType: orderData.entityType,
             businessName: businessName,
             phone: phone,
@@ -493,19 +517,45 @@ export default function CheckoutPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-slate-600">State</span>
-                      <span className="font-semibold">{orderData.state}</span>
-                    </div>
+                    {orderData.region === "UK" ? (
+                      <>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-slate-600">Country</span>
+                          <span className="font-semibold">{orderData.country}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-slate-600">Region</span>
+                          <span className="font-semibold">United Kingdom</span>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-slate-600">State</span>
+                        <span className="font-semibold">{orderData.state}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between text-sm">
                       <span className="text-slate-600">Entity Type</span>
                       <span className="font-semibold">{orderData.entityType}</span>
                     </div>
                     <div className="border-t pt-3 space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-slate-600">Formation Fee</span>
-                        <span>${orderData.formationFee}</span>
-                      </div>
+                      {orderData.region === "UK" ? (
+                        <>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-slate-600">Incorporation Fee</span>
+                            <span>${convertGBPtoUSD(orderData.incorporationFee || 0)}</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-slate-600">Confirmation Statement</span>
+                            <span>${convertGBPtoUSD(orderData.confirmationStatementFee || 0)}</span>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-slate-600">Formation Fee</span>
+                          <span>${orderData.formationFee}</span>
+                        </div>
+                      )}
                       <div className="flex justify-between text-sm">
                         <span className="text-slate-600">Service Fee</span>
                         <span>${orderData.serviceFee}</span>
@@ -519,9 +569,14 @@ export default function CheckoutPage() {
                     </div>
                     <div className="border-t pt-3">
                       <div className="flex justify-between">
-                        <span className="font-semibold text-slate-900">Total</span>
+                        <span className="font-semibold text-slate-900">Total (USD)</span>
                         <span className="text-2xl font-bold text-blue-600">${orderData.total}</span>
                       </div>
+                      {orderData.region === "UK" && orderData.totalGBP && (
+                        <p className="text-xs text-slate-500 text-right mt-1">
+                          Approx. £{orderData.totalGBP} GBP
+                        </p>
+                      )}
                     </div>
                   </div>
                 </CardContent>

@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
 import { USMap } from "@/components/USMap";
+import { UKMap } from "@/components/UKMap";
 import { TrustBadge } from "@/components/TrustBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, CheckCircle2, Star, ArrowRight, Shield, Clock, DollarSign } from "lucide-react";
+import { Building2, CheckCircle2, Star, ArrowRight, Shield, Clock, DollarSign, FileText } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -105,6 +106,48 @@ export default function HomePage() {
                 <DollarSign className="w-12 h-12 text-purple-600 mx-auto mb-4" />
                 <h4 className="font-bold text-xl mb-2">Transparent Pricing</h4>
                 <p className="text-slate-600">No hidden fees, clear costs upfront</p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Interactive UK Map Section */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-gradient-to-br from-emerald-50 to-white rounded-3xl">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+              <Building2 className="w-4 h-4" />
+              UK Company Formation
+            </div>
+            <h3 className="text-4xl font-bold text-slate-900 mb-4">Register Your UK Company</h3>
+            <p className="text-xl text-slate-600">Companies House registration for England, Scotland, Wales, and Northern Ireland</p>
+          </div>
+
+          <Card className="border-emerald-200 shadow-xl">
+            <CardContent className="p-8">
+              <UKMap />
+            </CardContent>
+          </Card>
+
+          <div className="grid md:grid-cols-3 gap-6 mt-12">
+            <Card className="text-center border-emerald-200">
+              <CardContent className="pt-6">
+                <Building2 className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
+                <h4 className="font-bold text-xl mb-2">Companies House Filing</h4>
+                <p className="text-slate-600">Complete incorporation and confirmation statements</p>
+              </CardContent>
+            </Card>
+            <Card className="text-center border-emerald-200">
+              <CardContent className="pt-6">
+                <FileText className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+                <h4 className="font-bold text-xl mb-2">HMRC Compliance</h4>
+                <p className="text-slate-600">Expert CT600 tax filing and VAT registration</p>
+              </CardContent>
+            </Card>
+            <Card className="text-center border-emerald-200">
+              <CardContent className="pt-6">
+                <CheckCircle2 className="w-12 h-12 text-purple-600 mx-auto mb-4" />
+                <h4 className="font-bold text-xl mb-2">Non-Resident Directors</h4>
+                <p className="text-slate-600">Specialized experience with international filings</p>
               </CardContent>
             </Card>
           </div>
