@@ -1,42 +1,43 @@
 export interface UKCountryData {
   id: string;
   name: string;
-  incorporationFee: number; // In GBP
+  formationFee: number; // Renamed from incorporationFee to match component
   confirmationStatementFee: number; // In GBP
   vatThreshold: string;
   currency: "GBP";
 }
 
 // Authentic data from UK Companies House
+// Keys match the lowercase name from TopoJSON for direct lookup
 export const ukData: Record<string, UKCountryData> = {
-  ENG: {
+  "england": {
     id: "ENG",
     name: "England",
-    incorporationFee: 100,
+    formationFee: 100,
     confirmationStatementFee: 50,
     vatThreshold: "£90,000",
     currency: "GBP"
   },
-  SCT: {
+  "scotland": {
     id: "SCT",
     name: "Scotland",
-    incorporationFee: 100,
+    formationFee: 100,
     confirmationStatementFee: 50,
     vatThreshold: "£90,000",
     currency: "GBP"
   },
-  WLS: {
+  "wales": {
     id: "WLS",
     name: "Wales",
-    incorporationFee: 100,
+    formationFee: 100,
     confirmationStatementFee: 50,
     vatThreshold: "£90,000",
     currency: "GBP"
   },
-  NIR: {
+  "northern ireland": {
     id: "NIR",
     name: "Northern Ireland",
-    incorporationFee: 100,
+    formationFee: 100,
     confirmationStatementFee: 50,
     vatThreshold: "£90,000",
     currency: "GBP"
