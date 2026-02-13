@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ukCountryData } from "@/lib/ukData";
+import { ukData } from "@/lib/ukData";
 
 export function UKMap() {
   const router = useRouter();
@@ -15,201 +15,202 @@ export function UKMap() {
   return (
     <div className="w-full max-w-5xl mx-auto relative select-none">
       <Card className="border-none shadow-xl bg-white/50 backdrop-blur-sm overflow-visible">
-        <CardContent className="p-8 relative">
+        <CardContent className="p-8 relative min-h-[600px] flex items-center justify-center">
           <svg
-            viewBox="0 0 600 800"
-            className="w-full h-auto"
+            viewBox="0 0 800 1000"
+            className="w-full h-full max-w-3xl drop-shadow-2xl"
             xmlns="http://www.w3.org/2000/svg"
+            style={{ filter: "drop-shadow(0 10px 15px rgba(0,0,0,0.1))" }}
           >
-            {/* Scotland */}
+            <defs>
+              <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="5" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+
+            {/* Scotland - High Fidelity Path */}
             <g
-              onMouseEnter={() => setHoveredCountry("scotland")}
+              onMouseEnter={() => setHoveredCountry("SCT")}
               onMouseLeave={() => setHoveredCountry(null)}
-              onClick={() => handleCountryClick("scotland")}
-              className="cursor-pointer transition-all duration-300 origin-center"
+              onClick={() => handleCountryClick("SCT")}
+              className="cursor-pointer transition-all duration-500 ease-out origin-[400px_300px]"
               style={{
-                transform: hoveredCountry === "scotland" ? "scale(1.05)" : "scale(1)",
-                filter: hoveredCountry === "scotland" ? "drop-shadow(0 8px 12px rgba(0,0,0,0.3))" : "none",
+                transform: hoveredCountry === "SCT" ? "scale(1.05) translateY(-10px)" : "scale(1)",
+                zIndex: hoveredCountry === "SCT" ? 50 : 10,
               }}
             >
               <path
-                d="M 300,50 L 380,80 L 420,140 L 400,200 L 350,240 L 280,250 L 220,240 L 180,200 L 170,140 L 210,80 Z"
-                fill={hoveredCountry === "scotland" ? "#3B82F6" : "#DBEAFE"}
+                d="M 380,50 C 400,60 420,80 430,100 C 450,120 480,110 500,140 C 510,160 500,190 480,210 C 460,230 450,250 440,270 C 420,280 400,280 380,290 L 320,280 C 300,270 280,260 260,240 C 250,220 240,200 250,180 C 260,160 280,140 300,120 C 320,100 340,80 380,50 Z"
+                fill={hoveredCountry === "SCT" ? "#3B82F6" : "#EFF6FF"}
                 stroke="#2563EB"
-                strokeWidth="2"
+                strokeWidth={hoveredCountry === "SCT" ? "3" : "1.5"}
+                className="transition-colors duration-300"
               />
               <text
-                x="300"
-                y="165"
+                x="380"
+                y="180"
                 textAnchor="middle"
-                className="font-bold text-2xl pointer-events-none"
-                fill={hoveredCountry === "scotland" ? "#FFFFFF" : "#1E40AF"}
+                className="font-bold text-3xl pointer-events-none tracking-wider font-sans"
+                fill={hoveredCountry === "SCT" ? "#FFFFFF" : "#1E40AF"}
+                style={{ textShadow: "0 2px 4px rgba(0,0,0,0.1)" }}
               >
-                Scotland
+                SCOTLAND
               </text>
             </g>
 
-            {/* Northern Ireland */}
+            {/* Northern Ireland - High Fidelity Path */}
             <g
-              onMouseEnter={() => setHoveredCountry("northern-ireland")}
+              onMouseEnter={() => setHoveredCountry("NIR")}
               onMouseLeave={() => setHoveredCountry(null)}
-              onClick={() => handleCountryClick("northern-ireland")}
-              className="cursor-pointer transition-all duration-300 origin-center"
+              onClick={() => handleCountryClick("NIR")}
+              className="cursor-pointer transition-all duration-500 ease-out origin-[180px_350px]"
               style={{
-                transform: hoveredCountry === "northern-ireland" ? "scale(1.05)" : "scale(1)",
-                filter: hoveredCountry === "northern-ireland" ? "drop-shadow(0 8px 12px rgba(0,0,0,0.3))" : "none",
+                transform: hoveredCountry === "NIR" ? "scale(1.05) translateX(-10px)" : "scale(1)",
+                zIndex: hoveredCountry === "NIR" ? 50 : 10,
               }}
             >
               <path
-                d="M 80,280 L 140,260 L 180,280 L 190,340 L 160,380 L 100,390 L 60,360 L 50,310 Z"
-                fill={hoveredCountry === "northern-ireland" ? "#F59E0B" : "#FEF3C7"}
+                d="M 150,320 C 170,310 190,320 200,340 C 210,360 200,380 190,400 C 180,410 160,420 140,410 C 120,400 110,380 110,360 C 120,340 130,330 150,320 Z"
+                fill={hoveredCountry === "NIR" ? "#F59E0B" : "#FFFBEB"}
                 stroke="#D97706"
-                strokeWidth="2"
+                strokeWidth={hoveredCountry === "NIR" ? "3" : "1.5"}
+                className="transition-colors duration-300"
               />
               <text
-                x="120"
-                y="325"
+                x="160"
+                y="375"
                 textAnchor="middle"
-                className="font-semibold text-sm pointer-events-none"
-                fill={hoveredCountry === "northern-ireland" ? "#FFFFFF" : "#92400E"}
+                className="font-bold text-sm pointer-events-none tracking-wide font-sans"
+                fill={hoveredCountry === "NIR" ? "#FFFFFF" : "#92400E"}
               >
-                Northern
-              </text>
-              <text
-                x="120"
-                y="345"
-                textAnchor="middle"
-                className="font-semibold text-sm pointer-events-none"
-                fill={hoveredCountry === "northern-ireland" ? "#FFFFFF" : "#92400E"}
-              >
-                Ireland
+                N. IRELAND
               </text>
             </g>
 
-            {/* Wales */}
+            {/* Wales - High Fidelity Path */}
             <g
-              onMouseEnter={() => setHoveredCountry("wales")}
+              onMouseEnter={() => setHoveredCountry("WLS")}
               onMouseLeave={() => setHoveredCountry(null)}
-              onClick={() => handleCountryClick("wales")}
-              className="cursor-pointer transition-all duration-300 origin-center"
+              onClick={() => handleCountryClick("WLS")}
+              className="cursor-pointer transition-all duration-500 ease-out origin-[300px_550px]"
               style={{
-                transform: hoveredCountry === "wales" ? "scale(1.05)" : "scale(1)",
-                filter: hoveredCountry === "wales" ? "drop-shadow(0 8px 12px rgba(0,0,0,0.3))" : "none",
+                transform: hoveredCountry === "WLS" ? "scale(1.05) translateX(-10px)" : "scale(1)",
+                zIndex: hoveredCountry === "WLS" ? 50 : 10,
               }}
             >
               <path
-                d="M 180,380 L 240,360 L 280,400 L 270,480 L 220,520 L 160,510 L 130,470 L 140,420 Z"
-                fill={hoveredCountry === "wales" ? "#EF4444" : "#FEE2E2"}
+                d="M 280,480 C 300,470 320,490 330,510 L 340,560 C 330,590 310,610 280,620 C 250,610 230,580 240,550 C 250,520 260,500 280,480 Z"
+                fill={hoveredCountry === "WLS" ? "#EF4444" : "#FEF2F2"}
                 stroke="#DC2626"
-                strokeWidth="2"
+                strokeWidth={hoveredCountry === "WLS" ? "3" : "1.5"}
+                className="transition-colors duration-300"
               />
               <text
-                x="205"
-                y="450"
+                x="290"
+                y="560"
                 textAnchor="middle"
-                className="font-bold text-2xl pointer-events-none"
-                fill={hoveredCountry === "wales" ? "#FFFFFF" : "#991B1B"}
+                className="font-bold text-xl pointer-events-none tracking-wider font-sans"
+                fill={hoveredCountry === "WLS" ? "#FFFFFF" : "#991B1B"}
               >
-                Wales
+                WALES
               </text>
             </g>
 
-            {/* England */}
+            {/* England - High Fidelity Path */}
             <g
-              onMouseEnter={() => setHoveredCountry("england")}
+              onMouseEnter={() => setHoveredCountry("ENG")}
               onMouseLeave={() => setHoveredCountry(null)}
-              onClick={() => handleCountryClick("england")}
-              className="cursor-pointer transition-all duration-300 origin-center"
+              onClick={() => handleCountryClick("ENG")}
+              className="cursor-pointer transition-all duration-500 ease-out origin-[450px_600px]"
               style={{
-                transform: hoveredCountry === "england" ? "scale(1.05)" : "scale(1)",
-                filter: hoveredCountry === "england" ? "drop-shadow(0 8px 12px rgba(0,0,0,0.3))" : "none",
+                transform: hoveredCountry === "ENG" ? "scale(1.05)" : "scale(1)",
+                zIndex: hoveredCountry === "ENG" ? 40 : 5,
               }}
             >
               <path
-                d="M 220,260 L 350,260 L 420,300 L 450,380 L 440,480 L 400,580 L 320,650 L 240,670 L 180,640 L 160,580 L 180,520 L 220,480 L 270,450 L 280,380 Z"
-                fill={hoveredCountry === "england" ? "#10B981" : "#D1FAE5"}
+                d="M 320,280 L 380,290 C 420,300 450,320 480,350 C 520,380 540,420 530,480 C 520,540 500,600 450,650 C 400,680 350,680 300,660 C 280,640 320,620 340,560 L 330,510 C 320,490 300,470 280,480 C 260,460 280,420 300,380 C 310,340 315,310 320,280 Z"
+                fill={hoveredCountry === "ENG" ? "#10B981" : "#ECFDF5"}
                 stroke="#059669"
-                strokeWidth="2"
+                strokeWidth={hoveredCountry === "ENG" ? "3" : "1.5"}
+                className="transition-colors duration-300"
               />
               <text
-                x="300"
-                y="470"
+                x="420"
+                y="500"
                 textAnchor="middle"
-                className="font-bold text-3xl pointer-events-none"
-                fill={hoveredCountry === "england" ? "#FFFFFF" : "#065F46"}
+                className="font-bold text-4xl pointer-events-none tracking-widest font-sans"
+                fill={hoveredCountry === "ENG" ? "#FFFFFF" : "#065F46"}
+                style={{ textShadow: "0 2px 4px rgba(0,0,0,0.1)" }}
               >
-                England
+                ENGLAND
               </text>
             </g>
           </svg>
 
-          {/* Vertical Infographic Box - Positioned to the right */}
-          {hoveredCountry && (
+          {/* Vertical Infographic Box */}
+          {hoveredCountry && ukData[hoveredCountry] && (
             <div
-              className="absolute top-1/2 right-0 transform translate-x-full -translate-y-1/2 ml-8 animate-in slide-in-from-left-4 fade-in duration-300 z-50"
-              style={{ minWidth: "320px" }}
+              className="absolute top-1/4 right-0 transform translate-x-4 animate-in slide-in-from-left-8 fade-in duration-300 z-50 w-80"
             >
-              <div className="bg-white rounded-xl shadow-2xl border-2 border-emerald-200 overflow-hidden">
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-slate-200 overflow-hidden ring-1 ring-slate-100">
                 {/* Header */}
-                <div className="bg-gradient-to-r from-emerald-600 to-emerald-500 p-5 text-white">
-                  <div className="flex justify-between items-center mb-2">
-                    <h3 className="font-bold text-xl">
-                      {ukCountryData[hoveredCountry].name}
+                <div className={`p-6 text-white bg-gradient-to-br ${
+                  hoveredCountry === 'ENG' ? 'from-emerald-500 to-emerald-700' :
+                  hoveredCountry === 'SCT' ? 'from-blue-500 to-blue-700' :
+                  hoveredCountry === 'WLS' ? 'from-red-500 to-red-700' :
+                  'from-amber-400 to-amber-600'
+                }`}>
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-bold text-2xl tracking-tight">
+                      {ukData[hoveredCountry].name}
                     </h3>
-                    <Badge className="bg-white/20 text-white border-white/40">
-                      {ukCountryData[hoveredCountry].id.toUpperCase()}
+                    <Badge className="bg-white/20 hover:bg-white/30 text-white border-0 backdrop-blur-sm">
+                      {ukData[hoveredCountry].id}
                     </Badge>
                   </div>
-                  <p className="text-emerald-100 text-sm">Companies House Registration</p>
+                  <p className="text-white/90 text-sm font-medium">Companies House Jurisdiction</p>
                 </div>
 
                 {/* Pricing Details */}
-                <div className="p-5 space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                      <span className="text-slate-600 font-medium">Incorporation Fee</span>
-                      <span className="font-bold text-lg text-slate-900">
-                        £{ukCountryData[hoveredCountry].incorporationFee}
+                <div className="p-6 space-y-5">
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center group">
+                      <span className="text-slate-500 font-medium group-hover:text-slate-700 transition-colors">Formation Fee</span>
+                      <div className="text-right">
+                        <span className="block font-bold text-xl text-slate-900">
+                          £{ukData[hoveredCountry].incorporationFee}
+                        </span>
+                        <span className="text-xs text-slate-400">One-time fee</span>
+                      </div>
+                    </div>
+
+                    <div className="h-px bg-slate-100" />
+
+                    <div className="flex justify-between items-center group">
+                      <span className="text-slate-500 font-medium group-hover:text-slate-700 transition-colors">Conf. Statement</span>
+                      <span className="font-bold text-lg text-slate-700">
+                        £{ukData[hoveredCountry].confirmationStatementFee}
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                      <span className="text-slate-600 font-medium">Confirmation Statement</span>
-                      <span className="font-bold text-lg text-slate-900">
-                        £{ukCountryData[hoveredCountry].confirmationStatementFee}
-                      </span>
-                    </div>
-
-                    <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                      <span className="text-slate-600 font-medium">Service Fee</span>
-                      <span className="font-bold text-lg text-emerald-600">$150.00</span>
-                    </div>
-
-                    <div className="bg-slate-50 rounded-lg p-3 space-y-2">
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-slate-500">VAT Threshold</span>
-                        <span className="font-semibold text-slate-700">
-                          £{ukCountryData[hoveredCountry].vatThreshold.toLocaleString()}
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-slate-500">Corporation Tax</span>
-                        <span className="font-semibold text-slate-700">
-                          {ukCountryData[hoveredCountry].corporationTax}
-                        </span>
-                      </div>
+                    <div className="flex justify-between items-center group">
+                      <span className="text-slate-500 font-medium group-hover:text-slate-700 transition-colors">VAT Threshold</span>
+                      <Badge variant="outline" className="border-slate-200 text-slate-700 bg-slate-50">
+                        {ukData[hoveredCountry].vatThreshold}
+                      </Badge>
                     </div>
                   </div>
 
                   {/* CTA */}
-                  <div className="pt-3 border-t border-slate-200">
-                    <div className="text-center">
-                      <span className="text-sm font-bold text-emerald-600 flex items-center justify-center gap-2">
-                        <span className="animate-pulse">→</span>
-                        Click to Configure Service
-                        <span className="animate-pulse">←</span>
-                      </span>
+                  <div className="pt-4 mt-2">
+                    <div className="w-full bg-slate-900 text-white py-3 px-4 rounded-lg font-semibold text-center text-sm hover:bg-slate-800 transition-colors shadow-lg shadow-slate-200 flex items-center justify-center gap-2 group">
+                      Start Formation
+                      <span className="group-hover:translate-x-1 transition-transform duration-200">→</span>
                     </div>
+                    <p className="text-center text-xs text-slate-400 mt-3">
+                      Instant Stripe Invoice • Secure Checkout
+                    </p>
                   </div>
                 </div>
               </div>
