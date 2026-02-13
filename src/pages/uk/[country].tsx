@@ -38,7 +38,7 @@ export default function UKServicePage() {
 
   useEffect(() => {
     if (countryInfo) {
-      let calcTotalGBP = countryInfo.incorporationFee + countryInfo.confirmationStatementFee + SERVICE_FEE_GBP;
+      let calcTotalGBP = countryInfo.formationFee + countryInfo.confirmationStatementFee + SERVICE_FEE_GBP;
       if (includeVAT) calcTotalGBP += VAT_REGISTRATION_GBP;
       if (includeAnnualFiling) calcTotalGBP += ANNUAL_FILING_GBP;
       
@@ -55,7 +55,7 @@ export default function UKServicePage() {
       countryCode: countryInfo.id,
       region: "UK",
       entityType,
-      incorporationFee: countryInfo.incorporationFee,
+      formationFee: countryInfo.formationFee,
       confirmationStatementFee: countryInfo.confirmationStatementFee,
       serviceFee: SERVICE_FEE_GBP,
       addons: [
@@ -271,8 +271,8 @@ export default function UKServicePage() {
                   </div>
                   <CardContent className="p-6 space-y-4">
                     <div className="flex justify-between items-center text-sm">
-                      <span className="text-slate-600">Incorporation Fee</span>
-                      <span className="font-medium">£{countryInfo.incorporationFee} (${convertGBPtoUSD(countryInfo.incorporationFee)})</span>
+                      <span className="text-slate-600">Formation Fee</span>
+                      <span className="font-medium">£{countryInfo.formationFee} (${convertGBPtoUSD(countryInfo.formationFee)})</span>
                     </div>
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-slate-600">Confirmation Statement</span>

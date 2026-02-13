@@ -3,6 +3,8 @@ export interface UKCountryData {
   name: string;
   formationFee: number; // Renamed from incorporationFee to match component
   confirmationStatementFee: number; // In GBP
+  annualConfirmationFee: number; // Added to match UKMap usage
+  corporationTax: string; // Added to match UKMap usage
   vatThreshold: string;
   currency: "GBP";
 }
@@ -15,6 +17,8 @@ export const ukData: Record<string, UKCountryData> = {
     name: "England",
     formationFee: 100,
     confirmationStatementFee: 50,
+    annualConfirmationFee: 50,
+    corporationTax: "19-25%",
     vatThreshold: "£90,000",
     currency: "GBP"
   },
@@ -23,6 +27,8 @@ export const ukData: Record<string, UKCountryData> = {
     name: "Scotland",
     formationFee: 100,
     confirmationStatementFee: 50,
+    annualConfirmationFee: 50,
+    corporationTax: "19-25%",
     vatThreshold: "£90,000",
     currency: "GBP"
   },
@@ -31,6 +37,8 @@ export const ukData: Record<string, UKCountryData> = {
     name: "Wales",
     formationFee: 100,
     confirmationStatementFee: 50,
+    annualConfirmationFee: 50,
+    corporationTax: "19-25%",
     vatThreshold: "£90,000",
     currency: "GBP"
   },
@@ -39,6 +47,8 @@ export const ukData: Record<string, UKCountryData> = {
     name: "Northern Ireland",
     formationFee: 100,
     confirmationStatementFee: 50,
+    annualConfirmationFee: 50,
+    corporationTax: "19-25%",
     vatThreshold: "£90,000",
     currency: "GBP"
   }
