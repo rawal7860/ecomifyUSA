@@ -1,74 +1,43 @@
 import React, { useState } from 'react';
 
 const UKMap = () => {
-  const [hoveredState, setHoveredState] = useState(null);
+    const [hovered, setHovered] = useState < string | null > (null);
 
-  // UK Data Object
-  const ukData = {
-    England: { fee: "£100", vat: "£90k", tax: "19-25%", desc: "HMRC & Companies House" },
-    Scotland: { fee: "£100", vat: "£90k", tax: "19-25%", desc: "Scottish Limited Partnership" },
-    Wales: { fee: "£100", vat: "£90k", tax: "19-25%", desc: "Standard UK Compliance" },
-    NorthernIreland: { fee: "£100", vat: "£90k", tax: "19-25%", desc: "Dual Market Access" }
-  };
+    const regions = [
+        { id: 'Scotland', d: "M150,50 L250,50 L270,150 L230,250 L130,200 Z" },
+        { id: 'England', d: "M230,250 L330,300 L300,500 L200,550 L170,400 Z" },
+        { id: 'Wales', d: "M170,400 L130,380 L110,450 L150,480 Z" },
+        { id: 'N. Ireland', d: "M70,200 L110,180 L130,220 L90,250 Z" }
+    ];
 
-  const handleHover = (name) => setHoveredState(name);
-
-  return (
-    <div className="flex flex-row items-start justify-center p-8 bg-gray-50 rounded-xl">
-      {/* SVG MAP SECTION */}
-      <svg viewBox="0 0 500 600" className="w-full max-w-md drop-shadow-2xl">
-        {/* England */}
-        <path
-          d="M320,550 L300,500 L280,450 L350,350 L400,400 L420,500 Z"
-          fill={hoveredState === 'England' ? '#3b82f6' : '#94a3b8'}
-          className="transition-all duration-300 cursor-pointer hover:scale-[1.02] origin-center"
-          onMouseEnter={() => handleHover('England')}
-          onMouseLeave={() => handleHover(null)}
-        />
-        {/* Scotland */}
-        <path
-          d="M250,50 L350,150 L320,300 L250,280 L200,150 Z"
-          fill={hoveredState === 'Scotland' ? '#3b82f6' : '#94a3b8'}
-          className="transition-all duration-300 cursor-pointer hover:scale-[1.02] origin-center"
-          onMouseEnter={() => handleHover('Scotland')}
-        />
-        {/* Wales */}
-        <path
-          d="M230,450 L200,400 L250,380 L270,420 Z"
-          fill={hoveredState === 'Wales' ? '#3b82f6' : '#94a3b8'}
-          className="transition-all duration-300 cursor-pointer hover:scale-[1.02] origin-center"
-          onMouseEnter={() => handleHover('Wales')}
-        />
-        {/* Northern Ireland */}
-        <path
-          d="M150,250 L180,220 L210,250 L180,280 Z"
-          fill={hoveredState === 'NorthernIreland' ? '#3b82f6' : '#94a3b8'}
-          className="transition-all duration-300 cursor-pointer hover:scale-[1.02] origin-center"
-          onMouseEnter={() => handleHover('NorthernIreland')}
-        />
-      </svg>
-
-      {/* VERTICAL INFOGRAPHIC BOX */}
-      <div className="ml-8 w-64 p-6 bg-white border-2 border-blue-500 rounded-lg shadow-xl min-h-[300px]">
-        {hoveredState ? (
-          <>
-            <h2 className="text-2xl font-bold text-blue-700 border-b pb-2 mb-4">{hoveredState}</h2>
-            <div className="space-y-4 text-sm text-gray-700">
-              <p><strong>Formation Fee:</strong> {ukData[hoveredState].fee}</p>
-              <p><strong>VAT Threshold:</strong> {ukData[hoveredState].vat}</p>
-              <p><strong>Corp Tax:</strong> {ukData[hoveredState].tax}</p>
-              <p className="mt-4 italic">{ukData[hoveredState].desc}</p>
-              <button className="w-full py-2 bg-blue-600 text-white rounded font-bold hover:bg-blue-700 mt-4">
-                Select State
-              </button>
+    return (
+        <div className="flex flex-col md:flex-row gap-8 p-10 bg-white rounded-xl border border-gray-200 shadow-sm">
+            <svg viewBox="0 0 400 600" className="w-full max-w-[300px] h-auto">
+                {regions.map((region) => (
+                    <path
+                        key={region.id}
+                        d={region.d}
+                        fill={hovered === region.id ? "#2563eb" : "#e2e8f0"}
+                        stroke="#94a3b8"
+                        strokeWidth="2"
+                        className="transition-all duration-300 cursor-pointer hover:scale-[1.05] origin-center"
+                        onMouseEnter={() => setHovered(region.id)}
+                        onMouseLeave={() => setHovered(null)}
+                    />
+                ))}
+            </svg>
+            <div className="w-64 p-6 bg-blue-50 rounded-lg border-l-4 border-blue-600">
+                <h3 className="text-xl font-bold text-blue-900 mb-2">{hovered || "Select a Region"}</h3>
+                {hovered && (
+                    <div className="text-sm space-y-2 text-blue-800">
+                        <p><strong>Formation:</strong> £100</p>
+                        <p><strong>Compliance:</strong> HMRC & Co. House</p>
+                        <p><strong>VAT Threshold:</strong> £90,000</p>
+                    </div>
+                )}
             </div>
-          </>
-        ) : (
-          <p className="text-gray-400 italic text-center mt-20">Hover over a region to see details</p>
-        )}
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
-export default UKMap;
+export default UKMap; // THIS LINE FIXES THE BUILD ERROR
