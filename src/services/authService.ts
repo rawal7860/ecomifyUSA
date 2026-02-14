@@ -180,3 +180,19 @@ export const authService = {
     return supabase.auth.onAuthStateChange(callback);
   }
 };
+
+export const signUp = async (email: string, password: string, fullName?: string) => {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: `${getURL()}/dashboard`,
+      data: {
+        full_name: fullName || ""
+      }
+    }
+  });
+
+  if (error) throw error;
+  return data;
+};
