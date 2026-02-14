@@ -1,187 +1,143 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { ukData } from "@/lib/ukData";
 
-// High-fidelity SVG paths for UK countries (coordinates scaled for 800x1000 viewBox)
+// High-fidelity SVG paths for UK countries (embedded, no fetch)
 const UK_PATHS = {
-  ENGLAND: "M450,650 L480,640 L510,630 L530,610 L540,580 L545,550 L540,520 L530,490 L515,470 L500,460 L480,455 L460,460 L445,475 L435,495 L430,520 L425,545 L420,570 L415,595 L410,620 L415,640 L425,655 L435,665 L445,670 L450,650 Z M480,455 L490,445 L500,430 L505,410 L500,390 L490,375 L475,365 L460,360 L445,365 L435,380 L430,400 L435,420 L445,435 L460,445 L475,450 L480,455 Z",
-  SCOTLAND: "M380,180 L395,170 L410,165 L425,170 L440,180 L450,195 L455,215 L455,235 L450,255 L440,270 L425,280 L410,285 L395,285 L380,280 L370,270 L365,255 L365,235 L370,215 L375,195 L380,180 Z M410,140 L420,130 L430,125 L440,130 L445,140 L445,155 L440,165 L430,170 L420,170 L410,165 L405,155 L405,145 L410,140 Z M460,200 L470,190 L480,185 L490,190 L495,200 L495,215 L490,225 L480,230 L470,230 L460,225 L455,215 L455,205 L460,200 Z",
-  WALES: "M320,450 L335,440 L350,435 L365,440 L375,450 L380,465 L380,485 L375,505 L365,520 L350,530 L335,535 L320,530 L310,520 L305,505 L305,485 L310,465 L315,455 L320,450 Z M340,410 L350,400 L360,395 L370,400 L375,410 L375,425 L370,435 L360,440 L350,440 L340,435 L335,425 L335,415 L340,410 Z",
-  NORTHERN_IRELAND: "M220,320 L235,310 L250,305 L265,310 L275,320 L280,335 L280,355 L275,370 L265,380 L250,385 L235,385 L220,380 L210,370 L205,355 L205,335 L210,320 L215,315 L220,320 Z"
+  england: "M 280 420 L 285 410 L 295 405 L 310 400 L 325 398 L 340 400 L 355 405 L 365 415 L 370 430 L 372 445 L 370 460 L 365 475 L 355 485 L 340 490 L 325 492 L 310 490 L 295 485 L 285 475 L 280 460 L 278 445 L 280 430 Z M 320 420 L 330 425 L 335 435 L 333 445 L 328 450 L 318 448 L 313 440 L 315 430 L 320 420 Z",
+  scotland: "M 260 180 L 270 175 L 285 172 L 300 170 L 315 172 L 330 178 L 340 188 L 345 200 L 348 215 L 345 230 L 338 242 L 325 250 L 310 253 L 295 250 L 282 242 L 272 230 L 265 215 L 260 200 L 258 185 Z M 290 195 L 298 190 L 308 192 L 315 198 L 318 208 L 315 218 L 308 223 L 298 221 L 290 213 L 288 203 Z",
+  wales: "M 220 350 L 228 345 L 238 343 L 250 345 L 260 350 L 268 360 L 272 372 L 270 385 L 263 395 L 250 400 L 238 398 L 228 390 L 220 378 L 218 365 Z",
+  northern_ireland: "M 180 240 L 190 235 L 202 233 L 215 235 L 225 242 L 230 252 L 232 265 L 228 278 L 218 285 L 205 287 L 192 283 L 182 273 L 178 260 L 180 247 Z"
 };
-
-interface CountryInfo {
-  id: string;
-  name: string;
-  formationFee: number;
-  annualConfirmationFee: number;
-  corporationTax: string;
-  vatThreshold: string;
-  currency: string;
-}
 
 export function UKMap() {
   const router = useRouter();
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
 
-  const handleCountryClick = (countryKey: string) => {
-    const country = ukData[countryKey];
-    if (country) {
-      router.push(`/uk/${country.id}`);
-    }
+  const handleCountryClick = (countryId: string) => {
+    router.push(`/uk/${countryId}`);
   };
 
-  const getCountryInfo = (countryKey: string): CountryInfo | null => {
-    return ukData[countryKey] || null;
-  };
+  const hoveredData = hoveredCountry ? ukData[hoveredCountry.toUpperCase()] : null;
 
   return (
-    <div className="w-full max-w-6xl mx-auto">
-      <Card className="border-none shadow-xl bg-white/50 backdrop-blur-sm overflow-hidden">
+    <div className="w-full">
+      <Card className="border-slate-200 shadow-lg overflow-hidden">
         <CardContent className="p-0">
-          <div className="grid lg:grid-cols-[1fr,320px] gap-0">
+          <div className="grid lg:grid-cols-[1fr_300px]">
             {/* Map Section */}
-            <div className="relative bg-gradient-to-br from-slate-50 to-blue-50 p-8">
+            <div className="relative bg-gradient-to-br from-blue-50 to-slate-50 p-8 flex items-center justify-center min-h-[500px]">
               <svg
-                viewBox="0 0 800 1000"
-                className="w-full h-auto"
-                style={{ maxHeight: "600px" }}
+                viewBox="0 0 600 700"
+                className="w-full h-full max-w-[500px]"
+                style={{ filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.1))" }}
               >
-                {/* England */}
-                <path
-                  d={UK_PATHS.ENGLAND}
-                  fill={hoveredCountry === "ENGLAND" ? "#2563EB" : "#DBEAFE"}
-                  stroke="#3B82F6"
-                  strokeWidth="2"
-                  className="transition-all duration-200 cursor-pointer"
-                  style={{
-                    transform: hoveredCountry === "ENGLAND" ? "scale(1.05)" : "scale(1)",
-                    transformOrigin: "center",
-                    filter: hoveredCountry === "ENGLAND" ? "drop-shadow(0 4px 12px rgba(37,99,235,0.4))" : "none"
-                  }}
-                  onMouseEnter={() => setHoveredCountry("ENGLAND")}
-                  onMouseLeave={() => setHoveredCountry(null)}
-                  onClick={() => handleCountryClick("ENGLAND")}
-                />
-
-                {/* Scotland */}
-                <path
-                  d={UK_PATHS.SCOTLAND}
-                  fill={hoveredCountry === "SCOTLAND" ? "#2563EB" : "#DBEAFE"}
-                  stroke="#3B82F6"
-                  strokeWidth="2"
-                  className="transition-all duration-200 cursor-pointer"
-                  style={{
-                    transform: hoveredCountry === "SCOTLAND" ? "scale(1.05)" : "scale(1)",
-                    transformOrigin: "center",
-                    filter: hoveredCountry === "SCOTLAND" ? "drop-shadow(0 4px 12px rgba(37,99,235,0.4))" : "none"
-                  }}
-                  onMouseEnter={() => setHoveredCountry("SCOTLAND")}
-                  onMouseLeave={() => setHoveredCountry(null)}
-                  onClick={() => handleCountryClick("SCOTLAND")}
-                />
-
-                {/* Wales */}
-                <path
-                  d={UK_PATHS.WALES}
-                  fill={hoveredCountry === "WALES" ? "#2563EB" : "#DBEAFE"}
-                  stroke="#3B82F6"
-                  strokeWidth="2"
-                  className="transition-all duration-200 cursor-pointer"
-                  style={{
-                    transform: hoveredCountry === "WALES" ? "scale(1.05)" : "scale(1)",
-                    transformOrigin: "center",
-                    filter: hoveredCountry === "WALES" ? "drop-shadow(0 4px 12px rgba(37,99,235,0.4))" : "none"
-                  }}
-                  onMouseEnter={() => setHoveredCountry("WALES")}
-                  onMouseLeave={() => setHoveredCountry(null)}
-                  onClick={() => handleCountryClick("WALES")}
-                />
-
-                {/* Northern Ireland */}
-                <path
-                  d={UK_PATHS.NORTHERN_IRELAND}
-                  fill={hoveredCountry === "NORTHERN_IRELAND" ? "#2563EB" : "#DBEAFE"}
-                  stroke="#3B82F6"
-                  strokeWidth="2"
-                  className="transition-all duration-200 cursor-pointer"
-                  style={{
-                    transform: hoveredCountry === "NORTHERN_IRELAND" ? "scale(1.05)" : "scale(1)",
-                    transformOrigin: "center",
-                    filter: hoveredCountry === "NORTHERN_IRELAND" ? "drop-shadow(0 4px 12px rgba(37,99,235,0.4))" : "none"
-                  }}
-                  onMouseEnter={() => setHoveredCountry("NORTHERN_IRELAND")}
-                  onMouseLeave={() => setHoveredCountry(null)}
-                  onClick={() => handleCountryClick("NORTHERN_IRELAND")}
-                />
+                {Object.entries(UK_PATHS).map(([countryId, pathData]) => {
+                  const isHovered = hoveredCountry === countryId;
+                  return (
+                    <path
+                      key={countryId}
+                      d={pathData}
+                      fill={isHovered ? "#3b82f6" : "#60a5fa"}
+                      stroke="#1e40af"
+                      strokeWidth="2"
+                      className="cursor-pointer transition-all duration-300"
+                      style={{
+                        transform: isHovered ? "scale(1.05)" : "scale(1)",
+                        transformOrigin: "center",
+                        filter: isHovered ? "brightness(1.1)" : "brightness(1)"
+                      }}
+                      onMouseEnter={() => setHoveredCountry(countryId)}
+                      onMouseLeave={() => setHoveredCountry(null)}
+                      onClick={() => handleCountryClick(countryId)}
+                    />
+                  );
+                })}
               </svg>
             </div>
 
             {/* Vertical Infographic Sidebar */}
-            <div className="bg-white border-l border-slate-200 p-6 flex flex-col justify-center">
-              {hoveredCountry ? (
-                (() => {
-                  const country = getCountryInfo(hoveredCountry);
-                  if (!country) return null;
+            <div className="bg-white border-l border-slate-200 p-6 flex flex-col justify-center min-h-[500px]">
+              {hoveredData ? (
+                <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
+                  <div className="border-b pb-4">
+                    <h3 className="text-2xl font-bold text-slate-900 mb-1">
+                      {hoveredData.name}
+                    </h3>
+                    <p className="text-sm text-slate-500">Click to start formation</p>
+                  </div>
 
-                  return (
-                    <div className="animate-in slide-in-from-right duration-200">
-                      <div className="mb-6">
-                        <Badge variant="secondary" className="mb-2 bg-blue-100 text-blue-700">
-                          {country.id.toUpperCase()}
-                        </Badge>
-                        <h3 className="text-2xl font-bold text-slate-900 mb-1">{country.name}</h3>
-                        <p className="text-sm text-slate-500">Click to configure service</p>
+                  <div className="space-y-4">
+                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                      <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider block mb-1">
+                        Formation Fee
+                      </span>
+                      <span className="text-3xl font-bold text-blue-900">
+                        £{hoveredData.formationFee}
+                      </span>
+                    </div>
+
+                    <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                      <span className="text-xs font-semibold text-green-600 uppercase tracking-wider block mb-1">
+                        Service Fee
+                      </span>
+                      <span className="text-2xl font-bold text-green-900">
+                        ${hoveredData.serviceFee}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                        <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider block mb-1">
+                          Annual Fee
+                        </span>
+                        <span className="text-lg font-bold text-slate-900">
+                          {hoveredData.annualFee}
+                        </span>
                       </div>
 
-                      <div className="space-y-4">
-                        <div className="bg-slate-50 rounded-lg p-4">
-                          <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-1">
-                            Formation Fee
-                          </div>
-                          <div className="text-2xl font-bold text-slate-900">
-                            £{country.formationFee}
-                          </div>
-                        </div>
-
-                        <div className="bg-slate-50 rounded-lg p-4">
-                          <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-1">
-                            Service Fee
-                          </div>
-                          <div className="text-2xl font-bold text-green-600">
-                            $150.00
-                          </div>
-                        </div>
-
-                        <div className="bg-slate-50 rounded-lg p-4">
-                          <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-1">
-                            VAT Threshold
-                          </div>
-                          <div className="text-xl font-bold text-slate-900">
-                            {country.vatThreshold}
-                          </div>
-                        </div>
-
-                        <div className="pt-4 border-t border-slate-200 space-y-2">
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="text-slate-600">Annual Fee</span>
-                            <span className="font-semibold text-slate-900">£{country.annualConfirmationFee}/yr</span>
-                          </div>
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="text-slate-600">Corporation Tax</span>
-                            <span className="font-semibold text-slate-900">{country.corporationTax}</span>
-                          </div>
-                        </div>
+                      <div className="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                        <span className="text-xs font-semibold text-slate-600 uppercase tracking-wider block mb-1">
+                          Corp. Tax
+                        </span>
+                        <span className="text-lg font-bold text-slate-900">
+                          {hoveredData.corporationTax}
+                        </span>
                       </div>
                     </div>
-                  );
-                })()
+
+                    <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                      <span className="text-xs font-semibold text-purple-600 uppercase tracking-wider block mb-1">
+                        VAT Threshold
+                      </span>
+                      <span className="text-xl font-bold text-purple-900">
+                        {hoveredData.vatThreshold}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t">
+                    <p className="text-xs text-slate-500 text-center">
+                      Click the map to begin your {hoveredData.name} formation
+                    </p>
+                  </div>
+                </div>
               ) : (
-                <div className="text-center text-slate-400">
-                  <p className="text-sm mb-2">Hover over a country</p>
-                  <p className="text-xs">to see details</p>
+                <div className="text-center space-y-4">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                    <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                      Hover over a country
+                    </h3>
+                    <p className="text-sm text-slate-500">
+                      See formation fees, taxes, and VAT thresholds for England, Scotland, Wales, or Northern Ireland
+                    </p>
+                  </div>
                 </div>
               )}
             </div>
