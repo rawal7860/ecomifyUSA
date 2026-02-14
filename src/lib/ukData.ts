@@ -1,16 +1,17 @@
 export interface UKCountryData {
   id: string;
   name: string;
-  formationFee: number; // Renamed from incorporationFee to match component
-  confirmationStatementFee: number; // In GBP
-  annualConfirmationFee: number; // Added to match UKMap usage
-  corporationTax: string; // Added to match UKMap usage
+  formationFee: number; // GBP
+  confirmationStatementFee: number; // GBP
+  annualConfirmationFee: number; // GBP
+  serviceFee: number; // USD
+  annualFee: string; // Display string (e.g. "£50/yr")
+  corporationTax: string;
   vatThreshold: string;
   currency: "GBP";
 }
 
 // Authentic data from UK Companies House
-// Keys match the country codes/names from the TopoJSON
 export const ukData: Record<string, UKCountryData> = {
   "ENGLAND": {
     id: "ENG",
@@ -18,6 +19,8 @@ export const ukData: Record<string, UKCountryData> = {
     formationFee: 100,
     confirmationStatementFee: 50,
     annualConfirmationFee: 50,
+    serviceFee: 150,
+    annualFee: "£50/yr",
     corporationTax: "19-25%",
     vatThreshold: "£90,000",
     currency: "GBP"
@@ -28,6 +31,8 @@ export const ukData: Record<string, UKCountryData> = {
     formationFee: 100,
     confirmationStatementFee: 50,
     annualConfirmationFee: 50,
+    serviceFee: 150,
+    annualFee: "£50/yr",
     corporationTax: "19-25%",
     vatThreshold: "£90,000",
     currency: "GBP"
@@ -38,6 +43,8 @@ export const ukData: Record<string, UKCountryData> = {
     formationFee: 100,
     confirmationStatementFee: 50,
     annualConfirmationFee: 50,
+    serviceFee: 150,
+    annualFee: "£50/yr",
     corporationTax: "19-25%",
     vatThreshold: "£90,000",
     currency: "GBP"
@@ -48,6 +55,8 @@ export const ukData: Record<string, UKCountryData> = {
     formationFee: 100,
     confirmationStatementFee: 50,
     annualConfirmationFee: 50,
+    serviceFee: 150,
+    annualFee: "£50/yr",
     corporationTax: "19-25%",
     vatThreshold: "£90,000",
     currency: "GBP"
