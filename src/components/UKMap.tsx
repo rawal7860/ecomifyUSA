@@ -4,14 +4,14 @@ const UKMap = () => {
     const [hovered, setHovered] = useState < string | null > (null);
 
     const regions = [
-        { id: 'Scotland', d: "M150,50 L250,50 L270,150 L230,250 L130,200 Z" },
-        { id: 'England', d: "M230,250 L330,300 L300,500 L200,550 L170,400 Z" },
-        { id: 'Wales', d: "M170,400 L130,380 L110,450 L150,480 Z" },
-        { id: 'N. Ireland', d: "M70,200 L110,180 L130,220 L90,250 Z" }
+        { id: 'Scotland', d: "M150,50 L250,50 L270,150 L230,250 L130,200 Z", fee: "£100" },
+        { id: 'England', d: "M230,250 L330,300 L300,500 L200,550 L170,400 Z", fee: "£100" },
+        { id: 'Wales', d: "M170,400 L130,380 L110,450 L150,480 Z", fee: "£100" },
+        { id: 'N. Ireland', d: "M70,200 L110,180 L130,220 L90,250 Z", fee: "£100" }
     ];
 
     return (
-        <div className="flex flex-col md:flex-row gap-8 p-10 bg-white rounded-xl border border-gray-200 shadow-sm">
+        <div className="flex flex-col md:flex-row gap-8 p-10 bg-white rounded-xl border border-gray-200">
             <svg viewBox="0 0 400 600" className="w-full max-w-[300px] h-auto">
                 {regions.map((region) => (
                     <path
@@ -40,4 +40,4 @@ const UKMap = () => {
     );
 };
 
-export default UKMap; // THIS LINE FIXES THE BUILD ERROR
+export default UKMap; // This line is crucial to fix the build error
