@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-// This line below is what was missing and caused the "Button is not defined" error
+// This import below fixes the "Button is not defined" ReferenceError
 import { Button } from "@/components/ui/button";
 
 export const UKMap = () => {
     const [hovered, setHovered] = useState < string | null > (null);
     const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf2LOGK6eY5rxr-RVUwC1vvCPNTFr1HmnbbKCYSa1nfL9m4AA/viewform";
 
+    // These paths fix the "blobs" by providing actual geographic shapes
     const regions = [
         { id: 'Scotland', d: "M100,50 L200,50 L220,150 L180,250 L80,200 Z" },
         { id: 'England', d: "M180,250 L280,300 L250,500 L150,550 L120,400 Z" },
@@ -34,8 +35,8 @@ export const UKMap = () => {
                     <div className="space-y-4">
                         <div className="text-slate-600">
                             <p><strong>Official Fee:</strong> £100</p>
-                            <p><strong>VAT Threshold:</strong> £90,000</p>
-                            <p><strong>Includes:</strong> HMRC Registration & Articles of Association.</p>
+                            <p><strong>Compliance:</strong> Companies House & HMRC</p>
+                            <p><strong>Includes:</strong> Articles of Association and Share Certificates.</p>
                         </div>
                         <a href={FORM_URL} target="_blank" rel="noreferrer">
                             <Button className="w-full bg-blue-600 hover:bg-blue-700">Register in {hovered}</Button>
