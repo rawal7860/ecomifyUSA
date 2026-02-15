@@ -1,40 +1,46 @@
 import React, { useState } from 'react';
 
-// Using a named export to match your index.tsx import { UKMap }
 export const UKMap = () => {
     const [hovered, setHovered] = useState < string | null > (null);
+    const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf2LOGK6eY5rxr-RVUwC1vvCPNTFr1HmnbbKCYSa1nfL9m4AA/viewform";
 
     const regions = [
-        { id: 'Scotland', d: "M150,50 L250,50 L270,150 L230,250 L130,200 Z" },
-        { id: 'England', d: "M230,250 L330,300 L300,500 L200,550 L170,400 Z" },
-        { id: 'Wales', d: "M170,400 L130,380 L110,450 L150,480 Z" },
-        { id: 'N. Ireland', d: "M70,200 L110,180 L130,220 L90,250 Z" }
+        { id: 'Scotland', d: "M100,50 L200,50 L220,150 L180,250 L80,200 Z", fee: "£100" },
+        { id: 'England', d: "M180,250 L280,300 L250,500 L150,550 L120,400 Z", fee: "£100" },
+        { id: 'Wales', d: "M120,400 L80,380 L60,450 L100,480 Z", fee: "£100" },
+        { id: 'N. Ireland', d: "M20,200 L60,180 L80,220 L40,250 Z", fee: "£100" }
     ];
 
     return (
-        <div className="flex flex-col md:flex-row gap-8 p-10 bg-white rounded-xl border border-gray-200 shadow-sm">
-            <svg viewBox="0 0 400 600" className="w-full max-w-[300px] h-auto">
-                {regions.map((region) => (
+        <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
+            <svg viewBox="0 0 350 600" className="w-full max-w-[280px] drop-shadow-lg">
+                {regions.map((reg) => (
                     <path
-                        key={region.id}
-                        d={region.d}
-                        fill={hovered === region.id ? "#2563eb" : "#e2e8f0"}
-                        stroke="#94a3b8"
-                        strokeWidth="2"
-                        className="transition-all duration-300 cursor-pointer hover:scale-[1.05] origin-center"
-                        onMouseEnter={() => setHovered(region.id)}
+                        key={reg.id}
+                        d={reg.d}
+                        fill={hovered === reg.id ? "#2563eb" : "#cbd5e1"}
+                        className="transition-all duration-300 cursor-pointer hover:scale-105 origin-center"
+                        onMouseEnter={() => setHovered(reg.id)}
                         onMouseLeave={() => setHovered(null)}
                     />
                 ))}
             </svg>
-            <div className="w-64 p-6 bg-blue-50 rounded-lg border-l-4 border-blue-600">
-                <h3 className="text-xl font-bold text-blue-900 mb-2">{hovered || "Select a UK Region"}</h3>
-                {hovered && (
-                    <div className="text-sm space-y-2 text-blue-800">
-                        <p><strong>Formation:</strong> £100</p>
-                        <p><strong>Compliance:</strong> HMRC & Co. House</p>
-                        <p><strong>VAT Threshold:</strong> £90,000</p>
+
+            <div className="w-full max-w-sm p-6 bg-white border-2 border-blue-500 rounded-xl shadow-lg">
+                <h4 className="text-2xl font-bold text-blue-900 mb-2">{hovered || "Select UK Region"}</h4>
+                {hovered ? (
+                    <div className="space-y-4">
+                        <div className="text-slate-600">
+                            <p><strong>Official Fee:</strong> £100</p>
+                            <p><strong>VAT Threshold:</strong> £90,000</p>
+                            <p><strong>Includes:</strong> Articles of Association, Share Certificates, and Registered Office.</p>
+                        </div>
+                        <a href={FORM_URL} target="_blank" rel="noreferrer">
+                            <Button className="w-full bg-blue-600 hover:bg-blue-700">Register in {hovered}</Button>
+                        </a>
                     </div>
+                ) : (
+                    <p className="text-slate-400 italic">Hover over the map to view UK formation details.</p>
                 )}
             </div>
         </div>
