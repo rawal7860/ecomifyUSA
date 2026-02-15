@@ -5,7 +5,7 @@ export const UKMap = () => {
     const [hovered, setHovered] = useState < string | null > (null);
     const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf2LOGK6eY5rxr-RVUwC1vvCPNTFr1HmnbbKCYSa1nfL9m4AA/viewform";
 
-    // These coordinates are manually tuned to represent the actual UK geography
+    // Refined geographic paths to fix the "blobs"
     const regions = [
         {
             id: 'Scotland',
@@ -32,7 +32,7 @@ export const UKMap = () => {
     return (
         <div className="flex flex-col md:flex-row gap-12 items-center justify-center p-8 bg-white rounded-3xl shadow-sm border border-slate-100">
             {/* SVG Map Section */}
-            <div className="relative group">
+            <div className="relative">
                 <svg viewBox="0 0 300 550" className="w-full max-w-[320px] drop-shadow-2xl">
                     {regions.map((reg) => (
                         <path
@@ -41,7 +41,7 @@ export const UKMap = () => {
                             fill={hovered === reg.id ? reg.color : "#f1f5f9"}
                             stroke={hovered === reg.id ? "#fff" : "#cbd5e1"}
                             strokeWidth={hovered === reg.id ? "3" : "1.5"}
-                            className="transition-all duration-500 cursor-pointer hover:brightness-110"
+                            className="transition-all duration-500 cursor-pointer"
                             onMouseEnter={() => setHovered(reg.id)}
                             onMouseLeave={() => setHovered(null)}
                         />
@@ -50,36 +50,31 @@ export const UKMap = () => {
             </div>
 
             {/* Professional Info Card */}
-            <div className="w-full max-w-md p-8 bg-white border border-slate-200 rounded-2xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.07)]">
-                <div className="flex items-center gap-3 mb-4">
-                    <div className={`w-3 h-3 rounded-full animate-pulse ${hovered ? 'bg-blue-600' : 'bg-slate-300'}`} />
-                    <h4 className="text-3xl font-black text-slate-900 tracking-tight">
-                        {hovered || "Select UK Region"}
-                    </h4>
-                </div>
+            <div className="w-full max-w-md p-8 bg-white border border-slate-200 rounded-2xl shadow-xl">
+                <h4 className="text-3xl font-black text-slate-900 mb-4">
+                    {hovered || "Select UK Region"}
+                </h4>
 
                 {hovered ? (
-                    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2">
-                        <div className="space-y-3">
-                            <div className="flex justify-between items-center py-2 border-b border-slate-100">
+                    <div className="space-y-6">
+                        <div className="space-y-3 py-4 border-y border-slate-100">
+                            <div className="flex justify-between">
                                 <span className="text-slate-500 font-medium">Formation Fee</span>
                                 <span className="text-blue-700 font-bold text-xl">£100</span>
                             </div>
-                            <p className="text-slate-600 leading-relaxed text-sm">
-                                Complete incorporation for <strong>{hovered}</strong> including Articles of Association and Registered Office Address.
+                            <p className="text-slate-600 text-sm">
+                                Complete incorporation for <strong>{hovered}</strong> with HMRC registration and Articles of Association.
                             </p>
                         </div>
                         <a href={FORM_URL} target="_blank" rel="noreferrer" className="block">
-                            <Button className="w-full h-14 text-lg font-bold bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-95">
+                            <Button className="w-full h-14 text-lg font-bold bg-blue-600 hover:bg-blue-700 shadow-lg">
                                 Register in {hovered}
                             </Button>
                         </a>
                     </div>
                 ) : (
-                    <div className="py-12 text-center space-y-4">
-                        <p className="text-slate-400 text-lg leading-relaxed">
-                            Hover over the map to explore formation details for the United Kingdom.
-                        </p>
+                    <div className="py-12 text-center text-slate-400">
+                        <p className="text-lg">Hover over the map to explore UK formation options.</p>
                     </div>
                 )}
             </div>
