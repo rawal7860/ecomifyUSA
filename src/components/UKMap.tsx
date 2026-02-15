@@ -1,47 +1,47 @@
 import React, { useState } from 'react';
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"; // Fixes ReferenceError
 
 export const UKMap = () => {
     const [hovered, setHovered] = useState < string | null > (null);
     const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf2LOGK6eY5rxr-RVUwC1vvCPNTFr1HmnbbKCYSa1nfL9m4AA/viewform";
 
-    // HIGH-DEFINITION GEOGRAPHIC PATHS
+    // HIGH-FIDELITY GEOGRAPHIC COORDINATES
     const regions = [
         {
             id: 'Scotland',
-            d: "M118,20 L135,15 L155,25 L165,65 L155,100 L165,135 L145,160 L105,155 L90,120 L100,60 Z",
+            d: "M80,20 L110,15 L140,20 L160,50 L165,100 L150,150 L110,165 L80,140 L70,80 Z",
             color: "#005EB8"
         },
         {
             id: 'England',
-            d: "M145,160 L170,175 L215,225 L210,380 L135,410 L115,290 L135,220 Z",
+            d: "M110,165 L150,150 L180,190 L220,240 L210,380 L140,410 L115,280 L110,220 Z",
             color: "#CE1126"
         },
         {
             id: 'Wales',
-            d: "M115,290 L135,295 L125,355 L100,360 L90,320 Z",
+            d: "M85,290 L115,280 L110,350 L85,360 L75,320 Z",
             color: "#00AD36"
         },
         {
             id: 'N. Ireland',
-            d: "M55,125 L85,115 L100,150 L80,185 L55,175 Z",
+            d: "M25,120 L65,110 L80,150 L60,185 L25,175 Z",
             color: "#f59e0b"
         }
     ];
 
     return (
-        <div className="flex flex-col md:flex-row gap-12 items-center justify-center p-8 bg-white rounded-3xl shadow-sm border border-slate-100">
+        <div className="flex flex-col md:flex-row gap-12 items-center justify-center p-10 bg-white rounded-[2.5rem] shadow-sm border border-slate-100">
             <div className="relative">
-                {/* VIEWBOX ADJUSTED FOR REAL PROPORTIONS */}
-                <svg viewBox="0 0 250 450" className="w-full max-w-[300px] drop-shadow-2xl">
+                {/* Adjusted viewBox for a vertical UK layout */}
+                <svg viewBox="0 0 250 450" className="w-full max-w-[320px] drop-shadow-2xl filter saturate-150">
                     {regions.map((reg) => (
                         <path
                             key={reg.id}
                             d={reg.d}
-                            fill={hovered === reg.id ? reg.color : "#f1f5f9"}
+                            fill={hovered === reg.id ? reg.color : "#f8fafc"}
                             stroke={hovered === reg.id ? "#fff" : "#cbd5e1"}
-                            strokeWidth={hovered === reg.id ? "2.5" : "1"}
-                            className="transition-all duration-300 cursor-pointer"
+                            strokeWidth={hovered === reg.id ? "3" : "1"}
+                            className="transition-all duration-500 cursor-pointer"
                             onMouseEnter={() => setHovered(reg.id)}
                             onMouseLeave={() => setHovered(null)}
                         />
@@ -49,31 +49,36 @@ export const UKMap = () => {
                 </svg>
             </div>
 
-            <div className="w-full max-w-md p-8 bg-white border border-slate-200 rounded-2xl shadow-xl">
-                <h4 className="text-3xl font-black text-slate-900 mb-4 tracking-tight">
-                    {hovered || "Select UK Region"}
-                </h4>
+            <div className="w-full max-w-md p-8 bg-white border border-slate-200 rounded-3xl shadow-2xl">
+                <div className="flex items-center gap-3 mb-6">
+                    <div className={`w-3 h-3 rounded-full ${hovered ? 'bg-blue-600 animate-pulse' : 'bg-slate-300'}`} />
+                    <h4 className="text-3xl font-black text-slate-900 tracking-tighter italic">
+                        {hovered || "Select UK Region"}
+                    </h4>
+                </div>
 
                 {hovered ? (
-                    <div className="space-y-6">
-                        <div className="space-y-3 py-4 border-y border-slate-100">
-                            <div className="flex justify-between">
-                                <span className="text-slate-500 font-medium text-lg">Formation Fee</span>
-                                <span className="text-blue-700 font-bold text-2xl">£100</span>
+                    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-3">
+                        <div className="py-4 border-y border-slate-100">
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-slate-500 font-bold uppercase text-xs tracking-widest">Formation Fee</span>
+                                <span className="text-blue-700 font-black text-2xl">£100</span>
                             </div>
-                            <p className="text-slate-600">
-                                Official registration for <strong>{hovered}</strong> through Companies House and HMRC.
+                            <p className="text-slate-600 text-sm leading-relaxed">
+                                Expert registration for <strong>{hovered}</strong> via Companies House. Includes HMRC setup and Articles of Association.
                             </p>
                         </div>
                         <a href={FORM_URL} target="_blank" rel="noreferrer" className="block">
-                            <Button className="w-full h-14 text-lg font-bold bg-blue-600 hover:bg-blue-700 shadow-lg transition-transform active:scale-95">
+                            <Button className="w-full h-14 text-lg font-bold bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-100 transition-transform active:scale-95">
                                 Register in {hovered}
                             </Button>
                         </a>
                     </div>
                 ) : (
-                    <div className="py-12 text-center text-slate-400">
-                        <p className="text-lg italic">Hover over the map to view formation details for England, Scotland, Wales, and Northern Ireland.</p>
+                    <div className="py-12 text-center">
+                        <p className="text-slate-400 text-lg font-medium leading-relaxed">
+                            Hover over the map to view specialized formation details for the UK.
+                        </p>
                     </div>
                 )}
             </div>
