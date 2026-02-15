@@ -1,22 +1,82 @@
 import React, { useState } from 'react';
-import { Button } from "@/components/ui/button"; // Ensuring no ReferenceError
+import { Button } from "@/components/ui/button";
 
 export const UKMap = () => {
     const [hovered, setHovered] = useState < string | null > (null);
     const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf2LOGK6eY5rxr-RVUwC1vvCPNTFr1HmnbbKCYSa1nfL9m4AA/viewform";
 
-    // AUTHENTIC GEOGRAPHIC PATHS (The "USA Technique")
+    // Simplified high-resolution paths to prevent "Unterminated string" errors
     const regions = [
         {
             id: 'Scotland',
-            d: "M118.8,10.5c-3.1,1.8-7.5,6-8.5,9.2c-1,3.2-3.1,5.2-6.5,6.5c-7.9,3.1-8.2,3.5-6.2,9.6c1.4,4,0.7,7-2.7,12.5 c-2.4,3.9-2.7,5.5-1.7,9c1.1,4.5,0.7,5.2-4.8,10c-7.9,6.5-7.9,6.5-6.8,11.3c0.3,2.7,0,7.2-1.4,9.6c-3.8,7.9,0.7,16.5,9.2,18.9 c8.6,2.4,18.9-0.7,25.1-7.2c6.2-6.5,6.2-6.5,12.7,0.3c6.5,6.8,12.7,7.2,19.2,0.7c3.1-3.1,5.5-3.8,9.6-2.1c3.5,1.7,8.2,1,14.4-2.1 c4.5-2.1,8.9-3.1,10.3-2.4c1,0.7,0,4.5-2.7,8.2c-3.8,5.2-4.1,8.2-0.3,11.7c2.4,2.1,4.8,6.2,5.2,9.3c0.7,5.2,7.9,11.3,14.4,11.3 c7.2,0,11.3-4.5,8.6-9.3c-1.4-2.7-1-5.5,1-6.8c1.7-1.4,6.2,0.3,10,3.8c6.2,5.8,8.6,6.2,13.4,1c4.5-4.8,4.5-5.5-1-14.1 c-2.7-4.8-3.8-8.2-2.4-8.9c3.8-1.7,3.4-6.2-0.7-9.3c-3.8-3.1-4.1-4.5-0.7-7.2c3.1-2.7,3.1-3.4,0-7.9c-4.1-6.2-1.4-12,5.2-12 c2.7,0,5.5-1.7,7.9-5.2c3.4-4.5,3.4-5.2-0.3-11c-2.7-4.1-4.1-7.9-2.7-8.9c1.4-1,7.5,2.1,13.4,7.2c8.2,7.2,10.3,7.9,12.7,2.4 c4.1-10-6.2-25.7-18.9-29.2c-3.4-1-4.5-2.4-3.8-4.5c1.4-3.1-8.2-13.7-13.7-15.4C130.4,4.3,124.3,7.4,118.8,10.5z",
+            d: "M45,10 L55,5 L70,10 L80,25 L75,50 L85,70 L70,85 L50,82 L40,70 L42,40 Z",
             color: "#005EB8"
         },
         {
             id: 'England',
-            d: "M171.8,117.1c-5.2,1.4-9.6,5.8-9.6,9.9c0,2.7-1.4,4.8-2.7,4.8c-1.4,0-2.7,3.4-2.7,7.5c0,4.1-1.4,7.5-2.7,7.5 c-1.4,0-2.7,2.1-2.7,4.5c0,2.4-2.4,6.2-5.1,8.2c-5.5,4.1-5.2,8.6,1.4,12c3.4,2.1,7.5,6.8,8.9,10.6c1.7,5.2,3.1,5.8,6.8,3.1 c4.1-2.7,4.5-2.4,5.8,3.1c0.7,3.4,3.8,9.6,6.8,13.4c5.5,7.2,5.8,7.2,8.9,0.7c1.7-3.8,4.5-6.8,6.2-6.8s4.8,3.1,6.8,7.2 c3.8,7.9,4.5,8.2,13.7,5.5c5.2-1.4,11.3-1,13.7,0.7c4.5,3.4,24.7,3.8,24.7,0.3c0-2.1-5.1-4.5-11.3-5.1 c-7.9-0.7-11.3-2.4-11.3-5.1c0-1.7,3.1-3.4,6.8-3.8c3.8-0.3,7.2-2.1,7.2-4.5s4.1-6.8,9.3-10.6c5.8-4.5,9.2-9.2,9.2-12.7 c0-5.8-6.5-16.5-10.6-16.5c-1.4,0-2.7-3.4-2.7-7.5c0-4.1-2.4-9.2-5.1-11.3c-5.5-4.1-5.1-14.1,0.3-17.5c2.7-1.7,2.7-3.8,0-4.8 c-3.4-1-3.4-1.4,0-3.4c2.4-1.4,2.1-2.4-1.7-4.1c-2.7-1.4-6.2-5.1-7.5-8.2c-1.4-4.1-3.4-5.8-7.9-5.8 C177.6,113.7,174.5,116.4,171.8,117.1z",
+            d: "M70,85 L85,95 L105,110 L102,170 L95,210 L75,225 L60,210 L65,180 L60,140 L68,110 Z",
             color: "#CE1126"
         },
         {
             id: 'Wales',
-            d: "M151.2,150.3c-3.4,3.4-3.4,4.5,0.3,8.2c3.4,3.4,3.8,5.1,1.4,8.9c-2.1,3.4-2.1,4.8,0.3,8.2c2.7,3.8,2.4,4.5-2.1,6.2 c-4.5,1.7-4.8,3.1-1.7,6.2c2.4,2.4,3.1,6.2,1.7,10.3c-2.1,5.8-1.7,6.2,3.8,2.4c3.4-2.4,8.2-3.1,10.6-1.7 c4.8,3.1,6.8-0.3,3.4-6.2c-2.4-3.8-1.7-6.2,1.7-8.6c4.1-2.7,4.5-3.8,1.4-7.5c-2.7-3.4-2.7-4.8-0.3-8.2 c
+            d: "M60,145 L65,150 L62,190 L52,200 L45,170 Z",
+            color: "#00AD36"
+        },
+        {
+            id: 'N. Ireland',
+            d: "M10,95 L30,85 L40,110 L30,130 L10,125 Z",
+            color: "#f59e0b"
+        }
+    ];
+
+    return (
+        <div className="flex flex-col md:flex-row gap-12 items-center justify-center p-10 bg-white rounded-3xl shadow-sm border border-slate-100">
+            <div className="relative">
+                {/* Adjusted ViewBox for a professional vertical UK orientation */}
+                <svg viewBox="0 0 120 240" className="w-full max-w-[280px] drop-shadow-2xl">
+                    {regions.map((reg) => (
+                        <path
+                            key={reg.id}
+                            d={reg.d}
+                            fill={hovered === reg.id ? reg.color : "#f1f5f9"}
+                            stroke={hovered === reg.id ? "#fff" : "#cbd5e1"}
+                            strokeWidth={hovered === reg.id ? "2" : "0.5"}
+                            className="transition-all duration-300 cursor-pointer"
+                            onMouseEnter={() => setHovered(reg.id)}
+                            onMouseLeave={() => setHovered(null)}
+                        />
+                    ))}
+                </svg>
+            </div>
+
+            <div className="w-full max-w-md p-8 bg-white border border-slate-200 rounded-2xl shadow-xl">
+                <h4 className="text-3xl font-black text-slate-900 mb-4 tracking-tighter">
+                    {hovered || "Select UK Region"}
+                </h4>
+
+                {hovered ? (
+                    <div className="space-y-6">
+                        <div className="space-y-3 py-4 border-y border-slate-100">
+                            <div className="flex justify-between items-center">
+                                <span className="text-slate-500 font-bold uppercase text-xs">Formation Fee</span>
+                                <span className="text-blue-700 font-black text-2xl">£100</span>
+                            </div>
+                            <p className="text-slate-600 text-sm">
+                                Official <strong>{hovered}</strong> registration via Companies House. Includes HMRC setup.
+                            </p>
+                        </div>
+                        <a href={FORM_URL} target="_blank" rel="noreferrer" className="block">
+                            <Button className="w-full h-14 text-lg font-bold bg-blue-600 hover:bg-blue-700 shadow-xl transition-transform active:scale-95">
+                                Register in {hovered}
+                            </Button>
+                        </a>
+                    </div>
+                ) : (
+                    <div className="py-12 text-center text-slate-400">
+                        <p className="text-lg">Select a country to start your UK formation.</p>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
