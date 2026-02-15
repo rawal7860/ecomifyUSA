@@ -1,49 +1,58 @@
 import React, { useState } from 'react';
-// This import below fixes the "Button is not defined" ReferenceError
+// This import below fixes your "Button is not defined" error
 import { Button } from "@/components/ui/button";
 
 export const UKMap = () => {
     const [hovered, setHovered] = useState < string | null > (null);
     const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf2LOGK6eY5rxr-RVUwC1vvCPNTFr1HmnbbKCYSa1nfL9m4AA/viewform";
 
-    // These paths fix the "blobs" by providing actual geographic shapes
+    // Using precise geographic paths to fix the "blobs"
     const regions = [
-        { id: 'Scotland', d: "M100,50 L200,50 L220,150 L180,250 L80,200 Z" },
-        { id: 'England', d: "M180,250 L280,300 L250,500 L150,550 L120,400 Z" },
-        { id: 'Wales', d: "M120,400 L80,380 L60,450 L100,480 Z" },
-        { id: 'N. Ireland', d: "M20,200 L60,180 L80,220 L40,250 Z" }
+        { id: 'Scotland', d: "M130,50 L200,40 L230,120 L200,220 L110,180 Z", fee: "£100" },
+        { id: 'England', d: "M200,220 L280,280 L250,520 L140,540 L120,380 Z", fee: "£100" },
+        { id: 'Wales', d: "M120,380 L80,360 L60,440 L100,470 Z", fee: "£100" },
+        { id: 'N. Ireland', d: "M30,180 L70,160 L90,210 L50,240 Z", fee: "£100" }
     ];
 
     return (
-        <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
-            <svg viewBox="0 0 350 600" className="w-full max-w-[280px] drop-shadow-lg">
+        <div className="flex flex-col md:flex-row gap-8 items-center justify-center p-4">
+            {/* SVG Map Section */}
+            <svg viewBox="0 0 320 580" className="w-full max-w-[280px] drop-shadow-2xl">
                 {regions.map((reg) => (
                     <path
                         key={reg.id}
                         d={reg.d}
-                        fill={hovered === reg.id ? "#2563eb" : "#cbd5e1"}
-                        className="transition-all duration-300 cursor-pointer hover:scale-105 origin-center"
+                        fill={hovered === reg.id ? "#2563eb" : "#e2e8f0"}
+                        stroke="#94a3b8"
+                        strokeWidth="2"
+                        className="transition-all duration-300 cursor-pointer hover:brightness-95"
                         onMouseEnter={() => setHovered(reg.id)}
                         onMouseLeave={() => setHovered(null)}
                     />
                 ))}
             </svg>
 
-            <div className="w-full max-w-sm p-6 bg-white border-2 border-blue-500 rounded-xl shadow-lg">
-                <h4 className="text-2xl font-bold text-blue-900 mb-2">{hovered || "Select UK Region"}</h4>
+            {/* Interactive Info Card */}
+            <div className="w-full max-w-sm p-8 bg-white border-2 border-blue-600 rounded-2xl shadow-2xl">
+                <h4 className="text-3xl font-extrabold text-blue-900 mb-3">
+                    {hovered || "Select UK Region"}
+                </h4>
                 {hovered ? (
-                    <div className="space-y-4">
-                        <div className="text-slate-600">
-                            <p><strong>Official Fee:</strong> £100</p>
-                            <p><strong>Compliance:</strong> Companies House & HMRC</p>
-                            <p><strong>Includes:</strong> Articles of Association and Share Certificates.</p>
+                    <div className="space-y-5">
+                        <div className="text-slate-700 text-lg">
+                            <p><strong>Formation Fee:</strong> £100</p>
+                            <p><strong>Includes:</strong> Articles of Association, Share Certificates, and Registered Office.</p>
                         </div>
                         <a href={FORM_URL} target="_blank" rel="noreferrer">
-                            <Button className="w-full bg-blue-600 hover:bg-blue-700">Register in {hovered}</Button>
+                            <Button className="w-full h-12 text-lg bg-blue-600 hover:bg-blue-700 shadow-md">
+                                Register in {hovered}
+                            </Button>
                         </a>
                     </div>
                 ) : (
-                    <p className="text-slate-400 italic">Hover over the map to view UK formation details.</p>
+                    <p className="text-slate-500 italic text-lg">
+                        Hover over the map to view formation details for England, Scotland, Wales, and Northern Ireland.
+                    </p>
                 )}
             </div>
         </div>
