@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 // VERIFIED LINK: Returns valid TopoJSON nations data
-const geoUrl = "https://cdn.jsdelivr.net/npm/uk-atlas@1/uk/nations-10m.json";
+const geoUrl = geoUrl = "/uk.json";
 
 const ukRegionData: Record<string, any> = {
   "England": { id: "ENG", fee: "£100", service: "$150", office: "London" },
