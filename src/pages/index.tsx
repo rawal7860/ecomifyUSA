@@ -54,10 +54,21 @@ export default function HomePage() {
                     <Card className="shadow-xl"><CardContent className="p-6"><USMap /></CardContent></Card>
                 </section>
 
-                {/* UK Map Section */}
-                <section className="max-w-7xl mx-auto px-4 py-12">
-                    <h3 className="text-3xl font-bold text-center mb-8">Register UK Company</h3>
-                    <Card className="shadow-xl border-emerald-100"><CardContent className="p-6"><UKMap /></CardContent></Card>
+                {/* Interactive UK Map Section */}
+                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-gradient-to-br from-emerald-50 to-white rounded-3xl">
+                    <div className="text-center mb-12">
+                        <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+                            <Building2 className="w-4 h-4" />
+                            UK Company Formation
+                        </div>
+                        <h3 className="text-4xl font-bold text-slate-900 mb-4">Register Your UK Company</h3>
+                        <p className="text-xl text-slate-600">Companies House registration for England, Scotland, Wales, and Northern Ireland</p>
+                    </div>
+                    <Card className="border-emerald-200 shadow-xl">
+                        <CardContent className="p-8">
+                            <UKMap />
+                        </CardContent>
+                    </Card>
                 </section>
 
                 {/* Footer */}
