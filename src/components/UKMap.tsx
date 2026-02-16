@@ -2,75 +2,72 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 
 export const UKMap = () => {
-    const [selected, setSelected] = useState < string | null > (null);
+    const [selectedRegion, setSelectedRegion] = useState < string | null > (null);
     const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf2LOGK6eY5rxr-RVUwC1vvCPNTFr1HmnbbKCYSa1nfL9m4AA/viewform";
 
+    // This is the same technique used in your USA map
     const regions = [
-        { name: "England", color: "bg-red-500" },
-        { name: "Scotland", color: "bg-blue-600" },
-        { name: "Wales", color: "bg-green-600" },
-        { name: "N. Ireland", color: "bg-orange-500" }
+        { id: 'england', name: "England", x: 55, y: 65, width: 35, height: 45, color: "bg-red-500" },
+        { id: 'scotland', name: "Scotland", x: 40, y: 20, width: 25, height: 30, color: "bg-blue-600" },
+        { id: 'wales', name: "Wales", x: 30, y: 65, width: 15, height: 20, color: "bg-green-600" },
+        { id: 'ni', name: "N. Ireland", x: 20, y: 40, width: 15, height: 15, color: "bg-orange-500" }
     ];
 
     return (
-        <div className="flex flex-col items-center justify-center p-8 bg-white rounded-3xl shadow-xl border border-slate-100 max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12 items-center w-full">
+        <div className="flex flex-col items-center justify-center p-8 bg-white rounded-2xl shadow-lg border border-slate-100 max-w-4xl mx-auto">
+            <h3 className="text-2xl font-bold text-slate-900 mb-4">Register Your UK Company</h3>
+            <p className="text-slate-600 mb-6">Select a region to view formation details</p>
 
-                {/* Visual Region Indicator */}
-                <div className="flex flex-wrap justify-center gap-4">
-                    {regions.map((reg) => (
-                        <div
-                            key={reg.name}
-                            className={`w-32 h-32 rounded-2xl flex flex-col items-center justify-center text-white font-bold transition-all duration-300 shadow-lg ${selected === reg.name ? `${reg.color} scale-110 ring-4 ring-offset-2 ring-slate-200` : 'bg-slate-100 text-slate-400'
-                                }`}
-                        >
-                            <span className="text-xs uppercase tracking-widest mb-1 opacity-80">Region</span>
-                            <span className="text-sm text-center px-2">{reg.name}</span>
+            {/* UK Map with Interactive Regions */}
+            <div className="relative w-full max-w-md h-[400px] bg-[url('https://i.imgur.com/8X1q6kO.png')] bg-contain bg-no-repeat">
+                {regions.map((region) => (
+                    <div
+                        key={region.id}
+                        className={`absolute rounded-md transition-all duration-300 cursor-pointer
+              ${selectedRegion === region.id ? 'scale-110 ring-4 ring-blue-500' : 'opacity-90 hover:opacity-100'}`}
+                        style={{
+                            left: `${region.x}%`,
+                            top: `${region.y}%`,
+                            width: `${region.width}%`,
+                            height: `${region.height}%`,
+                            backgroundColor: selectedRegion === region.id ? 'rgba(59, 130, 246, 0.3)' : 'rgba(0, 0, 0, 0.1)'
+                        }}
+                        onClick={() => setSelectedRegion(region.name)}
+                    >
+                        <div className={`w-full h-full flex items-center justify-center text-white font-bold
+              ${selectedRegion === region.id ? 'text-lg' : 'text-sm'}`}>
+                            {selectedRegion === region.id ? region.name : ''}
                         </div>
-                    ))}
-                </div>
-
-                {/* Selection Interface */}
-                <div className="space-y-6">
-                    <h4 className="text-3xl font-black text-slate-900 tracking-tight">UK Formation</h4>
-                    <p className="text-slate-500 text-lg">Select a territory to begin your registration:</p>
-
-                    <div className="grid grid-cols-2 gap-3">
-                        {regions.map((reg) => (
-                            <button
-                                key={reg.name}
-                                onClick={() => setSelected(reg.name)}
-                                className={`p-4 rounded-xl border-2 transition-all font-bold text-lg ${selected === reg.name
-                                        ? "border-blue-600 bg-blue-50 text-blue-700"
-                                        : "border-slate-100 hover:border-blue-300 text-slate-600"
-                                    }`}
-                            >
-                                {reg.name}
-                            </button>
-                        ))}
                     </div>
+                ))}
+            </div>
 
-                    {selected ? (
-                        <div className="p-6 bg-slate-900 rounded-2xl text-white animate-in slide-in-from-top-4 duration-300">
-                            <div className="flex justify-between items-center mb-4">
-                                <div>
-                                    <h5 className="font-bold text-xl">{selected} Registration</h5>
-                                    <p className="text-slate-400 text-sm">Official Companies House Filing</p>
-                                </div>
-                                <span className="text-3xl font-black text-blue-400">£100</span>
+            {/* Info Panel */}
+            <div className="w-full max-w-md mt-8 p-6 bg-white border border-slate-200 rounded-xl shadow-md">
+                {selectedRegion ? (
+                    <div className="space-y-6">
+                        <div className="space-y-3">
+                            <div className="flex justify-between items-center">
+                                <span className="text-slate-500 font-medium">Formation Fee</span>
+                                <span className="text-blue-700 font-bold text-2xl">£100</span>
                             </div>
-                            <a href={FORM_URL} target="_blank" rel="noreferrer">
-                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold h-14 text-lg shadow-lg">
-                                    Start Filing in {selected}
-                                </Button>
-                            </a>
+                            <p className="text-slate-600">
+                                Official registration for <strong>{selectedRegion}</strong> via Companies House.
+                                Includes HMRC registration and Articles of Association.
+                            </p>
                         </div>
-                    ) : (
-                        <div className="p-10 border-2 border-dashed border-slate-100 rounded-2xl text-center text-slate-300">
-                            <p className="italic">Choose a region to view details and pricing.</p>
-                        </div>
-                    )}
-                </div>
+
+                        <a href={FORM_URL} target="_blank" rel="noreferrer">
+                            <Button className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-lg font-bold">
+                                Register in {selectedRegion}
+                            </Button>
+                        </a>
+                    </div>
+                ) : (
+                    <div className="text-center py-8">
+                        <p className="text-slate-400 text-lg">Select a region on the map to view formation details</p>
+                    </div>
+                )}
             </div>
         </div>
     );
