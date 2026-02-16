@@ -63,6 +63,31 @@ export default function HomePage() {
                         </CardContent>
                     </Card>
                 </section>
+                import {useNavigate} from "react-router-dom";
+                import {Button} from "@/components/ui/button";
+                import {ArrowRight} from "lucide-react";
+
+                export function CheckoutSection() {
+  const navigate = useNavigate();
+
+                return (
+                <div className="py-12 text-center bg-slate-50 rounded-b-xl border-t border-slate-200">
+                    <h3 className="text-xl font-semibold text-slate-900 mb-4">
+                        Ready to establish your business presence?
+                    </h3>
+                    <Button
+                        size="lg"
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg rounded-full shadow-lg transition-transform hover:scale-105"
+                        onClick={() => navigate("/checkout")}
+                    >
+                        Proceed to Checkout <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
+                    <p className="mt-4 text-sm text-slate-500 italic">
+                        * Includes Articles of Organization, Registered Agent, and Employer ID (EIN/CRN)
+                    </p>
+                </div>
+                );
+}
 
                 {/* Footer */}
                 <footer className="bg-slate-900 text-white py-12 mt-20">
