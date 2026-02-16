@@ -1,51 +1,132 @@
-import React, { useState } from 'react';
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import { Tooltip } from "react-tooltip";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
-export const UKMap = () => {
-    const [selectedRegion, setSelectedRegion] = useState < string | null > (null);
+// Authentic UK TopoJSON from a reliable CDN
+const geoUrl = "https://raw.githubusercontent.com/deldersveld/topojson/master/countries/united-kingdom/uk-countries.json";
+
+// Regional data for your Salestaxus LLC services
+const ukData = {
+    "England": { id: "ENG", name: "England", fee: "£100", service: "$150", address: "London / Manchester" },
+    "Scotland": { id: "SCT", name: "Scotland", fee: "£100", service: "$150", address: "Edinburgh / Glasgow" },
+    "Wales": { id: "WLS", name: "Wales", fee: "£100", service: "$150", address: "Cardiff" },
+    "Northern Ireland": { id: "NIR", name: "Northern Ireland", fee: "£100", service: "$150", address: "Belfast" }
+};
+
+export function UKMap() {
+    const [hoveredRegion, setHoveredRegion] = useState < string | null > (null);
     const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf2LOGK6eY5rxr-RVUwC1vvCPNTFr1HmnbbKCYSa1nfL9m4AA/viewform";
 
-    const regions = [
-        { name: "England", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", color: "bg-red-500" },
-        { name: "Scotland", flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", color: "bg-blue-600" },
-        { name: "Wales", flag: "🏴󠁧󠁢󠁷󠁬󠁳󠁿", color: "bg-green-600" },
-        { name: "N. Ireland", flag: "🇬🇧", color: "bg-orange-500" }
-    ];
-
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white rounded-2xl shadow-md border border-slate-200">
-            <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-slate-900">UK Company Formation</h2>
-                <p className="text-slate-600 mt-2">Select your registration region</p>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                {regions.map((region) => (
-                    <div
-                        key={region.name}
-                        className={`border-2 rounded-xl p-6 hover:border-blue-400 transition-all cursor-pointer text-center ${selectedRegion === region.name ? 'border-blue-600 ring-4 ring-blue-100' : 'border-slate-200'
-                            }`}
-                        onClick={() => setSelectedRegion(region.name)}
+        <div className="w-full max-w-4xl mx-auto relative select-none">
+            <Card className="border-none shadow-xl bg-white/50 backdrop-blur-sm overflow-hidden">
+                <CardContent className="p-0 relative">
+                    <ComposableMap
+                        // UK Projection: Centered at 2 degrees West, 54 degrees North
+                        projection="geoMercator"
+                        projectionConfig={{
+                            rotate: [2, -54, 0],
+                            scale: 2500
+                        }}
+                        style={{ width: "100%", height: "auto" }}
                     >
-                        <div className="text-5xl mb-2">{region.flag}</div>
-                        <div className="font-bold text-slate-800">{region.name}</div>
-                    </div>
-                ))}
-            </div>
+                        <Geographies geography={geoUrl}>
+                            {({ geographies }) =>
+                                geographies.map((geo) => {
+                                    const name = geo.properties.name;
+                                    const isHovered = hoveredRegion === name;
 
-            <div className="bg-blue-50 rounded-xl p-6 text-center">
-                <div className="text-2xl font-bold text-blue-700 mb-2">£100</div>
-                <p className="text-slate-600 mb-4">Official Companies House registration with HMRC setup</p>
-                <a
-                    href={FORM_URL}
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    <Button className="bg-blue-600 hover:bg-blue-700 w-full h-12 text-lg">
-                        Start Your UK Company Registration
-                    </Button>
-                </a>
-            </div>
+                                    return (
+                                        <Geography
+                                            key={geo.rsmKey}
+                                            geography={geo}
+                                            onMouseEnter={() => setHoveredRegion(name)}
+                                            onMouseLeave={() => setHoveredRegion(null)}
+                                            onClick={() => window.open(FORM_URL, '_blank')}
+                                            data-tooltip-id="uk-tooltip"
+                                            data-tooltip-content={name}
+                                            style={{
+                                                default: {
+                                                    fill: "#F1F5F9",
+                                                    stroke: "#94A3B8",
+                                                    strokeWidth: 0.5,
+                                                    outline: "none",
+                                                },
+                                                hover: {
+                                                    fill: "#2563EB",
+                                                    stroke: "#1E40AF",
+                                                    strokeWidth: 1,
+                                                    outline: "none",
+                                                    cursor: "pointer"
+                                                },
+                                                pressed: {
+                                                    fill: "#1E40AF",
+                                                    outline: "none",
+                                                },
+                                            }}
+                                        />
+                                    );
+                                })
+                            }
+                        </Geographies>
+                    </ComposableMap>
+
+                    <Tooltip
+                        id="uk-tooltip"
+                        place="right"
+                        float
+                        style={{ backgroundColor: "transparent", padding: 0, zIndex: 100 }}
+                        render={({ content }) => {
+                            if (!content) return null;
+                            const info = ukData[content as keyof typeof ukData];
+                            if (!info) return null;
+
+                            return (
+                                <div className="bg-white rounded-lg shadow-2xl border border-slate-200 p-4 min-w-[280px] text-left animate-in fade-in zoom-in-95 duration-200">
+                                    <div className="flex justify-between items-center mb-3 pb-2 border-b border-slate-100">
+                                        <h3 className="font-bold text-lg text-slate-900">{info.name}</h3>
+                                        <Badge variant="secondary" className="bg-blue-100 text-blue-700">
+                                            {info.id}
+                                        </Badge>
+                                    </div>
+
+                                    <div className="space-y-2.5 text-sm">
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-slate-500">Official Fee</span>
+                                            <span className="font-semibold text-slate-900">{info.fee}</span>
+                                        </div>
+
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-slate-500">Service Fee</span>
+                                            <span className="font-semibold text-green-600">{info.service}</span>
+                                        </div>
+
+                                        <div className="border-t border-dashed border-slate-200 my-2"></div>
+
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-slate-500">Registered Office</span>
+                                            <span className="font-medium text-slate-700">{info.address}</span>
+                                        </div>
+
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-slate-500">Compliance</span>
+                                            <span className="font-medium text-slate-700 text-xs">HMRC & Companies House</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-4 pt-3 border-t border-slate-100 text-center">
+                                        <span className="text-xs font-semibold text-blue-600">
+                                            Click to Start Registration →
+                                        </span>
+                                    </div>
+                                </div>
+                            );
+                        }}
+                    />
+                </CardContent>
+            </Card>
         </div>
     );
-};
+}
