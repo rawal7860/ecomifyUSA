@@ -178,7 +178,8 @@ export default function CheckoutPage() {
                 user_id: userId,
                 entity_type: orderData.entityType,
                 service_type: orderData.entityType || "LLC Formation",
-                business_name: businessName, // <--- ADDED THIS LINE
+                business_name: businessName,
+                state: orderData.state || orderData.country, // <--- ADDED THIS (handles both US state and UK country)
                 service_fee: orderData.serviceFee || 0,
                 addons: orderData.addons || [],
                 amount: orderData.total || 0,
@@ -193,7 +194,6 @@ export default function CheckoutPage() {
                     formation_fee: orderData.formationFee || 0,
                 })
             };
-
             const { data: orderRecord, error: orderError } = await supabase
                 .from("orders")
                 .insert(orderInsert as any)
