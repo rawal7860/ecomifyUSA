@@ -218,37 +218,17 @@ export default function CheckoutPage() {
             }
 
             // Step 4: Create and send Stripe invoice
-            const invoiceDescription = isUKOrder
-                ? `UK Company Formation - ${orderData.country} (${orderData.entityType})`
-                : `LLC Formation - ${orderData.state} (${orderData.entityType})`;
+            // Step 4: TEMPORARY MOCK FOR STRIPE (Remove this when Stripe is configured)
+            const invoiceData = {
+                success: true,
+                invoiceId: "in_mock_" + Date.now(),
+            };
 
-            const invoiceResponse = await fetch("/api/create-invoice", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    customerEmail: email,
-                    customerName: fullName,
-                    amount: orderData.total,
-                    description: invoiceDescription,
-                    metadata: {
-                        order_id: orderRecord.id,
-                        user_id: userId,
-                        region: isUKOrder ? "UK" : "US",
-                        location: isUKOrder ? orderData.country : orderData.state,
-                        entityType: orderData.entityType,
-                        businessName: businessName,
-                        phone: phone,
-                        address: `${address}, ${city}, ${state} ${zipCode}`,
-                    },
-                }),
+            toast({
+                title: "Note",
+                description: "Stripe not configured yet. Mock invoice created for testing.",
             });
-
-            const invoiceData = await invoiceResponse.json();
-
-            if (!invoiceData.success) {
-                throw new Error(invoiceData.error || "Failed to create invoice");
-            }
-
+            // ---------------------------------------------------------
             // Step 5: Update order with invoice ID
             await supabase
                 .from("orders")
