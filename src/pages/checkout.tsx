@@ -171,11 +171,13 @@ export default function CheckoutPage() {
             }
 
             // Step 3: Create order record (handle both US and UK)
+            // Step 3: Create order record (handle both US and UK)
             const isUKOrder = orderData.region === "UK";
 
             const orderInsert = {
                 user_id: userId,
                 entity_type: orderData.entityType,
+                service_type: orderData.entityType, // <--- ADDED THIS LINE TO FIX THE ERROR
                 service_fee: orderData.serviceFee,
                 addons: orderData.addons as any,
                 amount: orderData.total,
