@@ -66,7 +66,7 @@ export default function HomePage() {
                     <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-gradient-to-br from-slate-900 to-slate-600 bg-clip-text text-transparent">
                         Global Business Formation <br />Made Simple.
                     </h1>
-                    <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-xl text-slate-200 max-w-2xl mx-auto leading-relaxed">
                         Expert assistance for USA LLC & UK Limited company registration,
                         tax compliance, and registered agent services for international entrepreneurs.
                     </p>
