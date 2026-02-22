@@ -1,7 +1,4 @@
 import React from 'react';
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Star } from "lucide-react";
 
 export default function Home() {
     return (
@@ -15,25 +12,24 @@ export default function Home() {
                     <span className="text-xl font-bold text-blue-600">Salestaxus LLC</span>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Button variant="ghost">Sign In</Button>
-                    <Button className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                    <button className="px-4 py-2 text-sm font-medium">Sign In</button>
+                    <button className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium">Get Started</button>
                 </div>
             </nav>
 
-            {/* Hero Section - Changed background to bg-blue-50 for readability */}
-            <section className="relative py-20 px-6 bg-blue-50">
-                <div className="max-w-4xl mx-auto text-center">
-                    <Badge variant="secondary" className="mb-6 bg-yellow-100 text-yellow-700 hover:bg-yellow-100 border-none px-4 py-1">
-                        <Star className="w-4 h-4 fill-current mr-2" />
-                        5.0 Rated on Fiverr
-                    </Badge>
+            {/* Hero Section - ONLY CHANGED BACKGROUND COLOR HERE */}
+            <section className="relative py-20 px-6 bg-slate-50">
+                <div className="max-w-4xl">
+                    <div className="inline-flex items-center bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium mb-6">
+                        ★ 5.0 Rated on Fiverr
+                    </div>
 
-                    <h1 className="text-5xl md:text-7xl font-extrabold text-slate-800 mb-6 tracking-tight">
+                    <h1 className="text-6xl font-extrabold text-slate-900 mb-6">
                         Global Business Formation <br />
-                        <span className="text-slate-700">Made Simple.</span>
+                        Made Simple.
                     </h1>
 
-                    <p className="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-lg text-slate-600 mb-10 max-w-2xl">
                         Expert assistance for USA LLC & UK Limited company registration, tax compliance,
                         and registered agent services for international entrepreneurs.
                     </p>
