@@ -83,6 +83,7 @@ export default function CheckoutPage() {
 
             let userId: string;
             let isNewUser = false;
+            let needsEmailVerification = false;
 
             if (existingUser?.user) {
                 // User already exists and password is correct
@@ -93,7 +94,7 @@ export default function CheckoutPage() {
                     description: "Using your existing account to process this order.",
                 });
             } else {
-                // User doesn't exist or password wrong - create new account
+                // User doesn't exist - create new account
                 const { data: authData, error: authError } = await supabase.auth.signUp({
                     email,
                     password,
@@ -102,25 +103,17 @@ export default function CheckoutPage() {
                             full_name: fullName,
                             phone: phone,
                         },
-                        // Prevent redirect so we stay on page
                         emailRedirectTo: typeof window !== 'undefined' ? window.location.origin : undefined,
                     },
                 });
 
                 if (authError) {
-                    // Log real error to console for debugging
                     console.error("Supabase Signup Error:", authError);
 
                     if (authError.message?.includes("already registered") || authError.message?.includes("already exists")) {
                         toast({
                             title: "Account Already Exists",
                             description: "An account with this email already exists. Please use the correct password or try resetting your password.",
-                            variant: "destructive",
-                        });
-                    } else if (authError.message?.includes("email")) {
-                        toast({
-                            title: "Email Verification Required",
-                            description: "A verification email has been sent to " + email + ". Please check your inbox and verify your email, then try again.",
                             variant: "destructive",
                         });
                     } else {
@@ -147,13 +140,17 @@ export default function CheckoutPage() {
                 userId = authData.user.id;
                 isNewUser = true;
 
-                toast({
-                    title: "Account Created!",
-                    description: "Your account is ready. We will send the invoice to your email.",
-                });
+                // Check if email confirmation is required
+                if (authData.user.identities && authData.user.identities.length === 0) {
+                    needsEmailVerification = true;
+                }
+
+                // If user is confirmed, we can proceed with profile/order creation
+                // If not confirmed, we might need to handle it differently
             }
 
             // Step 2: Update user profile (Use upsert to create if missing)
+            // Note: This might fail if email verification is required and user isn't authenticated yet
             const { error: profileError } = await supabase
                 .from("profiles")
                 .upsert({
@@ -170,7 +167,7 @@ export default function CheckoutPage() {
 
             if (profileError) {
                 console.warn("Profile update warning:", profileError);
-                // We continue anyway as this is non-critical for checkout
+                // Continue anyway - profile can be updated later
             }
 
             // Step 3: Create order record (handle both US and UK)
@@ -202,6 +199,18 @@ export default function CheckoutPage() {
 
             if (orderError) {
                 console.error("Order Insert Error:", orderError);
+
+                // If it's an RLS error, it means email verification is blocking us
+                if (orderError.message?.includes("row-level security")) {
+                    toast({
+                        title: "Email Verification Required",
+                        description: "Please check your email and verify your account before completing this order. Then try again.",
+                        variant: "destructive",
+                    });
+                    setProcessing(false);
+                    return;
+                }
+
                 throw new Error("Failed to create order record in database.");
             }
 
@@ -252,14 +261,8 @@ export default function CheckoutPage() {
                 description: "Check your email for the Stripe invoice.",
             });
 
-            // Auto-login the user if they're not already logged in
-            if (isNewUser) {
-                await supabase.auth.signInWithPassword({
-                    email,
-                    password,
-                });
-            }
-
+            // Don't auto-login if email verification is required
+            // Let the user verify first, then they can log in
             setTimeout(() => {
                 router.push("/dashboard");
             }, 3000);
@@ -297,9 +300,9 @@ export default function CheckoutPage() {
                 <Card className="max-w-md">
                     <CardContent className="p-12 text-center">
                         <CheckCircle2 className="w-16 h-16 text-green-600 mx-auto mb-4" />
-                        <h2 className="text-2xl font-bold mb-2">Account Created & Invoice Sent!</h2>
+                        <h2 className="text-2xl font-bold mb-2">Order Created!</h2>
                         <p className="text-slate-600 mb-6">
-                            We've created your account and sent a Stripe invoice to <strong>{email}</strong>.
+                            We've created your order and sent a Stripe invoice to <strong>{email}</strong>.
                             Please check your email and complete the payment.
                         </p>
                         <p className="text-sm text-slate-500">Redirecting to dashboard...</p>
