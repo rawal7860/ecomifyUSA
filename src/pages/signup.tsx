@@ -39,15 +39,10 @@ export default function SignUpPage() {
 
         try {
             /**
-             * MODIFIED: Added options to disable email confirmation.
-             * This bypasses the 429 Rate Limit error caused by automated emails.
+             * MODIFIED: authService.signUp now handles the options internally
+             * We just pass the required arguments: email, password, fullName
              */
-            await authService.signUp(email, password, {
-                full_name: fullName,
-                options: {
-                    emailRedirectTo: null // This tells Supabase not to send a verification email
-                }
-            });
+            await authService.signUp(email, password, fullName);
 
             setSuccess(true);
             setTimeout(() => {
