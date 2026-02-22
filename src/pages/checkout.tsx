@@ -177,11 +177,13 @@ export default function CheckoutPage() {
             const orderInsert = {
                 user_id: userId,
                 entity_type: orderData.entityType,
-                service_type: orderData.entityType, // <--- ADDED THIS LINE TO FIX THE ERROR
-                service_fee: orderData.serviceFee,
-                addons: orderData.addons as any,
-                amount: orderData.total,
+                service_type: orderData.entityType || "LLC Formation",
+                business_name: businessName, // <--- ADDED THIS LINE
+                service_fee: orderData.serviceFee || 0,
+                addons: orderData.addons || [],
+                amount: orderData.total || 0,
                 status: "pending",
+                currency: "USD",
                 ...(isUKOrder ? {
                     state_code: orderData.countryCode,
                     state_name: orderData.country,
@@ -189,7 +191,7 @@ export default function CheckoutPage() {
                 } : {
                     state_code: orderData.stateCode,
                     state_name: orderData.state,
-                    formation_fee: orderData.formationFee,
+                    formation_fee: orderData.formationFee || 0,
                 })
             };
 
