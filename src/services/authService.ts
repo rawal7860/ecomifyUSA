@@ -52,35 +52,21 @@ export const authService = {
   },
 
   // Sign up with email and password
-  async signUp(email: string, password: string, userData?: { full_name: string }): Promise<{ user: AuthUser | null; error: AuthError | null }> {
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${getURL()}auth/confirm-email`,
-          data: userData
-        }
-      });
-
-      if (error) {
-        return { user: null, error: { message: error.message, code: error.status?.toString() } };
+  async signUp(email: string, password: string, fullName: string) {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/confirm-email`,
+        data: { full_name: fullName }
       }
+    });
 
-      const authUser = data.user ? {
-        id: data.user.id,
-        email: data.user.email || "",
-        user_metadata: data.user.user_metadata,
-        created_at: data.user.created_at
-      } : null;
-
-      return { user: authUser, error: null };
-    } catch (error) {
-      return { 
-        user: null, 
-        error: { message: "An unexpected error occurred during sign up" } 
-      };
+    if (error) {
+      console.error("Sign up error:", error);
+      throw error;
     }
+    return data;
   },
 
   // Sign in with email and password

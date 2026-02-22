@@ -5,6 +5,19 @@ type Order = Database["public"]["Tables"]["orders"]["Row"];
 type OrderInsert = Database["public"]["Tables"]["orders"]["Insert"];
 type OrderUpdate = Database["public"]["Tables"]["orders"]["Update"];
 
+export interface CreateOrderData {
+  service_type: string;
+  business_name: string;
+  state: string;
+  state_code?: string;
+  state_name?: string;
+  total_amount: number;
+  formation_fee?: number;
+  service_fee?: number;
+  addons?: any;
+  entity_type?: string;
+}
+
 export const orderService = {
   // Get all orders for the current user
   async getUserOrders(): Promise<Order[]> {
@@ -93,4 +106,40 @@ export const orderService = {
       cancelled: orders.filter(o => o.status === "cancelled").length,
     };
   },
+};
+
+export const createOrder = async (orderData: CreateOrderData): Promise<Order> => {
+  const { data: { user } } = await supabase.auth.getUser();
+  
+  if (!user) {
+    throw new Error("User must be authenticated to create an order");
+  }
+
+  // Map total_amount to amount column
+  const { data, error } = await supabase
+    .from("orders")
+    .insert({
+      user_id: user.id,
+      service_type: orderData.service_type,
+      business_name: orderData.business_name,
+      state: orderData.state,
+      state_code: orderData.state_code,
+      state_name: orderData.state_name,
+      amount: orderData.total_amount, // Map frontend 'total_amount' to DB 'amount'
+      formation_fee: orderData.formation_fee,
+      service_fee: orderData.service_fee,
+      addons: orderData.addons,
+      entity_type: orderData.entity_type,
+      status: "pending",
+      payment_status: "unpaid"
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error creating order:", error);
+    throw error;
+  }
+
+  return data;
 };
