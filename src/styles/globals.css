@@ -95,18 +95,4 @@
   .container {
     @apply mx-auto px-4 md:px-6 lg:px-8 max-w-7xl w-full;
   }
-}                                       /* --- ADD THIS TO THE BOTTOM OF globals.css --- */
-
-                                      body {
-                                          /* This changes the background to a Light Sky Blue */
-                                          background-color: #dbeafe !important;
-                                          background-image: none !important;
-                                          /* Removes the dark gradient */
-                                      }
-
-                                      /* Optional: If you want a very subtle gradient instead of solid color, use this: */
-                                      /* 
-body {
-    background: linear-gradient(to bottom, #eff6ff, #dbeafe) !important;
-} 
-*/
+}                                       
