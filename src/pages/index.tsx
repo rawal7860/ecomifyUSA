@@ -57,7 +57,7 @@ export default function HomePage() {
             </header>
 
             {/* Hero Section */}
-            <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-slate-900 text-white py-20 overflow-hidden">
+            <section className="relative bg-gradient-to-br from-blue-400 via-blue-800 to-slate-900 text-white py-20 overflow-hidden">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-yellow-50 border border-yellow-100 text-yellow-700 text-sm font-bold mb-6">
                         <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
