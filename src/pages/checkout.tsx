@@ -183,7 +183,6 @@ export default function CheckoutPage() {
                 addons: orderData.addons || [],
                 amount: orderData.total || 0,
                 status: "pending",
-                currency: "USD",
                 ...(isUKOrder ? {
                     state_code: orderData.countryCode,
                     state_name: orderData.country,
