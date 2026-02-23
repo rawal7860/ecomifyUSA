@@ -318,43 +318,7 @@ export default function HomePage() {
             <CheckoutSection />
 
             {/* 9. Footer */}
-            <footer className="bg-slate-900 text-slate-400 py-16 border-t border-slate-800">
-                <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-12">
-                    <div className="col-span-2">
-                        <div className="flex items-center gap-2 font-bold text-white text-xl mb-6">
-                            <Building2 className="h-6 w-6" /> Salestaxus LLC
-                        </div>
-                        <p className="max-w-xs text-sm leading-relaxed mb-6">
-                            Leading US & UK business registration agency providing compliance
-                            solutions for freelancers and entrepreneurs worldwide.
-                        </p>
-                        <div className="flex gap-4">
-                            <div className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors cursor-pointer"><Globe className="w-5 h-5" /></div>
-                            <div className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors cursor-pointer"><Headphones className="w-5 h-5" /></div>
-                        </div>
-                    </div>
-                    <div>
-                        <h5 className="text-white font-bold mb-6">Services</h5>
-                        <ul className="space-y-3 text-sm">
-                            <li className="hover:text-white cursor-pointer transition-colors"><Link href="/services">USA LLC Formation</Link></li>
-                            <li className="hover:text-white cursor-pointer transition-colors"><Link href="/services">UK Limited Company</Link></li>
-                            <li className="hover:text-white cursor-pointer transition-colors"><Link href="/services">EIN & ITIN Support</Link></li>
-                            <li className="hover:text-white cursor-pointer transition-colors"><Link href="/services">Registered Agent Service</Link></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h5 className="text-white font-bold mb-6">Legal</h5>
-                        <ul className="space-y-3 text-sm">
-                            <li className="hover:text-white cursor-pointer transition-colors">Privacy Policy</li>
-                            <li className="hover:text-white cursor-pointer transition-colors">Terms of Service</li>
-                            <li className="hover:text-white cursor-pointer transition-colors">Refund Policy</li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="max-w-7xl mx-auto px-4 mt-16 pt-8 border-t border-slate-800 text-center text-xs text-slate-500">
-                    © {new Date().getFullYear()} Salestaxus LLC. All rights reserved.
-                </div>
-            </footer>
+            <Footer />
         </div>
     );
 }
