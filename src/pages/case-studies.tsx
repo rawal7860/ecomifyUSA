@@ -7,6 +7,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { SEO } from "@/components/SEO";
 
 export default function CaseStudiesPage() {
+    const router = useRouter(); // ✅ Call useRouter at top level
+
     return (
         <>
             <SEO title="Client Success Stories - Salestaxus LLC" description="Real case studies from international entrepreneurs." />
@@ -17,7 +19,7 @@ export default function CaseStudiesPage() {
                         <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight text-blue-600">
                             <Building2 className="h-6 w-6" /> Salestaxus LLC
                         </Link>
-                        <Button variant="ghost" onClick={() => useRouter().push("/")} className="gap-2">
+                        <Button variant="ghost" onClick={() => router.push("/")} className="gap-2">
                             <ArrowLeft className="w-4 h-4" /> Back to Home
                         </Button>
                     </div>
