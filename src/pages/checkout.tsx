@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { SEO } from "@/components/SEO";
-import { TrustBadge } from "@/components/TrustBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Building2, ArrowLeft, CheckCircle2, Loader2, Mail, Phone, User, MapPin } from "lucide-react";
+import { Building2, ArrowLeft, CheckCircle2, Loader2, Mail, Phone, User, MapPin, Star, Award, Clock, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { convertGBPtoUSD } from "@/lib/ukData";
@@ -144,13 +143,9 @@ export default function CheckoutPage() {
                 if (authData.user.identities && authData.user.identities.length === 0) {
                     needsEmailVerification = true;
                 }
-
-                // If user is confirmed, we can proceed with profile/order creation
-                // If not confirmed, we might need to handle it differently
             }
 
             // Step 2: Update user profile (Use upsert to create if missing)
-            // Note: This might fail if email verification is required and user isn't authenticated yet
             const { error: profileError } = await supabase
                 .from("profiles")
                 .upsert({
@@ -167,10 +162,8 @@ export default function CheckoutPage() {
 
             if (profileError) {
                 console.warn("Profile update warning:", profileError);
-                // Continue anyway - profile can be updated later
             }
 
-            // Step 3: Create order record (handle both US and UK)
             // Step 3: Create order record (handle both US and UK)
             const isUKOrder = orderData.region === "UK";
 
@@ -179,7 +172,7 @@ export default function CheckoutPage() {
                 entity_type: orderData.entityType,
                 service_type: orderData.entityType || "LLC Formation",
                 business_name: businessName,
-                state: orderData.state || orderData.country, // <--- ADDED THIS (handles both US state and UK country)
+                state: orderData.state || orderData.country,
                 service_fee: orderData.serviceFee || 0,
                 addons: orderData.addons || [],
                 amount: orderData.total || 0,
@@ -194,6 +187,7 @@ export default function CheckoutPage() {
                     formation_fee: orderData.formationFee || 0,
                 })
             };
+
             const { data: orderRecord, error: orderError } = await supabase
                 .from("orders")
                 .insert(orderInsert as any)
@@ -203,7 +197,6 @@ export default function CheckoutPage() {
             if (orderError) {
                 console.error("Order Insert Error:", orderError);
 
-                // If it's an RLS error, it means email verification is blocking us
                 if (orderError.message?.includes("row-level security")) {
                     toast({
                         title: "Email Verification Required",
@@ -217,7 +210,6 @@ export default function CheckoutPage() {
                 throw new Error("Failed to create order record in database.");
             }
 
-            // Step 4: Create and send Stripe invoice
             // Step 4: TEMPORARY MOCK FOR STRIPE (Remove this when Stripe is configured)
             const invoiceData = {
                 success: true,
@@ -229,6 +221,7 @@ export default function CheckoutPage() {
                 description: "Stripe not configured yet. Mock invoice created for testing.",
             });
             // ---------------------------------------------------------
+
             // Step 5: Update order with invoice ID
             await supabase
                 .from("orders")
@@ -244,8 +237,6 @@ export default function CheckoutPage() {
                 description: "Check your email for the Stripe invoice.",
             });
 
-            // Don't auto-login if email verification is required
-            // Let the user verify first, then they can log in
             setTimeout(() => {
                 router.push("/dashboard");
             }, 3000);
@@ -481,7 +472,33 @@ export default function CheckoutPage() {
 
                         {/* Order Summary Sidebar */}
                         <div className="space-y-6">
-                            <TrustBadge />
+                            {/* Trust Bar - Replaced TrustBadge component */}
+                            <Card className="bg-white border-slate-200">
+                                <CardContent className="p-6">
+                                    <div className="grid grid-cols-2 gap-4 text-center">
+                                        <div className="flex flex-col items-center">
+                                            <Star className="w-6 h-6 text-green-600 fill-green-600 mb-1" />
+                                            <span className="font-bold text-slate-900 text-sm">5.0 Rating</span>
+                                            <span className="text-xs text-slate-500">500+ Reviews</span>
+                                        </div>
+                                        <div className="flex flex-col items-center">
+                                            <Shield className="w-6 h-6 text-blue-600 mb-1" />
+                                            <span className="font-bold text-slate-900 text-sm">100% Safe</span>
+                                            <span className="text-xs text-slate-500">Money Back</span>
+                                        </div>
+                                        <div className="flex flex-col items-center">
+                                            <Clock className="w-6 h-6 text-indigo-600 mb-1" />
+                                            <span className="font-bold text-slate-900 text-sm">24h Delivery</span>
+                                            <span className="text-xs text-slate-500">Fast Track</span>
+                                        </div>
+                                        <div className="flex flex-col items-center">
+                                            <Award className="w-6 h-6 text-blue-600 mb-1" />
+                                            <span className="font-bold text-slate-900 text-sm">Top Rated</span>
+                                            <span className="text-xs text-slate-500">Level 2</span>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
 
                             <Card>
                                 <CardHeader>
