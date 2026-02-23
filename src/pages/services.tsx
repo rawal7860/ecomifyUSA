@@ -1,12 +1,14 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Building2, ArrowLeft, DollarSign, FileText, CheckCircle2, Globe, TrendingUp, Shield, ArrowRight } from "lucide-react";
+import { Building2, ArrowLeft, DollarSign, FileText, CheckCircle2, Globe, TrendingUp, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SEO } from "@/components/SEO";
 
 export default function ServicesPage() {
+    const router = useRouter(); // ✅ Call useRouter at top level
+
     const services = [
         {
             icon: DollarSign,
@@ -62,7 +64,7 @@ export default function ServicesPage() {
                         <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight text-blue-600">
                             <Building2 className="h-6 w-6" /> Salestaxus LLC
                         </Link>
-                        <Button variant="ghost" onClick={() => useRouter().push("/")} className="gap-2">
+                        <Button variant="ghost" onClick={() => router.push("/")} className="gap-2">
                             <ArrowLeft className="w-4 h-4" /> Back to Home
                         </Button>
                     </div>
