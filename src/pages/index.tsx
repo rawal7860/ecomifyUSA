@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { USMap } from "@/components/USMap";
 import { UKMap } from "@/components/UKMap";
-
+import Footer from "@/components/Footer";
 // --- COMPONENT: Trust Bar ---
 function TrustBar() {
     return (
