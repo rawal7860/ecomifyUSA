@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { USMap } from "@/components/USMap";
 import { UKMap } from "@/components/UKMap";
 import Footer from "@/components/Footer";
+import Logo from "@/components/Logo";
 
 // --- COMPONENT: Trust Bar ---
 function TrustBar() {
@@ -66,7 +67,7 @@ function CheckoutSection() {
             <div className="relative z-10">
                 <h3 className="text-3xl font-bold mb-4">Ready to launch your empire?</h3>
                 <p className="text-blue-100 mb-8 max-w-2xl mx-auto text-lg">
-                    Join 500+ entrepreneurs who started their journey with Salestaxus.
+                    Join 500+ entrepreneurs who started their journey with ecomifyUSA.
                     Your LLC could be formed in as little as 24 hours.
                 </p>
                 <Button
@@ -101,8 +102,8 @@ export default function HomePage() {
             {/* 1. Enhanced Header */}
             <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-md shadow-lg py-3" : "bg-transparent py-5"}`}>
                 <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight text-blue-600">
-                        <Building2 className="h-7 w-7" /> Salestaxus LLC
+                    <Link href="/" className="hover:opacity-80 transition-opacity">
+                        <Logo />
                     </Link>
                     <div className="flex items-center gap-4">
                         <Link href="/case-studies"><Button variant="ghost" className="hidden sm:inline-flex text-slate-600 hover:text-blue-600">Case Studies</Button></Link>
@@ -137,7 +138,7 @@ export default function HomePage() {
                     <div className="text-center max-w-3xl mx-auto mb-20">
                         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 shadow-sm text-slate-600 text-sm font-medium mb-8 hover:shadow-md transition-shadow cursor-default">
                             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                            <span>Rated 5.0 on Fiverr by 500+ Founders</span>
+                            <span>Rated 5.0 by 500+ E-commerce Founders</span>
                         </div>
                         <h1 className="text-5xl lg:text-8xl font-bold text-slate-900 mb-8 tracking-tight leading-[1.1]">
                             Launch your global <br />
