@@ -112,21 +112,21 @@ export default function HomePage() {
                 </div>
             </header>
 
-            {/* 2. PREMIUM BENTO HERO WITH FADED GLOBE */}
+            {/* 2. PREMIUM BENTO HERO WITH HUBBLE-STYLE EARTH GLOBE */}
             <section className="pt-32 pb-20 lg:pt-48 lg:pb-32 bg-slate-50 relative overflow-hidden">
 
-                {/* 🌍 FADED WORLD GLOBE - LEFT SIDE WITH GRADIENT FADE */}
-                <div className="absolute top-0 left-0 w-1/2 h-full z-0">
+                {/* 🌍 HUBBLE-STYLE EARTH GLOBE - LEFT SIDE (Opacity 40%) */}
+                <div className="absolute top-0 left-0 w-1/2 h-full z-0 overflow-hidden">
                     <div
-                        className="w-full h-full bg-cover bg-center bg-no-repeat opacity-15"
+                        className="w-full h-full bg-cover bg-center bg-no-repeat opacity-40"
                         style={{
-                            backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')",
-                            maskImage: 'linear-gradient(to right, black 0%, black 40%, transparent 100%)',
-                            WebkitMaskImage: 'linear-gradient(to right, black 0%, black 40%, transparent 100%)'
+                            backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/1200px-The_Earth_seen_from_Apollo_17.jpg')",
+                            maskImage: 'linear-gradient(to right, black 0%, black 30%, transparent 100%)',
+                            WebkitMaskImage: 'linear-gradient(to right, black 0%, black 30%, transparent 100%)'
                         }}
                     ></div>
-                    {/* Blue Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-200/30 via-blue-100/20 to-transparent"></div>
+                    {/* Blue Brand Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/40 via-blue-400/30 to-transparent mix-blend-overlay"></div>
                 </div>
 
                 {/* Background Blobs */}
