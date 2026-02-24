@@ -1,15 +1,13 @@
-import { Globe, Star } from "lucide-react";
+// components/Logo.tsx
+import { ShoppingCart, Shield } from "lucide-react";
 
-export default function Logo({ className = "h-6 w-6" }) {
+export default function Logo({ className = "h-7 w-7" }) {
     return (
         <div className="flex items-center gap-2">
             {/* Icon */}
             <div className="relative">
-                <Globe className={`${className} text-blue-600`} />
-                <div className="absolute top-0 right-0 flex gap-0.5">
-                    <Star className="w-2.5 h-2.5 text-red-600 fill-red-600" />
-                    <Star className="w-2.5 h-2.5 text-red-600 fill-red-600" />
-                </div>
+                <Shield className={`${className} text-blue-600`} />
+                <ShoppingCart className="w-4 h-4 text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
             </div>
             {/* Text */}
             <div className="flex font-bold text-xl tracking-tight">
