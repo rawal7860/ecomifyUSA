@@ -1,13 +1,13 @@
 // components/Logo.tsx
-import { Building2 } from "lucide-react";
+import { ShoppingCart, Shield } from "lucide-react";
 
 export default function Logo({ className = "h-7 w-7" }) {
     return (
         <div className="flex items-center gap-2">
-            {/* Icon with USA colors */}
+            {/* Icon */}
             <div className="relative">
-                <Building2 className={`${className} text-blue-600`} />
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-white to-blue-600 rounded-full"></div>
+                <Shield className={`${className} text-blue-600`} />
+                <ShoppingCart className="w-4 h-4 text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
             </div>
             {/* Text */}
             <div className="flex font-bold text-xl tracking-tight">
