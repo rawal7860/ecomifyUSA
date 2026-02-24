@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { USMap } from "@/components/USMap";
 import { UKMap } from "@/components/UKMap";
 import Footer from "@/components/Footer";
+
 // --- COMPONENT: Trust Bar ---
 function TrustBar() {
     return (
@@ -111,8 +112,24 @@ export default function HomePage() {
                 </div>
             </header>
 
-            {/* 2. PREMIUM BENTO HERO */}
+            {/* 2. PREMIUM BENTO HERO WITH FADED GLOBE */}
             <section className="pt-32 pb-20 lg:pt-48 lg:pb-32 bg-slate-50 relative overflow-hidden">
+
+                {/* 🌍 FADED WORLD GLOBE - LEFT SIDE WITH GRADIENT FADE */}
+                <div className="absolute top-0 left-0 w-1/2 h-full z-0">
+                    <div
+                        className="w-full h-full bg-cover bg-center bg-no-repeat opacity-15"
+                        style={{
+                            backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')",
+                            maskImage: 'linear-gradient(to right, black 0%, black 40%, transparent 100%)',
+                            WebkitMaskImage: 'linear-gradient(to right, black 0%, black 40%, transparent 100%)'
+                        }}
+                    ></div>
+                    {/* Blue Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-200/30 via-blue-100/20 to-transparent"></div>
+                </div>
+
+                {/* Background Blobs */}
                 <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/3"></div>
                 <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-indigo-100 rounded-full blur-3xl opacity-50 translate-y-1/3 -translate-x-1/4"></div>
 
