@@ -5,7 +5,8 @@ import {
     Building2, Star, ArrowRight, Shield, Clock,
     DollarSign, FileText, CheckCircle2, MapPin,
     ArrowRightCircle, Zap, Globe, ChevronDown, ChevronUp,
-    TrendingUp, Award, Headphones, Users
+    TrendingUp, Award, Headphones, Users, Mail, Phone,
+    ShoppingCart, Truck, HelpCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -39,20 +40,34 @@ function TrustBar() {
     );
 }
 
-// --- COMPONENT: FAQ Item ---
-function FAQItem({ question, answer }: { question: string; answer: string }) {
+// --- COMPONENT: FAQ Item (Modern Card Style) ---
+function FAQItem({ icon, question, answer }: { icon: string; question: string; answer: string }) {
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <div className="border-b border-slate-200 last:border-0">
+        <div
+            className={`bg-white rounded-2xl border transition-all duration-300 overflow-hidden ${isOpen
+                    ? "border-blue-300 shadow-lg shadow-blue-100"
+                    : "border-slate-200 hover:border-blue-200 hover:shadow-md"
+                }`}
+        >
             <button
-                className="w-full py-6 flex items-center justify-between text-left focus:outline-none"
+                className="w-full px-6 py-5 flex items-center justify-between text-left focus:outline-none"
                 onClick={() => setIsOpen(!isOpen)}
             >
-                <span className="text-lg font-semibold text-slate-900">{question}</span>
-                {isOpen ? <ChevronUp className="w-5 h-5 text-blue-600" /> : <ChevronDown className="w-5 h-5 text-slate-400" />}
+                <div className="flex items-center gap-4">
+                    <span className="text-2xl">{icon}</span>
+                    <span className="text-lg font-semibold text-slate-900">{question}</span>
+                </div>
+                <div className={`w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center transition-transform duration-300 ${isOpen ? "rotate-180 bg-blue-100" : ""}`}>
+                    <ChevronDown className="w-5 h-5 text-blue-600" />
+                </div>
             </button>
-            <div className={`overflow-hidden transition-all duration-300 ${isOpen ? "max-h-40 opacity-100 mb-6" : "max-h-0 opacity-0"}`}>
-                <p className="text-slate-600 leading-relaxed">{answer}</p>
+            <div className={`transition-all duration-300 ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
+                <div className="px-6 pb-5 pt-0">
+                    <div className="ml-12 pl-4 border-l-2 border-blue-200">
+                        <p className="text-slate-600 leading-relaxed">{answer}</p>
+                    </div>
+                </div>
             </div>
         </div>
     );
@@ -64,7 +79,11 @@ function CheckoutSection() {
     return (
         <div className="py-16 text-center bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl shadow-2xl mt-12 mb-20 max-w-5xl mx-auto px-6 text-white relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400 opacity-10 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
             <div className="relative z-10">
+                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium mb-6">
+                    <Zap className="w-4 h-4" /> Limited Time: Free Registered Agent
+                </div>
                 <h3 className="text-3xl font-bold mb-4">Ready to launch your empire?</h3>
                 <p className="text-blue-100 mb-8 max-w-2xl mx-auto text-lg">
                     Join 500+ entrepreneurs who started their journey with ecomifyUSA.
@@ -226,18 +245,19 @@ export default function HomePage() {
             <section className="py-24 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
+                        <div className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">Simple Process</div>
                         <h2 className="text-4xl font-bold text-slate-900 mb-4">From Idea to LLC in 3 Steps</h2>
                         <p className="text-slate-600 max-w-2xl mx-auto">We've simplified the bureaucracy so you don't have to deal with it.</p>
                     </div>
                     <div className="grid md:grid-cols-3 gap-12 relative">
-                        <div className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-slate-100 -z-10"></div>
+                        <div className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100 -z-10"></div>
                         {[
-                            { step: "01", title: "Select Your State", desc: "Choose from 50 US states or the UK. We show you the tax benefits of each." },
-                            { step: "02", title: "We File Everything", desc: "We prepare and file your Articles of Organization and obtain your EIN/Tax ID." },
-                            { step: "03", title: "You Get Paid", desc: "Receive your official documents and start accepting payments instantly." }
+                            { step: "01", title: "Select Your State", desc: "Choose from 50 US states or the UK. We show you the tax benefits of each.", icon: MapPin },
+                            { step: "02", title: "We File Everything", desc: "We prepare and file your Articles of Organization and obtain your EIN/Tax ID.", icon: FileText },
+                            { step: "03", title: "You Get Paid", desc: "Receive your official documents and start accepting payments instantly.", icon: DollarSign },
                         ].map((item, i) => (
                             <div key={i} className="relative bg-white p-6 text-center group">
-                                <div className="w-24 h-24 mx-auto bg-white border-4 border-slate-100 rounded-full flex items-center justify-center text-3xl font-bold text-slate-300 mb-6 group-hover:border-blue-600 group-hover:text-blue-600 transition-all shadow-sm">
+                                <div className="w-24 h-24 mx-auto bg-gradient-to-br from-blue-50 to-blue-100 border-4 border-white rounded-full flex items-center justify-center text-3xl font-bold text-blue-600 mb-6 group-hover:scale-110 group-hover:border-blue-200 transition-all shadow-md">
                                     {item.step}
                                 </div>
                                 <h3 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h3>
@@ -249,12 +269,12 @@ export default function HomePage() {
             </section>
 
             {/* 5. Services Preview */}
-            <section className="py-24 bg-slate-50">
+            <section className="py-24 bg-gradient-to-br from-slate-50 to-blue-50">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
                         <div className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">Our Expertise</div>
                         <h2 className="text-4xl font-bold text-slate-900 mb-4">Specialized Services</h2>
-                        <div className="w-24 h-1.5 bg-blue-600 mx-auto rounded-full"></div>
+                        <div className="w-24 h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto rounded-full"></div>
                     </div>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
                         {[
@@ -265,11 +285,14 @@ export default function HomePage() {
                             <Link href={service.link} key={i}>
                                 <Card className="h-full hover:shadow-2xl hover:shadow-blue-900/10 transition-all duration-300 cursor-pointer border-0 bg-white group overflow-hidden">
                                     <CardContent className="p-8">
-                                        <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                        <div className="w-12 h-12 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6 group-hover:from-blue-600 group-hover:to-blue-700 group-hover:text-white transition-all">
                                             <service.icon className="w-6 h-6" />
                                         </div>
                                         <CardTitle className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">{service.title}</CardTitle>
                                         <p className="text-slate-600 text-sm leading-relaxed">{service.desc}</p>
+                                        <div className="mt-4 flex items-center text-blue-600 font-semibold text-sm opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
+                                            Learn More <ArrowRight className="ml-1 w-4 h-4" />
+                                        </div>
                                     </CardContent>
                                 </Card>
                             </Link>
@@ -283,16 +306,18 @@ export default function HomePage() {
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="grid lg:grid-cols-2 gap-12">
                         <div>
+                            <div className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">USA</div>
                             <h2 className="text-3xl font-bold text-slate-900 mb-4">USA State Selection</h2>
                             <p className="text-slate-600 mb-8">Select a state to view formation fees, annual reports, and tax requirements.</p>
-                            <div className="bg-white p-4 rounded-2xl shadow-lg border border-slate-100">
+                            <div className="bg-white p-4 rounded-2xl shadow-xl shadow-blue-100 border border-slate-100">
                                 <USMap />
                             </div>
                         </div>
                         <div>
+                            <div className="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-semibold mb-4">UK</div>
                             <h2 className="text-3xl font-bold text-slate-900 mb-4">United Kingdom Coverage</h2>
                             <p className="text-slate-600 mb-8">Interactive data for England, Scotland, Wales, and Northern Ireland.</p>
-                            <div className="bg-white p-4 rounded-2xl shadow-lg border border-slate-100">
+                            <div className="bg-white p-4 rounded-2xl shadow-xl shadow-indigo-100 border border-slate-100">
                                 <UKMap />
                             </div>
                         </div>
@@ -300,34 +325,88 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* 7. FAQ SECTION */}
-            <section className="py-24 bg-slate-50">
-                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* 7. ENHANCED FAQ SECTION - PREMIUM DESIGN */}
+            <section className="py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden">
+                {/* Decorative Background */}
+                <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-30 -translate-y-1/2 translate-x-1/2"></div>
+                <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-100 rounded-full blur-3xl opacity-30 translate-y-1/2 -translate-x-1/2"></div>
+
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h2>
-                        <p className="text-slate-600">Everything you need to know about forming your LLC.</p>
+                        <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-slate-200 text-blue-700 text-sm font-semibold mb-4">
+                            <HelpCircle className="w-4 h-4" /> FAQ
+                        </div>
+                        <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h2>
+                        <p className="text-lg text-slate-600 max-w-2xl mx-auto">Everything you need to know about forming your LLC with ecomifyUSA. Can't find your answer? <a href="mailto:support@ecomifyusa.com" className="text-blue-600 font-semibold hover:underline">Contact us</a>.</p>
                     </div>
-                    <div className="space-y-2 bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+
+                    <div className="space-y-4 mb-12">
                         <FAQItem
+                            icon="🏢"
                             question="Do I need to be a US citizen to form an LLC?"
-                            answer="No! You do not need to be a US citizen or resident to form a US LLC. We help entrepreneurs from over 50 countries set up their businesses remotely."
+                            answer="No! You do not need to be a US citizen or resident to form a US LLC. We help entrepreneurs from over 50 countries set up their businesses remotely. All you need is a valid passport and proof of address from your home country."
                         />
                         <FAQItem
+                            icon="📋"
                             question="Can I get sales tax exemption without an SSN?"
-                            answer="Yes! Most states accept ITIN for exemption certificates. Only a few states (DC, MD, etc.) require SSN. We've gotten clients exempt in 44+ states with just ITIN."
+                            answer="Yes! Most states accept ITIN for exemption certificates. Only a few states (DC, MD, etc.) require SSN. We've successfully gotten clients exempt in 44+ states with just an ITIN number."
                         />
                         <FAQItem
+                            icon="⏱️"
                             question="How long does EIN take for non-US residents?"
-                            answer="15-30 days typically. IRS requires fax submission for foreign owners (no online application available)."
+                            answer="Typically 15-30 business days. The IRS requires fax submission for foreign owners (no online application available). We offer expedited processing for an additional fee if you need it faster."
                         />
                         <FAQItem
+                            icon="🔐"
                             question="What if I lost my state portal logins?"
-                            answer="We can recover them. Contact each state tax department with your formation documents and ID. We offer portal recovery services for this exact situation."
+                            answer="We can recover them! We contact each state tax department, verify your identity with formation documents and ID, and regain access to all your portals. We also set up proper documentation so this doesn't happen again."
                         />
                         <FAQItem
+                            icon="💰"
                             question="Do you offer refunds?"
-                            answer="Yes, we offer a money-back guarantee if we cannot deliver the promised service. Official state fees are non-refundable once paid."
+                            answer="Yes, we offer a money-back guarantee if we cannot deliver the promised service. Official state fees are non-refundable once paid to government agencies. See our full Refund Policy for details."
                         />
+                        <FAQItem
+                            icon="🚀"
+                            question="How quickly can I start selling on Amazon/Walmart?"
+                            answer="Once you have your LLC and EIN (typically 2-4 weeks), you can immediately apply for Amazon/Walmart seller accounts. We expedite the formation process to get you selling faster. Many clients start selling within 30 days."
+                        />
+                        <FAQItem
+                            icon="🌍"
+                            question="I'm outside the US. Can you still help me?"
+                            answer="Absolutely! Over 80% of our clients are international. We specialize in helping non-US residents form US companies remotely. No need to travel to the US. We handle everything online."
+                        />
+                        <FAQItem
+                            icon="📧"
+                            question="Do you provide ongoing compliance support?"
+                            answer="Yes! We offer monthly compliance packages including sales tax filing, annual reports, and registered agent services. Starting at $150/month. We also provide one-time filing services if you prefer."
+                        />
+                        <FAQItem
+                            icon="🏦"
+                            question="Can I open a US bank account as a non-resident?"
+                            answer="Yes! With your LLC documents and EIN, you can open accounts with Mercury, Wise, Payoneer, and other fintech banks that serve non-residents. Traditional banks may require in-person visits."
+                        />
+                        <FAQItem
+                            icon="📞"
+                            question="How do I contact support?"
+                            answer="Email us at support@ecomifyusa.com or WhatsApp +1 (307) 218-0376. We respond within 24-48 hours. We also provide ongoing support for all our clients throughout their business journey."
+                        />
+                    </div>
+
+                    {/* Help CTA */}
+                    <div className="bg-white rounded-3xl p-8 shadow-xl shadow-blue-100 border border-blue-100">
+                        <div className="text-center">
+                            <h3 className="text-2xl font-bold text-slate-900 mb-4">Still have questions?</h3>
+                            <p className="text-slate-600 mb-6 max-w-xl mx-auto">Our team of experts is here to help. Reach out and we'll get back to you within 24 hours.</p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                <a href="mailto:support@ecomifyusa.com" className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-all hover:scale-105">
+                                    <Mail className="w-5 h-5" /> Email Us
+                                </a>
+                                <a href="https://wa.me/13072180376" target="_blank" className="inline-flex items-center justify-center gap-2 bg-green-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-green-700 transition-all hover:scale-105">
+                                    <Phone className="w-5 h-5" /> WhatsApp
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
