@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { SEO } from "@/components/SEO";
 import Logo from "@/components/Logo";
+import Footer from "@/components/Footer";
 
 export default function CaseStudiesPage() {
     const router = useRouter(); // ✅ Call useRouter at top level
@@ -147,6 +148,7 @@ export default function CaseStudiesPage() {
                     </div>
                 </div>
             </div>
+            <Footer />
         </>
     );
 }
