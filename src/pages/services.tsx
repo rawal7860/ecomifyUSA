@@ -5,6 +5,7 @@ import { Building2, ArrowLeft, DollarSign, FileText, CheckCircle2, Globe, Trendi
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SEO } from "@/components/SEO";
+import Logo from "@/components/Logo";
 
 export default function ServicesPage() {
     const router = useRouter(); // ✅ Call useRouter at top level
@@ -61,8 +62,8 @@ export default function ServicesPage() {
                 {/* Header */}
                 <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
                     <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-                        <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight text-blue-600">
-                            <Building2 className="h-6 w-6" /> Salestaxus LLC
+                        <Link href="/" className="hover:opacity-80 transition-opacity">
+                            <Logo />
                         </Link>
                         <Button variant="ghost" onClick={() => router.push("/")} className="gap-2">
                             <ArrowLeft className="w-4 h-4" /> Back to Home
