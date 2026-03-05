@@ -1,18 +1,19 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Building2, ArrowLeft, Truck, Mail, Calendar, Shield, Clock, FileText } from "lucide-react";
+import { Building2, ArrowLeft, Truck, Mail, Calendar, Shield, Clock, FileText, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { SEO } from "@/components/SEO";
 import Logo from "@/components/Logo";
+import Footer from "@/components/Footer";
 
 export default function DeliveryPolicyPage() {
     const router = useRouter();
 
     return (
         <>
-            <SEO title="Delivery Policy - Salestaxus LLC" description="Document delivery methods, processing times, and shipping information." />
+            <SEO title="Delivery Policy - ecomifyUSA" description="Document delivery methods, processing times, and shipping information." />
             <div className="min-h-screen bg-slate-50">
                 {/* Header */}
                 <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
@@ -33,7 +34,7 @@ export default function DeliveryPolicyPage() {
                                 <Truck className="w-10 h-10 text-blue-600" />
                                 <h1 className="text-4xl font-bold text-slate-900">Delivery Policy</h1>
                             </div>
-                            
+
                             <div className="flex items-center gap-6 text-sm text-slate-600 mb-8 pb-8 border-b">
                                 <div className="flex items-center gap-2">
                                     <Calendar className="w-4 h-4" />
@@ -41,14 +42,14 @@ export default function DeliveryPolicyPage() {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Mail className="w-4 h-4" />
-                                    <a href="mailto:support@salestaxus.com" className="hover:text-blue-600">support@salestaxus.com</a>
+                                    <a href="mailto:support@ecomifyusa.com" className="hover:text-blue-600">support@ecomifyusa.com</a>
                                 </div>
                             </div>
 
                             <div className="prose prose-slate max-w-none">
                                 <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Document Delivery Methods</h2>
                                 <p className="text-slate-600 mb-6">We offer two delivery methods for your documents:</p>
-                                
+
                                 <div className="space-y-4 mb-8">
                                     <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
                                         <h4 className="font-bold text-slate-900 mb-2 flex items-center gap-2">
@@ -57,10 +58,10 @@ export default function DeliveryPolicyPage() {
                                         </h4>
                                         <p className="text-slate-600 text-sm mb-3">All documents delivered via email and available in your online dashboard.</p>
                                         <ul className="text-slate-600 text-sm space-y-1">
-                                            <li>✅ PDF format (printable)</li>
-                                            <li>✅ Instant access upon completion</li>
-                                            <li>✅ Secure cloud storage</li>
-                                            <li>✅ Available worldwide</li>
+                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> PDF format (printable)</li>
+                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> Instant access upon completion</li>
+                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> Secure cloud storage</li>
+                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> Available worldwide</li>
                                         </ul>
                                     </div>
 
@@ -71,17 +72,17 @@ export default function DeliveryPolicyPage() {
                                         </h4>
                                         <p className="text-slate-600 text-sm mb-3">Hard copies mailed to your address via courier service.</p>
                                         <ul className="text-slate-600 text-sm space-y-1">
-                                            <li>✅ Certified copies available</li>
-                                            <li>✅ Company seal (if applicable)</li>
-                                            <li>✅ Tracking number provided</li>
-                                            <li>✅ International shipping available</li>
+                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> Certified copies available</li>
+                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> Company seal (if applicable)</li>
+                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> Tracking number provided</li>
+                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> International shipping available</li>
                                         </ul>
                                     </div>
                                 </div>
 
                                 <h2 className="text-2xl font-bold text-slate-900 mb-4">2. Processing Times</h2>
                                 <p className="text-slate-600 mb-6">Estimated processing times vary by service and government agency:</p>
-                                
+
                                 <div className="overflow-x-auto mb-8">
                                     <table className="w-full text-sm">
                                         <thead className="bg-slate-100">
@@ -137,7 +138,7 @@ export default function DeliveryPolicyPage() {
 
                                 <h2 className="text-2xl font-bold text-slate-900 mb-4">4. Physical Shipping Details</h2>
                                 <p className="text-slate-600 mb-6">For physical delivery:</p>
-                                
+
                                 <div className="grid md:grid-cols-2 gap-4 mb-8">
                                     <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
                                         <h4 className="font-bold text-slate-900 mb-2">📦 US Shipping</h4>
@@ -207,7 +208,7 @@ export default function DeliveryPolicyPage() {
                                 <h2 className="text-2xl font-bold text-slate-900 mb-4">10. Contact Us</h2>
                                 <p className="text-slate-600 mb-6">For delivery questions or issues:</p>
                                 <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                                    <p className="text-slate-700 mb-2"><strong>Email:</strong> support@salestaxus.com</p>
+                                    <p className="text-slate-700 mb-2"><strong>Email:</strong> support@ecomifyusa.com</p>
                                     <p className="text-slate-700 mb-2"><strong>WhatsApp:</strong> +1 (307) 218-0376</p>
                                     <p className="text-slate-700"><strong>Response Time:</strong> 24-48 hours</p>
                                 </div>
@@ -215,6 +216,9 @@ export default function DeliveryPolicyPage() {
                         </CardContent>
                     </Card>
                 </div>
+
+                {/* ✅ ADDED FOOTER - This was missing! */}
+                <Footer />
             </div>
         </>
     );
