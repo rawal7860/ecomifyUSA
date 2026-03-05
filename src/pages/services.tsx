@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SEO } from "@/components/SEO";
 import Logo from "@/components/Logo";
+import Footer from "@/components/Footer";
 
 export default function ServicesPage() {
     const router = useRouter(); // ✅ Call useRouter at top level
@@ -126,6 +127,8 @@ export default function ServicesPage() {
                     </div>
                 </div>
             </div>
+            <Footer />
         </>
+    
     );
 }
