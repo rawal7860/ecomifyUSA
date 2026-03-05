@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { convertGBPtoUSD } from "@/lib/ukData";
 import Logo from "@/components/Logo";
+import Footer from "@/components/Footer";
 
 interface OrderData {
     state?: string;
@@ -590,6 +591,7 @@ export default function CheckoutPage() {
                     </div>
                 </div>
             </div>
+            <Footer />
         </>
     );
 }
