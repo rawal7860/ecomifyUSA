@@ -5,6 +5,7 @@ import { Building2, ArrowLeft, CheckCircle2, Star, Globe, TrendingUp, Shield } f
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { SEO } from "@/components/SEO";
+import Logo from "@/components/Logo";
 
 export default function CaseStudiesPage() {
     const router = useRouter(); // ✅ Call useRouter at top level
