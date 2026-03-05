@@ -6,13 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { SEO } from "@/components/SEO";
 import Logo from "@/components/Logo";
+import Footer from "@/components/Footer";
 
 export default function RefundPolicyPage() {
     const router = useRouter();
 
     return (
         <>
-            <SEO title="Refund Policy - Salestaxus LLC" description="Our refund and cancellation policy for business formation and tax services." />
+            <SEO title="Refund Policy - ecomifyUSA" description="Our refund and cancellation policy for business formation and tax services." />
             <div className="min-h-screen bg-slate-50">
                 {/* Header */}
                 <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
@@ -41,7 +42,7 @@ export default function RefundPolicyPage() {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Mail className="w-4 h-4" />
-                                    <a href="mailto:support@salestaxus.com" className="hover:text-blue-600">support@salestaxus.com</a>
+                                    <a href="mailto:support@ecomifyusa.com" className="hover:text-blue-600">support@ecomifyusa.com</a>
                                 </div>
                             </div>
 
@@ -54,98 +55,73 @@ export default function RefundPolicyPage() {
 
                                 <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Service Fee Refunds</h2>
 
-                                <h3 className="text-lg font-semibold text-slate-900 mb-2">✅ Eligible for Refund:</h3>
-                                <ul className="list-disc list-inside text-slate-600 mb-6 space-y-2">
-                                    <li>Service not yet started (within 24 hours of payment)</li>
-                                    <li>Duplicate payment or billing error</li>
-                                    <li>Service cannot be completed due to our error</li>
-                                    <li>Client requests cancellation before filing submission</li>
-                                </ul>
+                                <div className="grid md:grid-cols-2 gap-6 mb-8">
+                                    <div className="bg-green-50 p-6 rounded-xl border border-green-200">
+                                        <h3 className="font-bold text-green-800 mb-3 flex items-center gap-2">
+                                            <CheckCircle2 className="w-5 h-5" /> Eligible for Refund
+                                        </h3>
+                                        <ul className="text-green-700 text-sm space-y-2">
+                                            <li>• Service not yet started (within 24 hours)</li>
+                                            <li>• Duplicate payment or billing error</li>
+                                            <li>• Service cannot be completed due to our error</li>
+                                            <li>• Client requests cancellation before filing</li>
+                                        </ul>
+                                    </div>
 
-                                <h3 className="text-lg font-semibold text-slate-900 mb-2">❌ Non-Refundable:</h3>
-                                <ul className="list-disc list-inside text-slate-600 mb-6 space-y-2">
-                                    <li>Government filing fees (once paid to state/IRS)</li>
-                                    <li>Services already completed and delivered</li>
-                                    <li>Delays caused by government processing times</li>
-                                    <li>Errors caused by incorrect information provided by client</li>
-                                    <li>Change of mind after filing submission</li>
-                                </ul>
+                                    <div className="bg-red-50 p-6 rounded-xl border border-red-200">
+                                        <h3 className="font-bold text-red-800 mb-3 flex items-center gap-2">
+                                            <DollarSign className="w-5 h-5" /> Non-Refundable
+                                        </h3>
+                                        <ul className="text-red-700 text-sm space-y-2">
+                                            <li>• Government filing fees (once paid)</li>
+                                            <li>• Services already completed</li>
+                                            <li>• Government processing delays</li>
+                                            <li>• Errors from incorrect client info</li>
+                                        </ul>
+                                    </div>
+                                </div>
 
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">2. Refund Timeline</h2>
-                                <p className="text-slate-600 mb-6">Approved refunds are processed within 5-10 business days to the original payment method. Bank processing times may vary.</p>
+                                <h2 className="text-2xl font-bold text-slate-900 mb-4">2. Service-Specific Policies</h2>
 
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">3. Service-Specific Policies</h2>
-
-                                <div className="space-y-6 mb-8">
+                                <div className="space-y-4 mb-8">
                                     <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                                        <h4 className="font-bold text-slate-900 mb-3 flex items-center gap-2">
-                                            <CheckCircle2 className="w-5 h-5 text-green-600" />
-                                            LLC/Company Formation
-                                        </h4>
+                                        <h4 className="font-bold text-slate-900 mb-3">LLC/Company Formation</h4>
                                         <p className="text-slate-600 text-sm">
-                                            <strong>Refundable:</strong> Service fee if cancelled before filing submission.<br />
-                                            <strong>Non-Refundable:</strong> State filing fees once submitted to Secretary of State.
+                                            <strong className="text-green-600">Refundable:</strong> Service fee if cancelled before filing submission.<br />
+                                            <strong className="text-red-600">Non-Refundable:</strong> State filing fees once submitted to Secretary of State.
                                         </p>
                                     </div>
 
                                     <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                                        <h4 className="font-bold text-slate-900 mb-3 flex items-center gap-2">
-                                            <CheckCircle2 className="w-5 h-5 text-green-600" />
-                                            EIN Acquisition
-                                        </h4>
+                                        <h4 className="font-bold text-slate-900 mb-3">EIN Acquisition</h4>
                                         <p className="text-slate-600 text-sm">
-                                            <strong>Refundable:</strong> Service fee if EIN not received within 45 days (non-US residents).<br />
-                                            <strong>Non-Refundable:</strong> Once EIN is issued by IRS.
+                                            <strong className="text-green-600">Refundable:</strong> Service fee if EIN not received within 45 days (non-US residents).<br />
+                                            <strong className="text-red-600">Non-Refundable:</strong> Once EIN is issued by IRS.
                                         </p>
                                     </div>
 
                                     <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                                        <h4 className="font-bold text-slate-900 mb-3 flex items-center gap-2">
-                                            <CheckCircle2 className="w-5 h-5 text-green-600" />
-                                            Sales Tax Registration
-                                        </h4>
+                                        <h4 className="font-bold text-slate-900 mb-3">Sales Tax Registration</h4>
                                         <p className="text-slate-600 text-sm">
-                                            <strong>Refundable:</strong> Service fee if permit not received within 60 days.<br />
-                                            <strong>Non-Refundable:</strong> Once permit is issued by state.
+                                            <strong className="text-green-600">Refundable:</strong> Service fee if permit not received within 60 days.<br />
+                                            <strong className="text-red-600">Non-Refundable:</strong> Once permit is issued by state.
                                         </p>
                                     </div>
 
                                     <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                                        <h4 className="font-bold text-slate-900 mb-3 flex items-center gap-2">
-                                            <CheckCircle2 className="w-5 h-5 text-green-600" />
-                                            Tax Filing Services
-                                        </h4>
+                                        <h4 className="font-bold text-slate-900 mb-3">Tax Filing Services</h4>
                                         <p className="text-slate-600 text-sm">
-                                            <strong>Refundable:</strong> Service fee if filing not completed by deadline due to our error.<br />
-                                            <strong>Non-Refundable:</strong> Once return is filed with IRS/state.
+                                            <strong className="text-green-600">Refundable:</strong> Service fee if filing not completed by deadline due to our error.<br />
+                                            <strong className="text-red-600">Non-Refundable:</strong> Once return is filed with IRS/state.
                                         </p>
                                     </div>
                                 </div>
+
+                                <h2 className="text-2xl font-bold text-slate-900 mb-4">3. Refund Timeline</h2>
+                                <p className="text-slate-600 mb-6">Approved refunds are processed within 5-10 business days to the original payment method. Bank processing times may vary.</p>
 
                                 <h2 className="text-2xl font-bold text-slate-900 mb-4">4. Government Delays</h2>
                                 <p className="text-slate-600 mb-6">Processing times for government agencies (IRS, Secretary of State, tax departments) are beyond our control. Delays do not qualify for refunds. We provide current estimated processing times at the time of order.</p>
 
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">5. Client Errors</h2>
-                                <p className="text-slate-600 mb-6">If filings are rejected or delayed due to incorrect information provided by you, additional fees may apply for corrections. Original service fees are non-refundable in these cases.</p>
-
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">6. How to Request a Refund</h2>
+                                <h2 className="text-2xl font-bold text-slate-900 mb-4">5. How to Request a Refund</h2>
                                 <p className="text-slate-600 mb-6">To request a refund, contact us within 30 days of service completion:</p>
-                                <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 mb-6">
-                                    <p className="text-slate-700 mb-2"><strong>Email:</strong> support@salestaxus.com</p>
-                                    <p className="text-slate-700 mb-2"><strong>WhatsApp:</strong> +1 (307) 218-0376</p>
-                                    <p className="text-slate-700 text-sm">Include your order number and reason for refund request. We respond within 24-48 hours.</p>
-                                </div>
-
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">7. Disputes</h2>
-                                <p className="text-slate-600 mb-6">If you have a billing dispute, contact us first. We will work to resolve the issue promptly. For Stripe payments, you may also dispute through your card issuer, but we request you contact us first for faster resolution.</p>
-
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">8. Changes to Policy</h2>
-                                <p className="text-slate-600 mb-6">We may update this Refund Policy at any time. Changes will be posted on this page with an updated "Last Updated" date.</p>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-            </div>
-        </>
-    );
-}
