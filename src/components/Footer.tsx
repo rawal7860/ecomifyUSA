@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Building2, Mail, Phone, Globe, MapPin } from "lucide-react";
+import Logo from "@/components/Logo";
 
 export default function Footer() {
     return (
@@ -9,8 +10,8 @@ export default function Footer() {
 
                     {/* Column 1: Company Info */}
                     <div className="lg:col-span-2">
-                        <div className="flex items-center gap-2 font-bold text-white text-xl mb-4">
-                            <Building2 className="h-6 w-6" /> Salestaxus LLC
+                        <div className="mb-4">
+                            <Logo className="h-8 w-8" />
                         </div>
                         <p className="text-sm leading-relaxed mb-6 max-w-sm">
                             Leading US & UK business registration agency providing compliance
