@@ -110,47 +110,43 @@ export default function CheckoutPage() {
 
                 if (authError) {
                     console.error("Supabase Signup Error:", authError);
+                    console.error("Error Status:", authError.status);
+                    console.error("Error Message:", authError.message);
 
-                    // Check if user already registered
-                    if (authError.message?.includes("already registered") || authError.message?.includes("already exists") || authError.status === 422) {
+                    // User already registered (Status 422 = Unprocessable Entity)
+                    if (authError.status === 422 ||
+                        authError.message?.toLowerCase().includes("already") ||
+                        authError.message?.toLowerCase().includes("registered") ||
+                        authError.message?.toLowerCase().includes("exists")) {
+
                         toast({
                             title: "🎉 Welcome Back!",
-                            description: "You're already registered with us! Please login instead.",
+                            description: "You're already registered with us! Redirecting to login...",
                             variant: "default",
-                            duration: 6000,
-                            action: (
-                                <Button 
-                                    size="sm" 
-                                    className="bg-blue-600 text-white hover:bg-blue-700"
-                                    onClick={() => router.push("/login")}
-                                >
-                                    Go to Login
-                                </Button>
-                            ),
+                            duration: 4000,
                         });
-                        
-                        // Auto-redirect to login page after 4 seconds
+
+                        // Auto-redirect to login page
                         setTimeout(() => {
                             router.push("/login");
-                        }, 4000);
-                        
-                    } else if (authError.message?.includes("Invalid login credentials") || authError.status === 400) {
+                        }, 2000);
+
+                    }
+                    // Invalid credentials (Status 400 = Bad Request)
+                    else if (authError.status === 400) {
                         toast({
                             title: "⚠️ Login Required",
                             description: "This email is already registered. Please login with your password.",
                             variant: "default",
-                            duration: 6000,
-                            action: (
-                                <Button 
-                                    size="sm" 
-                                    className="bg-blue-600 text-white hover:bg-blue-700"
-                                    onClick={() => router.push("/login")}
-                                >
-                                    Login Now
-                                </Button>
-                            ),
+                            duration: 4000,
                         });
-                    } else {
+
+                        setTimeout(() => {
+                            router.push("/login");
+                        }, 2000);
+                    }
+                    // Other errors
+                    else {
                         toast({
                             title: "❌ Account Creation Failed",
                             description: authError.message || "Unable to create account. Please try again.",
