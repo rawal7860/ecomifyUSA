@@ -76,105 +76,78 @@ export default function CheckoutPage() {
         setProcessing(true);
 
         try {
-            // Step 1: Try to sign in first (in case user already exists)
-            const { data: existingUser, error: signInError } = await supabase.auth.signInWithPassword({
+            let userId: string;
+            let isNewUser = false;
+
+            // Step 1: Try to sign in first
+            const signInResponse = await supabase.auth.signInWithPassword({
                 email,
                 password,
             });
 
-            let userId: string;
-            let isNewUser = false;
-
-            if (existingUser?.user) {
-                // User already exists and password is correct
-                userId = existingUser.user.id;
-
+            if (signInResponse.data?.user) {
+                // User exists and password is correct
+                userId = signInResponse.data.user.id;
                 toast({
                     title: "Welcome Back! 🎉",
                     description: "Using your existing account to process this order.",
                 });
-            } else {
-                // Sign in failed - user doesn't exist or wrong password
+            } else if (signInResponse.error) {
+                // Sign in failed - user might not exist
                 // Try to create new account
-                let authData;
-
-                try {
-                    const signUpResult = await supabase.auth.signUp({
-                        email,
-                        password,
-                        options: {
-                            data: {
-                                full_name: fullName,
-                                phone: phone,
-                            },
-                            emailRedirectTo: typeof window !== 'undefined' ? window.location.origin : undefined,
+                const signUpResponse = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        data: {
+                            full_name: fullName,
+                            phone: phone,
                         },
-                    });
-                    authData = signUpResult.data;
+                        emailRedirectTo: typeof window !== 'undefined' ? window.location.origin : undefined,
+                    },
+                });
 
-                    if (signUpResult.error) {
-                        throw signUpResult.error;
-                    }
-                } catch (signUpError: any) {
-                    console.error("Supabase Signup Error:", signUpError);
-                    console.error("Error Status:", signUpError?.status);
-                    console.error("Error Message:", signUpError?.message);
-
-                    // Check for "user already registered" error (Status 422)
-                    if (signUpError?.status === 422 ||
-                        signUpError?.message?.toLowerCase().includes("already") ||
-                        signUpError?.message?.toLowerCase().includes("registered")) {
+                if (signUpResponse.error) {
+                    // Handle "user already registered" error
+                    if (signUpResponse.error.status === 422 ||
+                        signUpResponse.error.message?.toLowerCase().includes("already")) {
 
                         toast({
                             title: "🎉 Welcome Back!",
-                            description: "You're already registered with us! Redirecting to login...",
+                            description: "You're already registered! Please login instead.",
                             variant: "default",
-                            duration: 3000,
-                        });
-
-                        // Auto-redirect to login page
-                        setTimeout(() => {
-                            router.push("/login");
-                        }, 2000);
-
-                    } else if (signUpError?.status === 400) {
-                        toast({
-                            title: "⚠️ Login Required",
-                            description: "This email is already registered. Please login with your password.",
-                            variant: "default",
-                            duration: 3000,
+                            duration: 4000,
+                            action: (
+                                <Button
+                                    size="sm"
+                                    className="bg-blue-600 text-white hover:bg-blue-700"
+                                    onClick={() => router.push("/login")}
+                                >
+                                    Go to Login
+                                </Button>
+                            ),
                         });
 
                         setTimeout(() => {
                             router.push("/login");
-                        }, 2000);
+                        }, 3000);
+
+                        setProcessing(false);
+                        return;
                     } else {
-                        toast({
-                            title: "❌ Account Creation Failed",
-                            description: signUpError?.message || "Unable to create account. Please try again.",
-                            variant: "destructive",
-                            duration: 5000,
-                        });
+                        throw new Error(signUpResponse.error.message || "Unable to create account");
                     }
-                    setProcessing(false);
-                    return;
                 }
 
-                if (!authData?.user) {
-                    toast({
-                        title: "Account Creation Failed",
-                        description: "Unable to create account. Please try again.",
-                        variant: "destructive",
-                    });
-                    setProcessing(false);
-                    return;
+                if (!signUpResponse.data?.user) {
+                    throw new Error("Unable to create account");
                 }
 
-                userId = authData.user.id;
+                userId = signUpResponse.data.user.id;
                 isNewUser = true;
             }
 
-            // Step 2: Update user profile (Use upsert to create if missing)
+            // Step 2: Update user profile
             const { error: profileError } = await supabase
                 .from("profiles")
                 .upsert({
@@ -193,7 +166,7 @@ export default function CheckoutPage() {
                 console.warn("Profile update warning:", profileError);
             }
 
-            // Step 3: Create order record (handle both US and UK)
+            // Step 3: Create order record
             const isUKOrder = orderData.region === "UK";
 
             const orderInsert = {
@@ -224,22 +197,19 @@ export default function CheckoutPage() {
                 .single();
 
             if (orderError) {
-                console.error("Order Insert Error:", orderError);
-
                 if (orderError.message?.includes("row-level security")) {
                     toast({
                         title: "Email Verification Required",
-                        description: "Please check your email and verify your account before completing this order. Then try again.",
+                        description: "Please check your email and verify your account before completing this order.",
                         variant: "destructive",
                     });
                     setProcessing(false);
                     return;
                 }
-
                 throw new Error("Failed to create order record in database.");
             }
 
-            // Step 4: TEMPORARY MOCK FOR STRIPE (Remove this when Stripe is configured)
+            // Step 4: Mock Stripe invoice (remove when Stripe is configured)
             const invoiceData = {
                 success: true,
                 invoiceId: "in_mock_" + Date.now(),
@@ -249,7 +219,6 @@ export default function CheckoutPage() {
                 title: "Note",
                 description: "Stripe not configured yet. Mock invoice created for testing.",
             });
-            // ---------------------------------------------------------
 
             // Step 5: Update order with invoice ID
             await supabase
@@ -273,20 +242,28 @@ export default function CheckoutPage() {
         } catch (error: any) {
             console.error("Checkout error:", error);
 
-            // Don't show error if user is already registered (handled above)
-            if (error?.status === 422 || error?.message?.toLowerCase().includes("already")) {
-                return; // Already handled
+            // Check if it's a "user already registered" error
+            if (error?.status === 422 ||
+                error?.message?.toLowerCase().includes("already") ||
+                error?.message?.toLowerCase().includes("registered")) {
+
+                toast({
+                    title: "🎉 Welcome Back!",
+                    description: "You're already registered! Redirecting to login...",
+                    variant: "default",
+                    duration: 3000,
+                });
+
+                setTimeout(() => {
+                    router.push("/login");
+                }, 2000);
+                return;
             }
 
-            let errorMessage = "Failed to process order. Please try again.";
-
-            if (error instanceof Error) {
-                errorMessage = error.message;
-            }
-
+            // Show error for other issues
             toast({
                 title: "Order Processing Error",
-                description: errorMessage,
+                description: error?.message || "Failed to process order. Please try again.",
                 variant: "destructive",
             });
         } finally {
