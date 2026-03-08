@@ -12,7 +12,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { convertGBPtoUSD } from "@/lib/ukData";
 import Logo from "@/components/Logo";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
 
 interface OrderData {
     state?: string;
@@ -35,7 +34,7 @@ interface OrderData {
 export default function CheckoutPage() {
     const router = useRouter();
     const { toast } = useToast();
-    const [orderData, setOrderData] = useState < OrderData | null > (null);
+    const [orderData, setOrderData] = useState<OrderData | null>(null);
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
 
@@ -92,7 +91,7 @@ export default function CheckoutPage() {
                 userId = existingUser.user.id;
 
                 toast({
-                    title: "Welcome Back!",
+                    title: "Welcome Back! 🎉",
                     description: "Using your existing account to process this order.",
                 });
             } else {
@@ -109,41 +108,59 @@ export default function CheckoutPage() {
                     },
                 });
 
-               if (authError) {
-    console.error("Supabase Signup Error:", authError);
+                if (authError) {
+                    console.error("Supabase Signup Error:", authError);
 
-    // Check if user already registered
-    if (authError.message?.includes("already registered") || authError.message?.includes("already exists") || authError.status === 422) {
-        toast({
-            title: "🎉 Welcome Back!",
-            description: "You're already registered with us! Please login instead.",
-            variant: "default",
-            duration: 5000,
-        });
-        
-        // Optional: Auto-redirect to login page after 3 seconds
-        setTimeout(() => {
-            router.push("/login");
-        }, 3000);
-        
-    } else if (authError.message?.includes("Invalid login credentials") || authError.status === 400) {
-        toast({
-            title: "⚠️ Login Required",
-            description: "This email is already registered. Please login with your password.",
-            variant: "default",
-            duration: 5000,
-        });
-    } else {
-        toast({
-            title: "❌ Account Creation Failed",
-            description: authError.message || "Unable to create account. Please try again.",
-            variant: "destructive",
-            duration: 5000,
-        });
-    }
-    setProcessing(false);
-    return;
-}
+                    // Check if user already registered
+                    if (authError.message?.includes("already registered") || authError.message?.includes("already exists") || authError.status === 422) {
+                        toast({
+                            title: "🎉 Welcome Back!",
+                            description: "You're already registered with us! Please login instead.",
+                            variant: "default",
+                            duration: 6000,
+                            action: (
+                                <Button 
+                                    size="sm" 
+                                    className="bg-blue-600 text-white hover:bg-blue-700"
+                                    onClick={() => router.push("/login")}
+                                >
+                                    Go to Login
+                                </Button>
+                            ),
+                        });
+                        
+                        // Auto-redirect to login page after 4 seconds
+                        setTimeout(() => {
+                            router.push("/login");
+                        }, 4000);
+                        
+                    } else if (authError.message?.includes("Invalid login credentials") || authError.status === 400) {
+                        toast({
+                            title: "⚠️ Login Required",
+                            description: "This email is already registered. Please login with your password.",
+                            variant: "default",
+                            duration: 6000,
+                            action: (
+                                <Button 
+                                    size="sm" 
+                                    className="bg-blue-600 text-white hover:bg-blue-700"
+                                    onClick={() => router.push("/login")}
+                                >
+                                    Login Now
+                                </Button>
+                            ),
+                        });
+                    } else {
+                        toast({
+                            title: "❌ Account Creation Failed",
+                            description: authError.message || "Unable to create account. Please try again.",
+                            variant: "destructive",
+                            duration: 5000,
+                        });
+                    }
+                    setProcessing(false);
+                    return;
+                }
 
                 if (!authData.user) {
                     toast({
@@ -252,7 +269,7 @@ export default function CheckoutPage() {
             sessionStorage.removeItem("pendingOrder");
 
             toast({
-                title: "Order Created Successfully!",
+                title: "Order Created Successfully! 🎉",
                 description: "Check your email for the Stripe invoice.",
             });
 
@@ -308,7 +325,7 @@ export default function CheckoutPage() {
     return (
         <>
             <SEO
-                title="Checkout - Salestaxus LLC"
+                title="Checkout - ecomifyUSA"
                 description="Complete your LLC formation order and create your account"
             />
 
@@ -327,6 +344,7 @@ export default function CheckoutPage() {
                         </div>
                     </div>
                 </header>
+
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                     <div className="grid lg:grid-cols-3 gap-8">
                         {/* Checkout Form */}
@@ -489,7 +507,7 @@ export default function CheckoutPage() {
 
                         {/* Order Summary Sidebar */}
                         <div className="space-y-6">
-                            {/* Trust Bar - Replaced TrustBadge component */}
+                            {/* Trust Bar */}
                             <Card className="bg-white border-slate-200">
                                 <CardContent className="p-6">
                                     <div className="grid grid-cols-2 gap-4 text-center">
@@ -607,8 +625,9 @@ export default function CheckoutPage() {
                         </div>
                     </div>
                 </div>
+
+                <Footer />
             </div>
-            <Footer />
         </>
     );
 }
