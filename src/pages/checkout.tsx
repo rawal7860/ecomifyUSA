@@ -34,7 +34,7 @@ interface OrderData {
 export default function CheckoutPage() {
     const router = useRouter();
     const { toast } = useToast();
-    const [orderData, setOrderData] = useState<OrderData | null>(null);
+    const [orderData, setOrderData] = useState < OrderData | null > (null);
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
 
@@ -84,7 +84,6 @@ export default function CheckoutPage() {
 
             let userId: string;
             let isNewUser = false;
-            let needsEmailVerification = false;
 
             if (existingUser?.user) {
                 // User already exists and password is correct
@@ -95,35 +94,42 @@ export default function CheckoutPage() {
                     description: "Using your existing account to process this order.",
                 });
             } else {
-                // User doesn't exist - create new account
-                const { data: authData, error: authError } = await supabase.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        data: {
-                            full_name: fullName,
-                            phone: phone,
+                // Sign in failed - user doesn't exist or wrong password
+                // Try to create new account
+                let authData;
+
+                try {
+                    const signUpResult = await supabase.auth.signUp({
+                        email,
+                        password,
+                        options: {
+                            data: {
+                                full_name: fullName,
+                                phone: phone,
+                            },
+                            emailRedirectTo: typeof window !== 'undefined' ? window.location.origin : undefined,
                         },
-                        emailRedirectTo: typeof window !== 'undefined' ? window.location.origin : undefined,
-                    },
-                });
+                    });
+                    authData = signUpResult.data;
 
-                if (authError) {
-                    console.error("Supabase Signup Error:", authError);
-                    console.error("Error Status:", authError.status);
-                    console.error("Error Message:", authError.message);
+                    if (signUpResult.error) {
+                        throw signUpResult.error;
+                    }
+                } catch (signUpError: any) {
+                    console.error("Supabase Signup Error:", signUpError);
+                    console.error("Error Status:", signUpError?.status);
+                    console.error("Error Message:", signUpError?.message);
 
-                    // User already registered (Status 422 = Unprocessable Entity)
-                    if (authError.status === 422 ||
-                        authError.message?.toLowerCase().includes("already") ||
-                        authError.message?.toLowerCase().includes("registered") ||
-                        authError.message?.toLowerCase().includes("exists")) {
+                    // Check for "user already registered" error (Status 422)
+                    if (signUpError?.status === 422 ||
+                        signUpError?.message?.toLowerCase().includes("already") ||
+                        signUpError?.message?.toLowerCase().includes("registered")) {
 
                         toast({
                             title: "🎉 Welcome Back!",
                             description: "You're already registered with us! Redirecting to login...",
                             variant: "default",
-                            duration: 4000,
+                            duration: 3000,
                         });
 
                         // Auto-redirect to login page
@@ -131,25 +137,21 @@ export default function CheckoutPage() {
                             router.push("/login");
                         }, 2000);
 
-                    }
-                    // Invalid credentials (Status 400 = Bad Request)
-                    else if (authError.status === 400) {
+                    } else if (signUpError?.status === 400) {
                         toast({
                             title: "⚠️ Login Required",
                             description: "This email is already registered. Please login with your password.",
                             variant: "default",
-                            duration: 4000,
+                            duration: 3000,
                         });
 
                         setTimeout(() => {
                             router.push("/login");
                         }, 2000);
-                    }
-                    // Other errors
-                    else {
+                    } else {
                         toast({
                             title: "❌ Account Creation Failed",
-                            description: authError.message || "Unable to create account. Please try again.",
+                            description: signUpError?.message || "Unable to create account. Please try again.",
                             variant: "destructive",
                             duration: 5000,
                         });
@@ -158,7 +160,7 @@ export default function CheckoutPage() {
                     return;
                 }
 
-                if (!authData.user) {
+                if (!authData?.user) {
                     toast({
                         title: "Account Creation Failed",
                         description: "Unable to create account. Please try again.",
@@ -170,11 +172,6 @@ export default function CheckoutPage() {
 
                 userId = authData.user.id;
                 isNewUser = true;
-
-                // Check if email confirmation is required
-                if (authData.user.identities && authData.user.identities.length === 0) {
-                    needsEmailVerification = true;
-                }
             }
 
             // Step 2: Update user profile (Use upsert to create if missing)
@@ -273,8 +270,13 @@ export default function CheckoutPage() {
                 router.push("/dashboard");
             }, 3000);
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("Checkout error:", error);
+
+            // Don't show error if user is already registered (handled above)
+            if (error?.status === 422 || error?.message?.toLowerCase().includes("already")) {
+                return; // Already handled
+            }
 
             let errorMessage = "Failed to process order. Please try again.";
 
