@@ -34,7 +34,7 @@ interface OrderData {
 export default function CheckoutPage() {
     const router = useRouter();
     const { toast } = useToast();
-    const [orderData, setOrderData] = useState < OrderData | null > (null);
+    const [orderData, setOrderData] = useState<OrderData | null>(null);
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
 
@@ -47,6 +47,9 @@ export default function CheckoutPage() {
     const [state, setState] = useState("");
     const [zipCode, setZipCode] = useState("");
     const [businessName, setBusinessName] = useState("");
+    
+    // Account creation option
+    const [createAccount, setCreateAccount] = useState(false);
     const [password, setPassword] = useState("");
 
     useEffect(() => {
@@ -63,8 +66,8 @@ export default function CheckoutPage() {
 
         if (!orderData) return;
 
-        // Validation
-        if (!fullName || !email || !phone || !address || !city || !state || !zipCode || !businessName || !password) {
+        // Validation - Required fields
+        if (!fullName || !email || !phone || !address || !city || !state || !zipCode || !businessName) {
             toast({
                 title: "Missing Information",
                 description: "Please fill in all required fields.",
@@ -73,104 +76,115 @@ export default function CheckoutPage() {
             return;
         }
 
+        // If creating account, password is required
+        if (createAccount && !password) {
+            toast({
+                title: "Password Required",
+                description: "Please create a password for your account.",
+                variant: "destructive",
+            });
+            return;
+        }
+
         setProcessing(true);
 
         try {
-            let userId: string;
-            let isNewUser = false;
+            let userId: string | null = null;
 
-            // Step 1: Try to sign in first
-            const signInResponse = await supabase.auth.signInWithPassword({
-                email,
-                password,
-            });
+            // Step 1: Create account ONLY if user wants to
+            if (createAccount && password) {
+                try {
+                    // Try to sign in first (in case user already exists)
+                    const signInResponse = await supabase.auth.signInWithPassword({
+                        email,
+                        password,
+                    });
 
-            if (signInResponse.data?.user) {
-                // User exists and password is correct
-                userId = signInResponse.data.user.id;
-                toast({
-                    title: "Welcome Back! 🎉",
-                    description: "Using your existing account to process this order.",
-                });
-            } else if (signInResponse.error) {
-                // Sign in failed - user might not exist
-                // Try to create new account
-                const signUpResponse = await supabase.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        data: {
-                            full_name: fullName,
-                            phone: phone,
-                        },
-                        emailRedirectTo: typeof window !== 'undefined' ? window.location.origin : undefined,
-                    },
-                });
-
-                if (signUpResponse.error) {
-                    // Handle "user already registered" error
-                    if (signUpResponse.error.status === 422 ||
-                        signUpResponse.error.message?.toLowerCase().includes("already")) {
-
+                    if (signInResponse.data?.user) {
+                        userId = signInResponse.data.user.id;
                         toast({
-                            title: "🎉 Welcome Back!",
-                            description: "You're already registered! Please login instead.",
-                            variant: "default",
-                            duration: 4000,
-                            action: (
-                                <Button
-                                    size="sm"
-                                    className="bg-blue-600 text-white hover:bg-blue-700"
-                                    onClick={() => router.push("/login")}
-                                >
-                                    Go to Login
-                                </Button>
-                            ),
+                            title: "Welcome Back! 🎉",
+                            description: "Using your existing account.",
+                        });
+                    } else if (signInResponse.error) {
+                        // User doesn't exist - create new account
+                        const signUpResponse = await supabase.auth.signUp({
+                            email,
+                            password,
+                            options: {
+                                data: {
+                                    full_name: fullName,
+                                    phone: phone,
+                                },
+                                emailRedirectTo: typeof window !== 'undefined' ? window.location.origin : undefined,
+                            },
                         });
 
-                        setTimeout(() => {
-                            router.push("/login");
-                        }, 3000);
+                        if (signUpResponse.error) {
+                            if (signUpResponse.error.status === 422 || 
+                                signUpResponse.error.message?.toLowerCase().includes("already")) {
+                                toast({
+                                    title: "⚠️ Account Exists",
+                                    description: "This email is already registered. Please login instead.",
+                                    variant: "default",
+                                    duration: 4000,
+                                });
+                                setTimeout(() => {
+                                    router.push("/login");
+                                }, 3000);
+                                setProcessing(false);
+                                return;
+                            } else {
+                                throw new Error(signUpResponse.error.message);
+                            }
+                        }
 
-                        setProcessing(false);
-                        return;
-                    } else {
-                        throw new Error(signUpResponse.error.message || "Unable to create account");
+                        if (signUpResponse.data?.user) {
+                            userId = signUpResponse.data.user.id;
+                            toast({
+                                title: "Account Created! 🎉",
+                                description: "Your account has been created successfully.",
+                            });
+                        }
                     }
+                } catch (error: any) {
+                    console.error("Account creation error:", error);
+                    toast({
+                        title: "⚠️ Account Creation Failed",
+                        description: "Continuing as guest checkout.",
+                        variant: "default",
+                    });
+                    // Continue with guest checkout
+                    userId = null;
                 }
-
-                if (!signUpResponse.data?.user) {
-                    throw new Error("Unable to create account");
-                }
-
-                userId = signUpResponse.data.user.id;
-                isNewUser = true;
             }
 
-            // Step 2: Update user profile
-            const { error: profileError } = await supabase
-                .from("profiles")
-                .upsert({
-                    id: userId,
-                    full_name: fullName,
-                    phone: phone,
-                    address: address,
-                    city: city,
-                    state: state,
-                    zip_code: zipCode,
-                    business_name: businessName,
-                    updated_at: new Date().toISOString(),
-                });
+            // Step 2: Update/Create user profile (if account created)
+            if (userId) {
+                const { error: profileError } = await supabase
+                    .from("profiles")
+                    .upsert({
+                        id: userId,
+                        full_name: fullName,
+                        phone: phone,
+                        address: address,
+                        city: city,
+                        state: state,
+                        zip_code: zipCode,
+                        business_name: businessName,
+                        updated_at: new Date().toISOString(),
+                    });
 
-            if (profileError) {
-                console.warn("Profile update warning:", profileError);
+                if (profileError) {
+                    console.warn("Profile update warning:", profileError);
+                }
             }
 
-            // Step 3: Create order record
+            // Step 3: Create order record (works with or without user_id)
             const isUKOrder = orderData.region === "UK";
 
-            const orderInsert = {
-                user_id: userId,
+            const orderInsert: any = {
+                user_id: userId, // Can be null for guest checkout
                 entity_type: orderData.entityType,
                 service_type: orderData.entityType || "LLC Formation",
                 business_name: businessName,
@@ -179,6 +193,10 @@ export default function CheckoutPage() {
                 addons: orderData.addons || [],
                 amount: orderData.total || 0,
                 status: "pending",
+                // Guest checkout info
+                customer_email: email,
+                customer_name: fullName,
+                customer_phone: phone,
                 ...(isUKOrder ? {
                     state_code: orderData.countryCode,
                     state_name: orderData.country,
@@ -192,20 +210,12 @@ export default function CheckoutPage() {
 
             const { data: orderRecord, error: orderError } = await supabase
                 .from("orders")
-                .insert(orderInsert as any)
+                .insert(orderInsert)
                 .select()
                 .single();
 
             if (orderError) {
-                if (orderError.message?.includes("row-level security")) {
-                    toast({
-                        title: "Email Verification Required",
-                        description: "Please check your email and verify your account before completing this order.",
-                        variant: "destructive",
-                    });
-                    setProcessing(false);
-                    return;
-                }
+                console.error("Order Insert Error:", orderError);
                 throw new Error("Failed to create order record in database.");
             }
 
@@ -215,15 +225,10 @@ export default function CheckoutPage() {
                 invoiceId: "in_mock_" + Date.now(),
             };
 
-            toast({
-                title: "Note",
-                description: "Stripe not configured yet. Mock invoice created for testing.",
-            });
-
             // Step 5: Update order with invoice ID
             await supabase
                 .from("orders")
-                .update({ stripe_invoice_id: invoiceData.invoiceId } as any)
+                .update({ stripe_invoice_id: invoiceData.invoiceId })
                 .eq("id", orderRecord.id);
 
             // Success!
@@ -232,35 +237,23 @@ export default function CheckoutPage() {
 
             toast({
                 title: "Order Created Successfully! 🎉",
-                description: "Check your email for the Stripe invoice.",
+                description: createAccount 
+                    ? "Check your email for the Stripe invoice and account details."
+                    : "Check your email for the Stripe invoice.",
             });
 
             setTimeout(() => {
-                router.push("/dashboard");
+                if (userId) {
+                    router.push("/dashboard");
+                } else {
+                    // For guest checkout, show order confirmation
+                    router.push("/order-confirmation");
+                }
             }, 3000);
 
         } catch (error: any) {
             console.error("Checkout error:", error);
 
-            // Check if it's a "user already registered" error
-            if (error?.status === 422 ||
-                error?.message?.toLowerCase().includes("already") ||
-                error?.message?.toLowerCase().includes("registered")) {
-
-                toast({
-                    title: "🎉 Welcome Back!",
-                    description: "You're already registered! Redirecting to login...",
-                    variant: "default",
-                    duration: 3000,
-                });
-
-                setTimeout(() => {
-                    router.push("/login");
-                }, 2000);
-                return;
-            }
-
-            // Show error for other issues
             toast({
                 title: "Order Processing Error",
                 description: error?.message || "Failed to process order. Please try again.",
@@ -290,7 +283,13 @@ export default function CheckoutPage() {
                             We've created your order and sent a Stripe invoice to <strong>{email}</strong>.
                             Please check your email and complete the payment.
                         </p>
-                        <p className="text-sm text-slate-500">Redirecting to dashboard...</p>
+                        {createAccount ? (
+                            <p className="text-sm text-slate-500">Redirecting to dashboard...</p>
+                        ) : (
+                            <p className="text-sm text-slate-500">
+                                Want to track your order? <Link href="/login" className="text-blue-600 hover:underline">Create an account</Link>
+                            </p>
+                        )}
                     </CardContent>
                 </Card>
             </div>
@@ -301,7 +300,7 @@ export default function CheckoutPage() {
         <>
             <SEO
                 title="Checkout - ecomifyUSA"
-                description="Complete your LLC formation order and create your account"
+                description="Complete your LLC formation order"
             />
 
             <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
@@ -327,7 +326,7 @@ export default function CheckoutPage() {
                             <Card>
                                 <CardHeader>
                                     <CardTitle>Complete Your Order</CardTitle>
-                                    <CardDescription>Create your account and we'll send a Stripe invoice to your email</CardDescription>
+                                    <CardDescription>Fill in your details and we'll send a Stripe invoice to your email</CardDescription>
                                 </CardHeader>
                                 <CardContent>
                                     <form onSubmit={handleSubmitOrder} className="space-y-6">
@@ -373,35 +372,15 @@ export default function CheckoutPage() {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <Label htmlFor="password">Create Password *</Label>
+                                                    <Label htmlFor="businessName">Business Name *</Label>
                                                     <Input
-                                                        id="password"
-                                                        type="password"
-                                                        value={password}
-                                                        onChange={(e) => setPassword(e.target.value)}
-                                                        placeholder="Min. 6 characters"
-                                                        minLength={6}
+                                                        id="businessName"
+                                                        value={businessName}
+                                                        onChange={(e) => setBusinessName(e.target.value)}
+                                                        placeholder="My Company LLC"
                                                         required
                                                     />
                                                 </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Business Information */}
-                                        <div className="space-y-4">
-                                            <h3 className="font-semibold text-slate-900 flex items-center gap-2">
-                                                <Building2 className="w-5 h-5 text-blue-600" />
-                                                Business Information
-                                            </h3>
-                                            <div>
-                                                <Label htmlFor="businessName">Business Name *</Label>
-                                                <Input
-                                                    id="businessName"
-                                                    value={businessName}
-                                                    onChange={(e) => setBusinessName(e.target.value)}
-                                                    placeholder="My Company LLC"
-                                                    required
-                                                />
                                             </div>
                                         </div>
 
@@ -456,6 +435,46 @@ export default function CheckoutPage() {
                                             </div>
                                         </div>
 
+                                        {/* Account Creation Option */}
+                                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 space-y-4">
+                                            <div className="flex items-start gap-3">
+                                                <input
+                                                    type="checkbox"
+                                                    id="createAccount"
+                                                    checked={createAccount}
+                                                    onChange={(e) => setCreateAccount(e.target.checked)}
+                                                    className="mt-1 h-4 w-4 text-blue-600 border-blue-300 rounded focus:ring-blue-500"
+                                                />
+                                                <div className="flex-1">
+                                                    <Label htmlFor="createAccount" className="font-semibold text-slate-900 cursor-pointer">
+                                                        Create an account to track your order
+                                                    </Label>
+                                                    <p className="text-sm text-slate-600 mt-1">
+                                                        Optional: Create a password to access your dashboard and track order progress. 
+                                                        You can still complete this order without an account.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            
+                                            {createAccount && (
+                                                <div className="ml-7">
+                                                    <Label htmlFor="password">Create Password</Label>
+                                                    <Input
+                                                        id="password"
+                                                        type="password"
+                                                        value={password}
+                                                        onChange={(e) => setPassword(e.target.value)}
+                                                        placeholder="Min. 6 characters"
+                                                        minLength={6}
+                                                        required={createAccount}
+                                                    />
+                                                    <p className="text-xs text-slate-500 mt-1">
+                                                        Required when creating an account
+                                                    </p>
+                                                </div>
+                                            )}
+                                        </div>
+
                                         <Button
                                             type="submit"
                                             size="lg"
@@ -465,15 +484,15 @@ export default function CheckoutPage() {
                                             {processing ? (
                                                 <>
                                                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                                                    Creating Account & Sending Invoice...
+                                                    Processing Order...
                                                 </>
                                             ) : (
-                                                "Create Account & Send Invoice"
+                                                createAccount ? "Create Account & Place Order" : "Place Order as Guest"
                                             )}
                                         </Button>
 
                                         <p className="text-xs text-center text-slate-500">
-                                            By proceeding, you agree to create an account and receive a Stripe invoice via email
+                                            By proceeding, you agree to receive a Stripe invoice via email
                                         </p>
                                     </form>
                                 </CardContent>
@@ -588,7 +607,7 @@ export default function CheckoutPage() {
                                         <div className="text-sm text-slate-700">
                                             <p className="font-semibold mb-1">How It Works</p>
                                             <ol className="space-y-1 text-xs">
-                                                <li>1. Create your account</li>
+                                                <li>1. Fill in your details</li>
                                                 <li>2. Receive Stripe invoice via email</li>
                                                 <li>3. Pay securely through Stripe</li>
                                                 <li>4. We process your LLC formation</li>
