@@ -108,25 +108,41 @@ export default function CheckoutPage() {
                     },
                 });
 
-                if (authError) {
-                    console.error("Supabase Signup Error:", authError);
+               if (authError) {
+    console.error("Supabase Signup Error:", authError);
 
-                    if (authError.message?.includes("already registered") || authError.message?.includes("already exists")) {
-                        toast({
-                            title: "Account Already Exists",
-                            description: "An account with this email already exists. Please use the correct password or try resetting your password.",
-                            variant: "destructive",
-                        });
-                    } else {
-                        toast({
-                            title: "Account Creation Failed",
-                            description: authError.message || "Unable to create account. Please try again.",
-                            variant: "destructive",
-                        });
-                    }
-                    setProcessing(false);
-                    return;
-                }
+    // Check if user already registered
+    if (authError.message?.includes("already registered") || authError.message?.includes("already exists") || authError.status === 422) {
+        toast({
+            title: "🎉 Welcome Back!",
+            description: "You're already registered with us! Please login instead.",
+            variant: "default",
+            duration: 5000,
+        });
+        
+        // Optional: Auto-redirect to login page after 3 seconds
+        setTimeout(() => {
+            router.push("/login");
+        }, 3000);
+        
+    } else if (authError.message?.includes("Invalid login credentials") || authError.status === 400) {
+        toast({
+            title: "⚠️ Login Required",
+            description: "This email is already registered. Please login with your password.",
+            variant: "default",
+            duration: 5000,
+        });
+    } else {
+        toast({
+            title: "❌ Account Creation Failed",
+            description: authError.message || "Unable to create account. Please try again.",
+            variant: "destructive",
+            duration: 5000,
+        });
+    }
+    setProcessing(false);
+    return;
+}
 
                 if (!authData.user) {
                     toast({
