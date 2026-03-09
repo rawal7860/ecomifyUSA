@@ -1,7 +1,7 @@
 // components/Logo.tsx
 import { ShoppingCart, Shield } from "lucide-react";
 
-export default function Logo({ className = "h-8 w-8" }) {
+export default function Logo({ className = "h-7 w-7" }) {
     return (
         <div className="flex items-center gap-2">
             {/* Icon */}
