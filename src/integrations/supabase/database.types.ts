@@ -21,6 +21,9 @@ export type Database = {
           amount: number
           business_name: string
           created_at: string | null
+          customer_email: string | null
+          customer_name: string | null
+          customer_phone: string | null
           entity_type: string | null
           formation_fee: number | null
           id: string
@@ -35,13 +38,16 @@ export type Database = {
           status: string
           stripe_invoice_id: string | null
           updated_at: string | null
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           addons?: Json | null
           amount: number
           business_name: string
           created_at?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
           entity_type?: string | null
           formation_fee?: number | null
           id?: string
@@ -56,13 +62,16 @@ export type Database = {
           status?: string
           stripe_invoice_id?: string | null
           updated_at?: string | null
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           addons?: Json | null
           amount?: number
           business_name?: string
           created_at?: string | null
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
           entity_type?: string | null
           formation_fee?: number | null
           id?: string
@@ -77,7 +86,7 @@ export type Database = {
           status?: string
           stripe_invoice_id?: string | null
           updated_at?: string | null
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -99,6 +108,7 @@ export type Database = {
           email: string | null
           full_name: string | null
           id: string
+          is_guest: boolean | null
           phone: string | null
           state: string | null
           updated_at: string | null
@@ -113,6 +123,7 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id: string
+          is_guest?: boolean | null
           phone?: string | null
           state?: string | null
           updated_at?: string | null
@@ -127,10 +138,38 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
+          is_guest?: boolean | null
           phone?: string | null
           state?: string | null
           updated_at?: string | null
           zip_code?: string | null
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          price: number
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          price: number
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          price?: number
         }
         Relationships: []
       }

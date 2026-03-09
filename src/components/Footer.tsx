@@ -11,14 +11,14 @@ export default function Footer() {
                     {/* Column 1: Company Info */}
                     <div className="lg:col-span-2">
                         <div className="mb-4">
-                            <Logo className="h-8 w-8" />
+                            <Logo />
                         </div>
                         <p className="text-sm leading-relaxed mb-6 max-w-sm">
                             Leading US & UK business registration agency providing compliance
                             solutions for freelancers and entrepreneurs worldwide.
                         </p>
                         <div className="flex gap-3">
-                            <a href="mailto:support@salestaxus.com" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <a href="mailto:support@ecomifyusa.com" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
                                 <Mail className="w-5 h-5" />
                             </a>
                             <a href="https://wa.me/13072180376" target="_blank" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
@@ -61,7 +61,7 @@ export default function Footer() {
                         <ul className="space-y-4 text-sm">
                             <li className="flex items-start gap-3">
                                 <Mail className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
-                                <a href="mailto:support@salestaxus.com" className="hover:text-white transition-colors">support@salestaxus.com</a>
+                                <a href="mailto:support@ecomifyusa.com" className="hover:text-white transition-colors">support@ecomifyusa.com</a>
                             </li>
                             <li className="flex items-start gap-3">
                                 <Phone className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
@@ -79,7 +79,7 @@ export default function Footer() {
                 {/* Bottom Bar */}
                 <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="text-sm text-slate-500">
-                        © {new Date().getFullYear()} Salestaxus LLC. All rights reserved.
+                        © {new Date().getFullYear()} ecomifyUSA. All rights reserved.
                     </div>
                     <div className="flex gap-6 text-sm flex-wrap justify-center">
                         <Link href="/privacy-policy" className="text-slate-500 hover:text-white transition-colors">Privacy Policy</Link>
