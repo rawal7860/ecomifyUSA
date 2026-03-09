@@ -7,7 +7,7 @@ export default function Logo({ className = "h-7 w-7" }) {
             {/* Icon */}
             <div className="relative">
                 <Shield className={`${className} text-blue-600`} />
-                <ShoppingCart className="w-4 h-4 text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+                <ShoppingCart className="w-4 h-4 text-blue-800 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
             </div>
             {/* Text */}
             <div className="flex font-bold text-xl tracking-tight">
