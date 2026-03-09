@@ -34,7 +34,7 @@ export default function LoginPage() {
       await authService.signIn(email, password);
       router.push("/dashboard");
     } catch (err: any) {
-      setError(err.message || "Failed to sign in");
+      setError(err.message || "Invalid login credentials");
     } finally {
       setLoading(false);
     }
@@ -42,9 +42,9 @@ export default function LoginPage() {
 
   return (
     <>
-      <SEO 
-        title="Sign In - Salestaxus LLC"
-        description="Sign in to your Salestaxus LLC account to manage your business formation orders and account details."
+      <SEO
+        title="Login - ecomifyUSA"
+        description="Access your ecomifyUSA dashboard to manage your LLC formation and tax compliance services."
       />
       
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-4">

@@ -99,11 +99,11 @@ export default function CheckoutPage() {
           // Create new account
           const authData = await authService.signUp(
             formData.email,
-            formData.password,
+            formData.password!,
             formData.fullName
           );
 
-          userId = authData?.user?.id || null;
+          userId = authData?.data?.user?.id || null;
 
           // Update profile with additional info
           if (userId) {

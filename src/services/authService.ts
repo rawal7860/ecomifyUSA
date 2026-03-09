@@ -57,16 +57,40 @@ export const authService = {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/confirm-email`,
-        data: { full_name: fullName }
-      }
+        data: {
+          full_name: fullName,
+        },
+        emailRedirectTo: `${getURL()}confirm-email`,
+      },
     });
 
     if (error) {
-      console.error("Sign up error:", error);
+      // Check if it's a "User already registered" error
+      if (error.message.includes("already registered") || error.status === 422) {
+        return { 
+          data: null, 
+          error: { 
+            message: "USER_ALREADY_EXISTS",
+            originalError: error 
+          } 
+        };
+      }
       throw error;
     }
-    return data;
+
+    // Create profile entry
+    if (data.user) {
+      const { error: profileError } = await supabase.from("profiles").insert({
+        id: data.user.id,
+        full_name: fullName,
+      });
+
+      if (profileError) {
+        console.error("Error creating profile:", profileError);
+      }
+    }
+
+    return { data, error: null };
   },
 
   // Sign in with email and password

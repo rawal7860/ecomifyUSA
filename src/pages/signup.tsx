@@ -10,7 +10,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { authService } from "@/services/authService";
 import { CheckCircle2, Building2, Star } from "lucide-react";
 
-export default function SignUpPage() {
+export default function SignupPage() {
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -20,37 +20,34 @@ export default function SignUpPage() {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
 
-    const handleSignUp = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
-        setSuccess(false);
+        setLoading(true);
 
         if (password !== confirmPassword) {
             setError("Passwords do not match");
+            setLoading(false);
             return;
         }
-
-        if (password.length < 6) {
-            setError("Password must be at least 6 characters");
-            return;
-        }
-
-        setLoading(true);
 
         try {
-            /**
-             * MODIFIED: authService.signUp now handles the options internally
-             * We just pass the required arguments: email, password, fullName
-             */
-            await authService.signUp(email, password, fullName);
+            const result = await authService.signUp(email, password, fullName);
 
-            setSuccess(true);
-            setTimeout(() => {
-                // Redirecting directly to login without the "Check email" message
-                router.push("/login?message=Account created successfully! You can now sign in.");
-            }, 2000);
+            // Check for "User already registered" error
+            if (result.error && result.error.message === "USER_ALREADY_EXISTS") {
+                setError("This email is already registered. Redirecting to login...");
+                setTimeout(() => {
+                    router.push("/login");
+                }, 2000);
+                return;
+            }
+
+            // Success - redirect to login
+            router.push("/login?message=Check your email to confirm your account");
         } catch (err: any) {
-            setError(err.message || "Failed to create account");
+            console.error("Signup error:", err);
+            setError(err.message || "Failed to create account. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -59,8 +56,8 @@ export default function SignUpPage() {
     return (
         <>
             <SEO
-                title="Sign Up - Salestaxus LLC"
-                description="Create your account and join 300+ entrepreneurs who trust Salestaxus LLC for their business formation needs."
+                title="Sign Up - ecomifyUSA"
+                description="Create your ecomifyUSA account to start your US business formation journey."
             />
 
             <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-4">
@@ -70,7 +67,7 @@ export default function SignUpPage() {
                         <div className="space-y-4">
                             <div className="flex items-center gap-3">
                                 <Building2 className="w-12 h-12 text-blue-600" />
-                                <h1 className="text-4xl font-bold text-slate-900">Salestaxus LLC</h1>
+                                <h1 className="text-4xl font-bold text-slate-900">ecomifyUSA</h1>
                             </div>
                             <p className="text-xl text-slate-600">Your trusted partner in business formation</p>
                         </div>
@@ -117,7 +114,7 @@ export default function SignUpPage() {
                             </CardDescription>
                         </CardHeader>
 
-                        <form onSubmit={handleSignUp}>
+                        <form onSubmit={handleSubmit}>
                             <CardContent className="space-y-4">
                                 {error && (
                                     <Alert variant="destructive">
