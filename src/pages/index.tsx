@@ -178,18 +178,14 @@ export default function HomePage() {
                                 You handle the growth. <span className="font-semibold text-slate-900">No hidden fees. Ever.</span>
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                <Button
-                                    size="lg"
-                                    className="bg-slate-900 text-white hover:bg-slate-800 px-8 py-7 text-lg rounded-xl shadow-xl shadow-slate-900/20 transition-all hover:scale-105"
-                                    onClick={() => {
-                                        const mapsSection = document.getElementById("maps-section");
-                                        if (mapsSection) {
-                                            mapsSection.scrollIntoView({ behavior: "smooth", block: "start" });
-                                        }
-                                    }}
-                                >
-                                    Start Your Formation
-                                </Button>
+                                <Link href="#maps-section">
+                                    <Button
+                                        size="lg"
+                                        className="bg-slate-900 text-white hover:bg-slate-800 px-8 py-7 text-lg rounded-xl shadow-xl shadow-slate-900/20 transition-all hover:scale-105"
+                                    >
+                                        Start Your Formation
+                                    </Button>
+                                </Link>
                                 <Link href="/services">
                                     <Button size="lg" variant="outline" className="px-8 py-7 text-lg rounded-xl border-slate-200 hover:bg-white bg-white/50 backdrop-blur-sm">
                                         View Services
