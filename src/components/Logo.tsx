@@ -1,15 +1,11 @@
-import { Globe, Star } from "lucide-react";
+import { Building2 } from "lucide-react";
 
 export default function Logo({ className = "h-6 w-6" }) {
     return (
         <div className="flex items-center gap-2">
             {/* Icon */}
-            <div className="relative">
-                <Globe className={`${className} text-blue-600`} />
-                <div className="absolute top-0 right-0 flex gap-0.5">
-                    <Star className="w-2.5 h-2.5 text-red-600 fill-red-600" />
-                    <Star className="w-2.5 h-2.5 text-red-600 fill-red-600" />
-                </div>
+            <div className="bg-gradient-to-br from-blue-600 to-blue-800 p-1.5 rounded-lg">
+                <Building2 className={`${className} text-white`} />
             </div>
             {/* Text */}
             <div className="flex font-bold text-xl tracking-tight">
