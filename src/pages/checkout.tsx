@@ -103,9 +103,7 @@ export default function CheckoutPage() {
             formData.fullName
           );
 
-          if (authData.error) throw authData.error;
-          
-          userId = authData.user?.id || null;
+          userId = authData?.user?.id || null;
 
           // Update profile with additional info
           if (userId) {
