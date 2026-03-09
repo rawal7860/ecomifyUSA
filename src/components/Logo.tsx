@@ -1,19 +1,16 @@
-// components/Logo.tsx
-import { ShoppingCart, Shield } from "lucide-react";
+import Link from "next/link";
+import { Building2 } from "lucide-react";
 
-export default function Logo({ className = "h-7 w-7" }) {
-    return (
-        <div className="flex items-center gap-2">
-            {/* Icon */}
-            <div className="relative">
-                <Shield className={`${className} text-blue-600`} />
-                <ShoppingCart className="w-4 h-4 text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-            </div>
-            {/* Text */}
-            <div className="flex font-bold text-xl tracking-tight">
-                <span className="text-blue-600">ecomify</span>
-                <span className="text-slate-900">USA</span>
-            </div>
-        </div>
-    );
+export default function Logo() {
+  return (
+    <Link href="/" className="flex items-center gap-2 group">
+      <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+        <Building2 className="w-6 h-6 text-white" />
+      </div>
+      <div className="flex flex-col">
+        <span className="text-xl font-bold text-slate-900 leading-none">ecomifyUSA</span>
+        <span className="text-[10px] text-slate-500 leading-none">Business Formation</span>
+      </div>
+    </Link>
+  );
 }

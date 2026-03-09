@@ -1,225 +1,211 @@
-import React from "react";
+import { SEO } from "@/components/SEO";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { Building2, ArrowLeft, Truck, Mail, Calendar, Shield, Clock, FileText, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { SEO } from "@/components/SEO";
-import Logo from "@/components/Logo";
+import { ArrowLeft, Clock, Mail, FileText } from "lucide-react";
 import Footer from "@/components/Footer";
 
 export default function DeliveryPolicyPage() {
-    const router = useRouter();
+  return (
+    <>
+      <SEO
+        title="Delivery Policy - ecomifyUSA"
+        description="Learn about our document delivery process and timelines"
+      />
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+        <div className="container mx-auto px-4 py-12">
+          <div className="max-w-4xl mx-auto">
+            <Link href="/">
+              <Button variant="ghost" className="mb-6">
+                <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home
+              </Button>
+            </Link>
 
-    return (
-        <>
-            <SEO title="Delivery Policy - ecomifyUSA" description="Document delivery methods, processing times, and shipping information." />
-            <div className="min-h-screen bg-slate-50">
-                {/* Header */}
-                <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
-                    <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-                        <Link href="/" className="hover:opacity-80 transition-opacity">
-                            <Logo />
-                        </Link>
-                        <Button variant="ghost" onClick={() => router.push("/")} className="gap-2">
-                            <ArrowLeft className="w-4 h-4" /> Back to Home
-                        </Button>
-                    </div>
-                </header>
-
-                <div className="max-w-4xl mx-auto px-4 py-16">
-                    <Card className="border-0 shadow-lg">
-                        <CardContent className="p-8 md:p-12">
-                            <div className="flex items-center gap-3 mb-6">
-                                <Truck className="w-10 h-10 text-blue-600" />
-                                <h1 className="text-4xl font-bold text-slate-900">Delivery Policy</h1>
-                            </div>
-
-                            <div className="flex items-center gap-6 text-sm text-slate-600 mb-8 pb-8 border-b">
-                                <div className="flex items-center gap-2">
-                                    <Calendar className="w-4 h-4" />
-                                    <span>Last Updated: February 2025</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Mail className="w-4 h-4" />
-                                    <a href="mailto:support@ecomifyusa.com" className="hover:text-blue-600">support@ecomifyusa.com</a>
-                                </div>
-                            </div>
-
-                            <div className="prose prose-slate max-w-none">
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Document Delivery Methods</h2>
-                                <p className="text-slate-600 mb-6">We offer two delivery methods for your documents:</p>
-
-                                <div className="space-y-4 mb-8">
-                                    <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                                        <h4 className="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                                            <FileText className="w-5 h-5 text-blue-600" />
-                                            Digital Delivery (Standard - Free)
-                                        </h4>
-                                        <p className="text-slate-600 text-sm mb-3">All documents delivered via email and available in your online dashboard.</p>
-                                        <ul className="text-slate-600 text-sm space-y-1">
-                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> PDF format (printable)</li>
-                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> Instant access upon completion</li>
-                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> Secure cloud storage</li>
-                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> Available worldwide</li>
-                                        </ul>
-                                    </div>
-
-                                    <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                                        <h4 className="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                                            <Truck className="w-5 h-5 text-green-600" />
-                                            Physical Delivery (Optional - Additional Fee)
-                                        </h4>
-                                        <p className="text-slate-600 text-sm mb-3">Hard copies mailed to your address via courier service.</p>
-                                        <ul className="text-slate-600 text-sm space-y-1">
-                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> Certified copies available</li>
-                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> Company seal (if applicable)</li>
-                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> Tracking number provided</li>
-                                            <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-green-600" /> International shipping available</li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">2. Processing Times</h2>
-                                <p className="text-slate-600 mb-6">Estimated processing times vary by service and government agency:</p>
-
-                                <div className="overflow-x-auto mb-8">
-                                    <table className="w-full text-sm">
-                                        <thead className="bg-slate-100">
-                                            <tr>
-                                                <th className="px-4 py-3 text-left font-semibold text-slate-900">Service</th>
-                                                <th className="px-4 py-3 text-left font-semibold text-slate-900">Estimated Time</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody className="divide-y divide-slate-200">
-                                            <tr>
-                                                <td className="px-4 py-3 text-slate-600">Wyoming LLC Formation</td>
-                                                <td className="px-4 py-3 text-slate-600">1-3 business days</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="px-4 py-3 text-slate-600">Delaware LLC Formation</td>
-                                                <td className="px-4 py-3 text-slate-600">1-5 business days</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="px-4 py-3 text-slate-600">UK Limited Company</td>
-                                                <td className="px-4 py-3 text-slate-600">24-48 hours</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="px-4 py-3 text-slate-600">EIN (Non-US Residents)</td>
-                                                <td className="px-4 py-3 text-slate-600">15-30 business days</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="px-4 py-3 text-slate-600">Sales Tax Permit</td>
-                                                <td className="px-4 py-3 text-slate-600">2-6 weeks</td>
-                                            </tr>
-                                            <tr>
-                                                <td className="px-4 py-3 text-slate-600">Delaware Franchise Tax</td>
-                                                <td className="px-4 py-3 text-slate-600">3-5 business days</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div className="bg-amber-50 border-l-4 border-amber-600 p-6 mb-8">
-                                    <p className="text-amber-800">
-                                        <strong>Important:</strong> These are estimates based on current government processing times. Delays by IRS, Secretary of State, or tax authorities are beyond our control and do not qualify for refunds.
-                                    </p>
-                                </div>
-
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">3. Digital Delivery Details</h2>
-                                <p className="text-slate-600 mb-6">For digital delivery:</p>
-                                <ul className="list-disc list-inside text-slate-600 mb-6 space-y-2">
-                                    <li>Documents sent to email address on file</li>
-                                    <li>Also available in your online dashboard</li>
-                                    <li>PDF format (compatible with all devices)</li>
-                                    <li>Digitally signed/sealed where applicable</li>
-                                    <li>Download and print as needed</li>
-                                </ul>
-
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">4. Physical Shipping Details</h2>
-                                <p className="text-slate-600 mb-6">For physical delivery:</p>
-
-                                <div className="grid md:grid-cols-2 gap-4 mb-8">
-                                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                        <h4 className="font-bold text-slate-900 mb-2">📦 US Shipping</h4>
-                                        <ul className="text-slate-600 text-sm space-y-1">
-                                            <li>USPS Priority Mail</li>
-                                            <li>3-5 business days</li>
-                                            <li>Tracking included</li>
-                                            <li>Signature required (optional)</li>
-                                        </ul>
-                                    </div>
-                                    <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                                        <h4 className="font-bold text-slate-900 mb-2">🌍 International Shipping</h4>
-                                        <ul className="text-slate-600 text-sm space-y-1">
-                                            <li>DHL/FedEx Express</li>
-                                            <li>5-10 business days</li>
-                                            <li>Tracking included</li>
-                                            <li>Customs fees may apply</li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">5. Shipping Costs</h2>
-                                <p className="text-slate-600 mb-6">Physical delivery fees:</p>
-                                <ul className="list-disc list-inside text-slate-600 mb-6 space-y-2">
-                                    <li><strong>Domestic (US):</strong> $25-50 depending on service</li>
-                                    <li><strong>International:</strong> $75-150 depending on destination</li>
-                                    <li><strong>Express Shipping:</strong> Available for additional fee</li>
-                                    <li><strong>Customs/Duties:</strong> Client's responsibility for international orders</li>
-                                </ul>
-
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">6. Delivery Address</h2>
-                                <p className="text-slate-600 mb-6">Documents will be sent to the address provided during checkout. To change delivery address:</p>
-                                <ul className="list-disc list-inside text-slate-600 mb-6 space-y-2">
-                                    <li>Contact us before documents are shipped</li>
-                                    <li>Address changes after shipping may incur additional fees</li>
-                                    <li>We are not responsible for undeliverable addresses</li>
-                                </ul>
-
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">7. Lost or Damaged Documents</h2>
-                                <p className="text-slate-600 mb-6">If documents are lost or damaged in transit:</p>
-                                <ul className="list-disc list-inside text-slate-600 mb-6 space-y-2">
-                                    <li>Contact us within 30 days of expected delivery</li>
-                                    <li>We will request tracking investigation</li>
-                                    <li>Replacement documents sent at no charge</li>
-                                    <li>Government re-filing fees may apply for certified copies</li>
-                                </ul>
-
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">8. Tracking Your Order</h2>
-                                <p className="text-slate-600 mb-6">You can track your order status:</p>
-                                <ul className="list-disc list-inside text-slate-600 mb-6 space-y-2">
-                                    <li>Check your online dashboard</li>
-                                    <li>Email notifications at each stage</li>
-                                    <li>Tracking number provided for physical shipments</li>
-                                    <li>Contact support for status updates</li>
-                                </ul>
-
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">9. International Clients</h2>
-                                <p className="text-slate-600 mb-6">For international clients:</p>
-                                <ul className="list-disc list-inside text-slate-600 mb-6 space-y-2">
-                                    <li>Digital delivery recommended (faster, no customs)</li>
-                                    <li>Physical shipping available to most countries</li>
-                                    <li>Customs/duties are client's responsibility</li>
-                                    <li>Some countries may have import restrictions</li>
-                                    <li>Tracking provided for all international shipments</li>
-                                </ul>
-
-                                <h2 className="text-2xl font-bold text-slate-900 mb-4">10. Contact Us</h2>
-                                <p className="text-slate-600 mb-6">For delivery questions or issues:</p>
-                                <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                                    <p className="text-slate-700 mb-2"><strong>Email:</strong> support@ecomifyusa.com</p>
-                                    <p className="text-slate-700 mb-2"><strong>WhatsApp:</strong> +1 (307) 218-0376</p>
-                                    <p className="text-slate-700"><strong>Response Time:</strong> 24-48 hours</p>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-
-                {/* ✅ ADDED FOOTER - This was missing! */}
-                <Footer />
+            <div className="text-center mb-12">
+              <h1 className="text-4xl font-bold text-slate-900 mb-4">Delivery Policy</h1>
+              <p className="text-slate-600 text-lg">Fast, reliable delivery of your business documents</p>
             </div>
-        </>
-    );
+
+            <div className="grid md:grid-cols-3 gap-6 mb-12">
+              <Card>
+                <CardContent className="pt-6">
+                  <Clock className="w-8 h-8 text-blue-600 mb-3" />
+                  <h3 className="font-bold text-lg mb-2">Fast Processing</h3>
+                  <p className="text-sm text-slate-600">Most orders processed within 2-5 business days</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="pt-6">
+                  <Mail className="w-8 h-8 text-green-600 mb-3" />
+                  <h3 className="font-bold text-lg mb-2">Email Delivery</h3>
+                  <p className="text-sm text-slate-600">All documents sent securely via email</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="pt-6">
+                  <FileText className="w-8 h-8 text-indigo-600 mb-3" />
+                  <h3 className="font-bold text-lg mb-2">Digital Format</h3>
+                  <p className="text-sm text-slate-600">High-quality PDF documents ready to use</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 space-y-8">
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Delivery Method</h2>
+                <div className="space-y-3 text-slate-600">
+                  <p>All documents are delivered electronically via email:</p>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li><strong>Email Delivery:</strong> PDF documents sent to your registered email address</li>
+                    <li><strong>Dashboard Access:</strong> Account holders can download documents anytime from their dashboard</li>
+                    <li><strong>Secure Storage:</strong> Documents stored securely in your account for 7 years</li>
+                  </ul>
+                  <p className="font-medium">We do NOT send physical documents by mail unless specifically requested (additional fees apply).</p>
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 mb-4">2. Processing Timeline</h2>
+                <div className="space-y-3 text-slate-600">
+                  <p>Processing times vary by service type:</p>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
+                    <div>
+                      <p className="font-semibold text-blue-900">LLC Formation</p>
+                      <p className="text-sm">2-5 business days (standard) | 1-2 business days (expedited)</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-blue-900">EIN Application</p>
+                      <p className="text-sm">1-3 business days</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-blue-900">Sales Tax Registration</p>
+                      <p className="text-sm">3-7 business days</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-blue-900">Delaware Franchise Tax</p>
+                      <p className="text-sm">1-2 business days</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-blue-900">Tax Exemption Certificates</p>
+                      <p className="text-sm">2-4 business days</p>
+                    </div>
+                  </div>
+                  <p className="font-medium">Note: These are estimated timelines. Actual processing times may vary based on government agency workload.</p>
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 mb-4">3. What You'll Receive</h2>
+                <div className="space-y-3 text-slate-600">
+                  <p>Your delivery package includes:</p>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li><strong>Formation Documents:</strong> Articles of Organization, Certificate of Formation</li>
+                    <li><strong>EIN Confirmation Letter:</strong> Official IRS letter with your tax ID number</li>
+                    <li><strong>Operating Agreement:</strong> Customized for your LLC (if included in your package)</li>
+                    <li><strong>Compliance Documents:</strong> Sales tax permits, tax exemption certificates (as applicable)</li>
+                    <li><strong>Instructions:</strong> Step-by-step guide for next steps</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 mb-4">4. Order Tracking</h2>
+                <div className="space-y-3 text-slate-600">
+                  <p>Stay updated on your order status:</p>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li><strong>Email Updates:</strong> Receive notifications at each stage of processing</li>
+                    <li><strong>WhatsApp Updates:</strong> Optional real-time updates via WhatsApp</li>
+                    <li><strong>Dashboard Tracking:</strong> Account holders can view order status anytime</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 mb-4">5. Expedited Processing</h2>
+                <div className="space-y-3 text-slate-600">
+                  <p>Need your documents faster?</p>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li><strong>Rush Processing:</strong> 1-2 business day delivery (additional $99)</li>
+                    <li><strong>Same-Day Processing:</strong> Available for select services (additional $199)</li>
+                    <li><strong>Priority Support:</strong> Dedicated account manager for expedited orders</li>
+                  </ul>
+                  <p>Expedited processing is subject to availability and may not be available in all states.</p>
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 mb-4">6. Delivery Delays</h2>
+                <div className="space-y-3 text-slate-600">
+                  <p>Delays may occur due to:</p>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li>Government agency backlogs or holidays</li>
+                    <li>Incomplete or inaccurate information provided</li>
+                    <li>Additional documentation requests from agencies</li>
+                    <li>Payment processing delays</li>
+                  </ul>
+                  <p className="font-medium">We will notify you immediately if any delays occur and provide updated timelines.</p>
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 mb-4">7. Missing Documents</h2>
+                <div className="space-y-3 text-slate-600">
+                  <p>If you haven't received your documents:</p>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li>Check your spam/junk folder</li>
+                    <li>Verify your email address is correct in your account settings</li>
+                    <li>Contact us at <a href="mailto:support@ecomifyusa.com" className="text-blue-600 hover:underline">support@ecomifyusa.com</a></li>
+                    <li>We'll resend documents within 24 hours</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 mb-4">8. Physical Documents</h2>
+                <div className="space-y-3 text-slate-600">
+                  <p>Need physical copies?</p>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li><strong>Certified Copies:</strong> Available upon request (additional $49 + shipping)</li>
+                    <li><strong>Shipping Options:</strong> USPS Priority Mail, FedEx, UPS</li>
+                    <li><strong>International Shipping:</strong> Available to most countries</li>
+                    <li><strong>Delivery Time:</strong> 3-7 business days (domestic), 7-14 days (international)</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 mb-4">9. Document Security</h2>
+                <div className="space-y-3 text-slate-600">
+                  <p>Your documents are protected:</p>
+                  <ul className="list-disc pl-6 space-y-2">
+                    <li>SSL/TLS encryption for email transmission</li>
+                    <li>Password-protected PDF files (optional)</li>
+                    <li>Secure cloud storage with Supabase</li>
+                    <li>Access controls and authentication</li>
+                  </ul>
+                </div>
+              </section>
+
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 mb-4">10. Contact Us</h2>
+                <div className="space-y-3 text-slate-600">
+                  <p>For delivery-related questions:</p>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <p className="font-medium text-blue-900 mb-2">Contact Information</p>
+                    <p>Email: <a href="mailto:support@ecomifyusa.com" className="text-blue-600 hover:underline">support@ecomifyusa.com</a></p>
+                    <p>WhatsApp: <a href="https://wa.me/13072180376" target="_blank" className="text-blue-600 hover:underline">+1 (307) 218-0376</a></p>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div className="mt-8 text-center text-sm text-slate-500">
+              <p>Last Updated: {new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</p>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    </>
+  );
 }
