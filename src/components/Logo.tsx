@@ -1,14 +1,13 @@
-import Link from "next/link";
-import { Building2 } from "lucide-react";
+import { Globe } from "lucide-react";
 
-export default function Logo() {
-  return (
-    <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-      <Building2 className="w-8 h-8 text-blue-600" />
-      <div className="flex flex-col">
-        <span className="text-xl font-bold text-slate-900 leading-tight">Salestaxus LLC</span>
-        <span className="text-[10px] text-slate-500 leading-none">Business Formation</span>
-      </div>
-    </Link>
-  );
+export default function Logo({ className = "h-6 w-6" }) {
+    return (
+        <div className="flex items-center gap-2">
+            <Globe className={`${className} text-blue-600`} />
+            <div className="flex font-bold text-xl tracking-tight">
+                <span className="text-blue-600">ecomify</span>
+                <span className="text-slate-900">USA</span>
+            </div>
+        </div>
+    );
 }
