@@ -16,26 +16,108 @@ import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
 import { SEO } from "@/components/SEO";
 
-// --- COMPONENT: Trust Bar ---
+// --- COMPONENT: Trust & Social Proof Section ---
 function TrustBar() {
+    const reviews = [
+        {
+            initials: "AK", name: "Ahmed K.", flag: "🇵🇰",
+            location: "Amazon FBA seller, Pakistan",
+            text: "Got my Wyoming LLC + EIN in 3 days. Best service for non-US sellers. Highly recommend!",
+            avatarBg: "bg-blue-100", avatarText: "text-blue-700"
+        },
+        {
+            initials: "SM", name: "Sara M.", flag: "🇦🇪",
+            location: "E-commerce founder, UAE",
+            text: "Handled my sales tax compliance across 12 states. Zero stress, 100% accurate filing.",
+            avatarBg: "bg-green-100", avatarText: "text-green-700"
+        },
+        {
+            initials: "RJ", name: "Raj J.", flag: "🇮🇳",
+            location: "Walmart seller, India",
+            text: "Got tax exemption in 44 states with just my ITIN. Saved thousands in tax. Game changer!",
+            avatarBg: "bg-yellow-100", avatarText: "text-yellow-700"
+        },
+        {
+            initials: "ML", name: "Ming L.", flag: "🇨🇳",
+            location: "Amazon seller, China",
+            text: "Delaware LLC formed remotely, no US travel needed. Professional and very responsive team.",
+            avatarBg: "bg-purple-100", avatarText: "text-purple-700"
+        },
+        {
+            initials: "OA", name: "Omar A.", flag: "🇸🇦",
+            location: "FBA seller, Saudi Arabia",
+            text: "Entire US company setup done online. Registered agent, EIN, everything. Truly professional.",
+            avatarBg: "bg-red-100", avatarText: "text-red-700"
+        },
+    ];
+
+    const platforms = [
+        { initial: "f", name: "Fiverr", rating: "Level 2 Seller", bg: "bg-green-500" },
+        { initial: "T", name: "Trustpilot", rating: "Excellent", bg: "bg-emerald-500" },
+        { initial: "G", name: "Google", rating: "5.0 rating", bg: "bg-blue-500" },
+    ];
+
     return (
-        <div className="border-y border-slate-200 bg-white py-10 relative z-20">
+        <div className="border-y border-slate-200 bg-slate-50 py-10 relative z-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center">
+
+                {/* Stats Row */}
+                <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 mb-8">
                     {[
-                        { icon: Star, label: "5.0 Rating", sub: "500+ Reviews", color: "text-green-600" },
-                        { icon: Award, label: "Top Rated", sub: "Level 2 Seller", color: "text-blue-600" },
-                        { icon: Clock, label: "24h Delivery", sub: "Fast Turnaround", color: "text-indigo-600" },
-                        { icon: Shield, label: "100% Safe", sub: "Money Back", color: "text-slate-600" },
-                    ].map((item, i) => (
-                        <div key={i} className="flex flex-col items-center gap-2 group cursor-default">
-                            <div className={`flex items-center gap-2 font-bold text-xl ${item.color} group-hover:scale-110 transition-transform`}>
-                                <item.icon className="w-6 h-6 fill-current" /> {item.label}
+                        { num: "5.0", label: "Average rating", star: true },
+                        { num: "500+", label: "Happy clients" },
+                        { num: "50+", label: "Countries served" },
+                        { num: "24h", label: "Avg. delivery" },
+                    ].map((s, i) => (
+                        <React.Fragment key={i}>
+                            <div className="flex items-center gap-2">
+                                {s.star && <span className="text-yellow-400 text-lg tracking-wide">★★★★★</span>}
+                                <div>
+                                    <div className="text-xl font-bold text-slate-900">{s.num}</div>
+                                    <div className="text-xs text-slate-500">{s.label}</div>
+                                </div>
                             </div>
-                            <span className="text-sm text-slate-500 font-medium">{item.sub}</span>
+                            {i < 3 && <div className="hidden md:block w-px h-8 bg-slate-200" />}
+                        </React.Fragment>
+                    ))}
+                </div>
+
+                {/* Platform Badges */}
+                <p className="text-center text-xs text-slate-400 uppercase tracking-widest mb-3">Verified on</p>
+                <div className="flex flex-wrap justify-center gap-3 mb-8">
+                    {platforms.map((p, i) => (
+                        <div key={i} className="flex items-center gap-2 border border-slate-200 rounded-lg px-3 py-2 bg-white">
+                            <div className={`w-5 h-5 ${p.bg} rounded text-white text-xs flex items-center justify-center font-bold`}>
+                                {p.initial}
+                            </div>
+                            <div>
+                                <div className="text-xs font-semibold text-slate-800">{p.name}</div>
+                                <div className="text-xs text-yellow-500">★★★★★ <span className="text-slate-400">{p.rating}</span></div>
+                            </div>
                         </div>
                     ))}
                 </div>
+
+                {/* Review Cards */}
+                <p className="text-center text-xs text-slate-400 uppercase tracking-widest mb-3">What clients say</p>
+                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                    {reviews.map((r, i) => (
+                        <div key={i} className="min-w-[220px] max-w-[240px] flex-shrink-0 bg-white border border-slate-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex items-center gap-2 mb-3">
+                                <div className={`w-8 h-8 rounded-full ${r.avatarBg} ${r.avatarText} flex items-center justify-center text-xs font-bold flex-shrink-0`}>
+                                    {r.initials}
+                                </div>
+                                <div>
+                                    <div className="text-xs font-semibold text-slate-800">{r.name} {r.flag}</div>
+                                    <div className="text-xs text-slate-400">{r.location}</div>
+                                </div>
+                            </div>
+                            <div className="text-yellow-400 text-xs mb-2">★★★★★</div>
+                            <p className="text-xs text-slate-500 leading-relaxed">"{r.text}"</p>
+                        </div>
+                    ))}
+                </div>
+
             </div>
         </div>
     );
@@ -47,8 +129,8 @@ function FAQItem({ icon, question, answer }: { icon: string; question: string; a
     return (
         <div
             className={`bg-white rounded-2xl border transition-all duration-300 overflow-hidden ${isOpen
-                    ? "border-blue-300 shadow-lg shadow-blue-100"
-                    : "border-slate-200 hover:border-blue-200 hover:shadow-md"
+                ? "border-blue-300 shadow-lg shadow-blue-100"
+                : "border-slate-200 hover:border-blue-200 hover:shadow-md"
                 }`}
         >
             <button
@@ -144,7 +226,6 @@ export default function HomePage() {
 
                 {/* Hero Section with Globe */}
                 <section className="pt-32 pb-20 lg:pt-48 lg:pb-32 bg-slate-50 relative overflow-hidden">
-                    {/* Globe Background */}
                     <div className="absolute top-0 left-0 w-1/2 h-full z-0 overflow-hidden">
                         <div
                             className="w-full h-full bg-cover bg-center bg-no-repeat opacity-40"
@@ -157,7 +238,6 @@ export default function HomePage() {
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/40 via-blue-400/30 to-transparent mix-blend-overlay"></div>
                     </div>
 
-                    {/* Background Blobs */}
                     <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/3"></div>
                     <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-indigo-100 rounded-full blur-3xl opacity-50 translate-y-1/3 -translate-x-1/4"></div>
 
@@ -251,8 +331,228 @@ export default function HomePage() {
                     </div>
                 </section>
 
-                {/* Trust Bar */}
-                <TrustBar />
+                {/* Trust & Social Proof Section */}
+                <section className="py-16 bg-white">
+                    <div className="max-w-7xl mx-auto px-4">
+                        {/* Stats Bar */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+                            <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-100 hover:shadow-lg transition-all duration-300">
+                                <div className="flex items-center justify-center gap-2 mb-3">
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <svg key={star} className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        </svg>
+                                    ))}
+                                </div>
+                                <p className="text-4xl font-bold text-slate-900 mb-1">5.0</p>
+                                <p className="text-sm text-slate-600">Average rating</p>
+                            </div>
+
+                            <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 hover:shadow-lg transition-all duration-300">
+                                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <p className="text-4xl font-bold text-slate-900 mb-1">500+</p>
+                                <p className="text-sm text-slate-600">Happy clients</p>
+                            </div>
+
+                            <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100 hover:shadow-lg transition-all duration-300">
+                                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <Globe className="w-6 h-6 text-green-600" />
+                                </div>
+                                <p className="text-4xl font-bold text-slate-900 mb-1">50+</p>
+                                <p className="text-sm text-slate-600">Countries served</p>
+                            </div>
+
+                            <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-100 hover:shadow-lg transition-all duration-300">
+                                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <Clock className="w-6 h-6 text-purple-600" />
+                                </div>
+                                <p className="text-4xl font-bold text-slate-900 mb-1">24h</p>
+                                <p className="text-sm text-slate-600">Avg. delivery</p>
+                            </div>
+                        </div>
+
+                        {/* Verified On Section */}
+                        <div className="mb-16">
+                            <p className="text-center text-sm font-semibold text-slate-500 tracking-widest uppercase mb-8">Verified On</p>
+                            <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                                {/* Fiverr Badge */}
+                                <div className="bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                                            <span className="text-white font-bold text-xl">F</span>
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="font-bold text-slate-900 text-lg mb-1">Fiverr</p>
+                                            <div className="flex items-center gap-1">
+                                                {[1, 2, 3, 4, 5].map((star) => (
+                                                    <svg key={star} className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                    </svg>
+                                                ))}
+                                                <span className="text-sm text-slate-600 ml-2">Level 2 Seller</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Trustpilot Badge */}
+                                <div className="bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                                            <span className="text-white font-bold text-xl">T</span>
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="font-bold text-slate-900 text-lg mb-1">Trustpilot</p>
+                                            <div className="flex items-center gap-1">
+                                                {[1, 2, 3, 4, 5].map((star) => (
+                                                    <svg key={star} className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                    </svg>
+                                                ))}
+                                                <span className="text-sm text-slate-600 ml-2">Excellent</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Google Badge */}
+                                <div className="bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-2xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                                            <span className="text-white font-bold text-xl">G</span>
+                                        </div>
+                                        <div className="flex-1">
+                                            <p className="font-bold text-slate-900 text-lg mb-1">Google</p>
+                                            <div className="flex items-center gap-1">
+                                                {[1, 2, 3, 4, 5].map((star) => (
+                                                    <svg key={star} className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                    </svg>
+                                                ))}
+                                                <span className="text-sm text-slate-600 ml-2">5.0 rating</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Testimonials Section */}
+                        <div>
+                            <p className="text-center text-sm font-semibold text-slate-500 tracking-widest uppercase mb-12">What Clients Say</p>
+                            <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
+                                {/* Testimonial 1 */}
+                                <div className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-lg">
+                                            AK
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-slate-900">Ahmed K.</p>
+                                            <p className="text-xs text-slate-500">Pakistan</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-1 mb-3">
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <svg key={star} className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                        ))}
+                                    </div>
+                                    <p className="text-slate-600 text-sm leading-relaxed">"Got my Wyoming LLC + EIN in 3 days. Best service for non-US sellers. Highly recommend!"</p>
+                                </div>
+
+                                {/* Testimonial 2 */}
+                                <div className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold text-lg">
+                                            SM
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-slate-900">Sara M.</p>
+                                            <p className="text-xs text-slate-500">UAE</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-1 mb-3">
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <svg key={star} className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                        ))}
+                                    </div>
+                                    <p className="text-slate-600 text-sm leading-relaxed">"Handled my sales tax compliance across 12 states. Zero stress, 100% accurate filing."</p>
+                                </div>
+
+                                {/* Testimonial 3 */}
+                                <div className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 font-bold text-lg">
+                                            RJ
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-slate-900">Raj J.</p>
+                                            <p className="text-xs text-slate-500">India</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-1 mb-3">
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <svg key={star} className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                        ))}
+                                    </div>
+                                    <p className="text-slate-600 text-sm leading-relaxed">"Got tax exemption in 44 states with just my ITIN. Saved thousands in tax. Game changer!"</p>
+                                </div>
+
+                                {/* Testimonial 4 */}
+                                <div className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold text-lg">
+                                            ML
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-slate-900">Ming L.</p>
+                                            <p className="text-xs text-slate-500">China</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-1 mb-3">
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <svg key={star} className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                        ))}
+                                    </div>
+                                    <p className="text-slate-600 text-sm leading-relaxed">"Delaware LLC formed remotely, no US travel needed. Professional and very responsive team."</p>
+                                </div>
+
+                                {/* Testimonial 5 */}
+                                <div className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600 font-bold text-lg">
+                                            OA
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-slate-900">Omar A.</p>
+                                            <p className="text-xs text-slate-500">Saudi Arabia</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-1 mb-3">
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <svg key={star} className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                        ))}
+                                    </div>
+                                    <p className="text-slate-600 text-sm leading-relaxed">"Entire US company setup done online. Registered agent, EIN, everything professional."</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
                 {/* How It Works */}
                 <section className="py-24 bg-white">
@@ -290,36 +590,12 @@ export default function HomePage() {
                         </div>
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {[
-                                {
-                                    title: "US Sales Tax Compliance",
-                                    desc: "Preparation, registration, and filing of monthly, quarterly, or yearly US sales tax returns across multiple states.",
-                                    link: "/services/us-sales-tax-compliance"
-                                },
-                                {
-                                    title: "E-commerce Tax Exemptions",
-                                    desc: "Streamlining the process to secure resale certificates for Amazon, Walmart, and Home Depot.",
-                                    link: "/services/ecommerce-tax-exemptions"
-                                },
-                                {
-                                    title: "LLC Formation & Structuring",
-                                    desc: "End-to-end US LLC formation for non-residents, including EIN acquisition and registered agent setup.",
-                                    link: "/services/llc-formation-structuring"
-                                },
-                                {
-                                    title: "Delaware Franchise Tax",
-                                    desc: "Expert, timely filing of Delaware Franchise Tax and annual reports to maintain good standing.",
-                                    link: "/services/delaware-franchise-tax"
-                                },
-                                {
-                                    title: "Income Tax & Cleanup",
-                                    desc: "Professional income tax preparation for corporations/LLCs and cleaning up prior year bookkeeping.",
-                                    link: "/services/income-tax-cleanup"
-                                },
-                                {
-                                    title: "Global E-commerce Support",
-                                    desc: "Handling HMRC filings and providing tailored document approval support for international sellers.",
-                                    link: "/services/global-ecommerce-support"
-                                }
+                                { title: "US Sales Tax Compliance", desc: "Preparation, registration, and filing of monthly, quarterly, or yearly US sales tax returns across multiple states.", link: "/services/us-sales-tax-compliance" },
+                                { title: "E-commerce Tax Exemptions", desc: "Streamlining the process to secure resale certificates for Amazon, Walmart, and Home Depot.", link: "/services/ecommerce-tax-exemptions" },
+                                { title: "LLC Formation & Structuring", desc: "End-to-end US LLC formation for non-residents, including EIN acquisition and registered agent setup.", link: "/services/llc-formation-structuring" },
+                                { title: "Delaware Franchise Tax", desc: "Expert, timely filing of Delaware Franchise Tax and annual reports to maintain good standing.", link: "/services/delaware-franchise-tax" },
+                                { title: "Income Tax & Cleanup", desc: "Professional income tax preparation for corporations/LLCs and cleaning up prior year bookkeeping.", link: "/services/income-tax-cleanup" },
+                                { title: "Global E-commerce Support", desc: "Handling HMRC filings and providing tailored document approval support for international sellers.", link: "/services/global-ecommerce-support" }
                             ].map((service, i) => (
                                 <Link href={service.link} key={i}>
                                     <Card className="h-full hover:shadow-2xl hover:shadow-blue-900/10 transition-all duration-300 cursor-pointer border-0 bg-white group overflow-hidden">
@@ -337,7 +613,7 @@ export default function HomePage() {
                     </div>
                 </section>
 
-                {/* 6. Maps Section */}
+                {/* Maps Section */}
                 <section id="maps-section" className="py-24 bg-white">
                     <div className="max-w-7xl mx-auto px-4">
                         <div className="grid lg:grid-cols-2 gap-12">
@@ -365,7 +641,6 @@ export default function HomePage() {
                 <section className="py-24 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-30 -translate-y-1/2 translate-x-1/2"></div>
                     <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-100 rounded-full blur-3xl opacity-30 translate-y-1/2 -translate-x-1/2"></div>
-
                     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                         <div className="text-center mb-16">
                             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-slate-200 text-blue-700 text-sm font-semibold mb-4">
@@ -374,61 +649,18 @@ export default function HomePage() {
                             <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4">Frequently Asked Questions</h2>
                             <p className="text-lg text-slate-600 max-w-2xl mx-auto">Everything you need to know about forming your LLC with ecomifyUSA. Can't find your answer? <a href="mailto:support@ecomifyusa.com" className="text-blue-600 font-semibold hover:underline">Contact us</a>.</p>
                         </div>
-
                         <div className="space-y-4 mb-12">
-                            <FAQItem
-                                icon="🏢"
-                                question="Do I need to be a US citizen to form an LLC?"
-                                answer="No! You do not need to be a US citizen or resident to form a US LLC. We help entrepreneurs from over 50 countries set up their businesses remotely. All you need is a valid passport and proof of address from your home country."
-                            />
-                            <FAQItem
-                                icon="📋"
-                                question="Can I get sales tax exemption without an SSN?"
-                                answer="Yes! Most states accept ITIN for exemption certificates. Only a few states (DC, MD, etc.) require SSN. We've successfully gotten clients exempt in 44+ states with just an ITIN number."
-                            />
-                            <FAQItem
-                                icon="⏱️"
-                                question="How long does EIN take for non-US residents?"
-                                answer="Typically 15-30 business days. The IRS requires fax submission for foreign owners (no online application available). We offer expedited processing for an additional fee if you need it faster."
-                            />
-                            <FAQItem
-                                icon="🔐"
-                                question="What if I lost my state portal logins?"
-                                answer="We can recover them! We contact each state tax department, verify your identity with formation documents and ID, and regain access to all your portals. We also set up proper documentation so this doesn't happen again."
-                            />
-                            <FAQItem
-                                icon="💰"
-                                question="Do you offer refunds?"
-                                answer="Yes, we offer a money-back guarantee if we cannot deliver the promised service. Official state fees are non-refundable once paid to government agencies. See our full Refund Policy for details."
-                            />
-                            <FAQItem
-                                icon="🚀"
-                                question="How quickly can I start selling on Amazon/Walmart?"
-                                answer="Once you have your LLC and EIN (typically 2-4 weeks), you can immediately apply for Amazon/Walmart seller accounts. We expedite the formation process to get you selling faster. Many clients start selling within 30 days."
-                            />
-                            <FAQItem
-                                icon="🌍"
-                                question="I'm outside the US. Can you still help me?"
-                                answer="Absolutely! Over 80% of our clients are international. We specialize in helping non-US residents form US companies remotely. No need to travel to the US. We handle everything online."
-                            />
-                            <FAQItem
-                                icon="📧"
-                                question="Do you provide ongoing compliance support?"
-                                answer="Yes! We offer monthly compliance packages including sales tax filing, annual reports, and registered agent services. Starting at $150/month. We also provide one-time filing services if you prefer."
-                            />
-                            <FAQItem
-                                icon="🏦"
-                                question="Can I open a US bank account as a non-resident?"
-                                answer="Yes! With your LLC documents and EIN, you can open accounts with Mercury, Wise, Payoneer, and other fintech banks that serve non-residents. Traditional banks may require in-person visits."
-                            />
-                            <FAQItem
-                                icon="📞"
-                                question="How do I contact support?"
-                                answer="Email us at support@ecomifyusa.com or WhatsApp +1 (307) 218-0376. We respond within 24-48 hours. We also provide ongoing support for all our clients throughout their business journey."
-                            />
+                            <FAQItem icon="🏢" question="Do I need to be a US citizen to form an LLC?" answer="No! You do not need to be a US citizen or resident to form a US LLC. We help entrepreneurs from over 50 countries set up their businesses remotely. All you need is a valid passport and proof of address from your home country." />
+                            <FAQItem icon="📋" question="Can I get sales tax exemption without an SSN?" answer="Yes! Most states accept ITIN for exemption certificates. Only a few states (DC, MD, etc.) require SSN. We've successfully gotten clients exempt in 44+ states with just an ITIN number." />
+                            <FAQItem icon="⏱️" question="How long does EIN take for non-US residents?" answer="Typically 15-30 business days. The IRS requires fax submission for foreign owners (no online application available). We offer expedited processing for an additional fee if you need it faster." />
+                            <FAQItem icon="🔐" question="What if I lost my state portal logins?" answer="We can recover them! We contact each state tax department, verify your identity with formation documents and ID, and regain access to all your portals. We also set up proper documentation so this doesn't happen again." />
+                            <FAQItem icon="💰" question="Do you offer refunds?" answer="Yes, we offer a money-back guarantee if we cannot deliver the promised service. Official state fees are non-refundable once paid to government agencies. See our full Refund Policy for details." />
+                            <FAQItem icon="🚀" question="How quickly can I start selling on Amazon/Walmart?" answer="Once you have your LLC and EIN (typically 2-4 weeks), you can immediately apply for Amazon/Walmart seller accounts. We expedite the formation process to get you selling faster. Many clients start selling within 30 days." />
+                            <FAQItem icon="🌍" question="I'm outside the US. Can you still help me?" answer="Absolutely! Over 80% of our clients are international. We specialize in helping non-US residents form US companies remotely. No need to travel to the US. We handle everything online." />
+                            <FAQItem icon="📧" question="Do you provide ongoing compliance support?" answer="Yes! We offer monthly compliance packages including sales tax filing, annual reports, and registered agent services. Starting at $150/month. We also provide one-time filing services if you prefer." />
+                            <FAQItem icon="🏦" question="Can I open a US bank account as a non-resident?" answer="Yes! With your LLC documents and EIN, you can open accounts with Mercury, Wise, Payoneer, and other fintech banks that serve non-residents. Traditional banks may require in-person visits." />
+                            <FAQItem icon="📞" question="How do I contact support?" answer="Email us at support@ecomifyusa.com or WhatsApp +1 (307) 218-0376. We respond within 24-48 hours. We also provide ongoing support for all our clients throughout their business journey." />
                         </div>
-
-                        {/* Help CTA */}
                         <div className="bg-white rounded-3xl p-8 shadow-xl shadow-blue-100 border border-blue-100">
                             <div className="text-center">
                                 <h3 className="text-2xl font-bold text-slate-900 mb-4">Still have questions?</h3>
