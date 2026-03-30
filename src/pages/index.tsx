@@ -213,6 +213,9 @@ export default function HomePage() {
                             <Link href="/case-studies" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Case Studies</Link>
                             <Link href="/pricing" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Pricing</Link>  {/* ← add this */}
                             <Link href="/which-state" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Which State?</Link>
+                            <Link href="/us-residents" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">
+  🇺🇸 US Sellers
+</Link>
                             <Link href="/services" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Services</Link>
                             <Link href="/checkout">
                                 <Button className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20">Get Started</Button>
