@@ -217,7 +217,7 @@ export default function HomePage() {
                                 <Link href="/blog/foreign-llc-mistake" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">
   Blog
 </Link>
-  🇺🇸 US Sellers
+  US Sellers
 </Link>
                             <Link href="/services" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Services</Link>
                             <Link href="/checkout">
