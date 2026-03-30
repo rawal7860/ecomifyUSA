@@ -214,7 +214,8 @@ export default function HomePage() {
                             <Link href="/pricing" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Pricing</Link>  {/* ← add this */}
                             <Link href="/which-state" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Which State?</Link>
                             <Link href="/us-residents" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">
-                                <Link href="/blog/foreign-llc-mistake" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">
+                            <Link href="/blog/foreign-llc-mistake" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">
+                            <Link href="/blog" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Blog</Link>
   Blog
 </Link>
   US Sellers
