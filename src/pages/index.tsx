@@ -211,15 +211,10 @@ export default function HomePage() {
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
                             <Link href="/case-studies" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Case Studies</Link>
-                            <Link href="/pricing" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Pricing</Link>  {/* ← add this */}
+                            <Link href="/pricing" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Pricing</Link>
                             <Link href="/which-state" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Which State?</Link>
-                            <Link href="/us-residents" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">
-                            <Link href="/blog/foreign-llc-mistake" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">
+                            <Link href="/us-residents" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">US Sellers</Link>
                             <Link href="/blog" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Blog</Link>
-  Blog
-</Link>
-  US Sellers
-</Link>
                             <Link href="/services" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Services</Link>
                             <Link href="/checkout">
                                 <Button className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20">Get Started</Button>
