@@ -1,9 +1,10 @@
 // components/Logo.tsx
+import Link from "next/link";
 import { ShoppingCart, Shield } from "lucide-react";
 
 export default function Logo({ className = "h-7 w-7" }) {
     return (
-        <div className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
             {/* Icon */}
             <div className="relative">
                 <Shield className={`${className} text-blue-600`} />
@@ -14,6 +15,6 @@ export default function Logo({ className = "h-7 w-7" }) {
                 <span className="text-blue-600">ecomify</span>
                 <span className="text-slate-900">USA</span>
             </div>
-        </div>
+        </Link>
     );
 }
