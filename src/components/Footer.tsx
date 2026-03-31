@@ -11,7 +11,7 @@ export default function Footer() {
                     {/* Column 1: Company Info */}
                     <div className="lg:col-span-2">
                         <div className="mb-4">
-                            <Logo />
+                            <Logo dark />
                         </div>
                         <p className="text-sm leading-relaxed mb-6 max-w-sm">
                             Leading US & UK business registration agency providing compliance
