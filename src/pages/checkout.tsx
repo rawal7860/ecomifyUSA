@@ -1,458 +1,531 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
-import { Shield, Lock, CheckCircle2 } from "lucide-react";
+import {
+    Shield, Lock, CheckCircle2, ArrowRight,
+    MessageCircle, Star, Clock, Zap, ChevronDown
+} from "lucide-react";
 import { authService } from "@/services/authService";
+import Logo from "@/components/Logo";
+import Footer from "@/components/Footer";
 
-interface CheckoutFormData {
-  email: string;
-  password: string;
-  fullName: string;
-  phone: string;
-  businessName: string;
-  address: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  notes: string;
-  createAccount: boolean;
+const SERVICES = [
+    { value: "Wyoming LLC", label: "Wyoming LLC Formation", price: 197, badge: "Most Popular" },
+    { value: "Wyoming LLC + Compliance", label: "Wyoming LLC + Annual Compliance", price: 297, badge: "Best Value" },
+    { value: "Delaware LLC", label: "Delaware LLC Formation", price: 347, badge: null },
+    { value: "Sales Tax Filing", label: "Sales Tax Filing", price: null, badge: null },
+    { value: "Tax Exemption Certificates", label: "Tax Exemption Certificates", price: null, badge: null },
+    { value: "Annual Report Filing", label: "Annual Report Filing", price: null, badge: null },
+    { value: "Other", label: "Other / Custom Service", price: null, badge: null },
+];
+
+const COUNTRIES = [
+    "United Kingdom", "Pakistan", "India", "UAE", "Saudi Arabia",
+    "China", "Bangladesh", "Nigeria", "Canada", "Australia",
+    "Germany", "France", "Turkey", "Egypt", "South Africa",
+    "Brazil", "Mexico", "Indonesia", "Malaysia", "Philippines",
+    "United States", "Other",
+];
+
+const WHATSAPP_NUMBER = "13072180376";
+
+interface FormData {
+    fullName: string;
+    email: string;
+    whatsapp: string;
+    country: string;
+    service: string;
+    notes: string;
+    createAccount: boolean;
+    password: string;
 }
 
 export default function CheckoutPage() {
-  const router = useRouter();
-  const { state, service = "LLC Formation", amount = "299" } = router.query;
+    const router = useRouter();
+    const { service: queryService } = router.query;
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [formData, setFormData] = useState<CheckoutFormData>({
-    email: "",
-    password: "",
-    fullName: "",
-    phone: "",
-    businessName: "",
-    address: "",
-    city: "",
-    state: (state as string) || "",
-    zipCode: "",
-    notes: "",
-    createAccount: false
-  });
+    const defaultService = SERVICES.find(s => s.value === queryService) ? queryService as string : "";
 
-  const handleInputChange = (field: keyof CheckoutFormData, value: string | boolean) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    setError("");
-  };
+    const [form, setForm] = useState<FormData>({
+        fullName: "",
+        email: "",
+        whatsapp: "",
+        country: "",
+        service: defaultService,
+        notes: "",
+        createAccount: false,
+        password: "",
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [submitted, setSubmitted] = useState(false);
+    const [orderNumber, setOrderNumber] = useState("");
 
-  const validateForm = () => {
-    if (!formData.email || !formData.fullName || !formData.phone) {
-      setError("Please fill in all required fields (Email, Name, Phone)");
-      return false;
-    }
-    
-    if (formData.createAccount && !formData.password) {
-      setError("Password is required when creating an account");
-      return false;
-    }
+    const selectedService = SERVICES.find(s => s.value === form.service);
 
-    if (formData.createAccount && formData.password.length < 6) {
-      setError("Password must be at least 6 characters");
-      return false;
-    }
+    const set = (field: keyof FormData, value: string | boolean) => {
+        setForm(prev => ({ ...prev, [field]: value }));
+        setError("");
+    };
 
-    return true;
-  };
+    const validate = () => {
+        if (!form.fullName.trim()) return setError("Please enter your full name."), false;
+        if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) return setError("Please enter a valid email address."), false;
+        if (!form.whatsapp.trim()) return setError("Please enter your WhatsApp number."), false;
+        if (!form.country) return setError("Please select your country."), false;
+        if (!form.service) return setError("Please select a service."), false;
+        if (form.createAccount && (!form.password || form.password.length < 6)) return setError("Password must be at least 6 characters."), false;
+        return true;
+    };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) return;
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!validate()) return;
+        setLoading(true);
+        setError("");
 
-    setLoading(true);
-    setError("");
-
-    try {
-      let userId: string | null = null;
-
-      // If user wants to create account
-      if (formData.createAccount) {
         try {
-          // Check if email already exists
-          const { data: existingUser } = await supabase
-            .from("profiles")
-            .select("id")
-            .eq("email", formData.email)
-            .maybeSingle();
+            let userId: string | null = null;
 
-          if (existingUser) {
-            setError("🎉 Welcome Back! This email is already registered. Please login instead.");
+            if (form.createAccount) {
+                try {
+                    const { data: existing } = await supabase
+                        .from("profiles")
+                        .select("id")
+                        .eq("email", form.email)
+                        .maybeSingle();
+
+                    if (existing) {
+                        setError("This email is already registered. Please log in instead.");
+                        setLoading(false);
+                        setTimeout(() => router.push("/login"), 2000);
+                        return;
+                    }
+
+                    const authData = await authService.signUp(form.email, form.password, form.fullName);
+                    userId = authData?.data?.user?.id || null;
+                } catch {
+                    // proceed as guest
+                }
+            }
+
+            const num = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
+            const amount = selectedService?.price ?? 0;
+
+            const { data: order, error: orderError } = await supabase
+                .from("orders")
+                .insert({
+                    user_id: userId,
+                    order_number: num,
+                    service_type: form.service,
+                    business_name: form.fullName,
+                    state: form.country,
+                    status: "pending",
+                    amount,
+                    payment_status: "unpaid",
+                    customer_email: form.email,
+                    customer_name: form.fullName,
+                    customer_phone: form.whatsapp,
+                    notes: form.notes || null,
+                })
+                .select()
+                .single();
+
+            if (orderError) throw new Error("Failed to save order. Please try again.");
+
+            if (amount > 0) {
+                try {
+                    await fetch("/api/create-invoice", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            customer_email: form.email,
+                            customer_name: form.fullName,
+                            amount,
+                            description: form.service,
+                            order_id: order.id,
+                        }),
+                    });
+                } catch {
+                    // non-blocking
+                }
+            }
+
+            // Trigger WhatsApp message
+            const msg = encodeURIComponent(
+                `Hi, I just placed an order on ecomifyUSA!\n\n` +
+                `📋 Order: ${num}\n` +
+                `👤 Name: ${form.fullName}\n` +
+                `📧 Email: ${form.email}\n` +
+                `🌍 Country: ${form.country}\n` +
+                `📦 Service: ${form.service}${amount ? ` ($${amount})` : ""}\n` +
+                (form.notes ? `📝 Notes: ${form.notes}\n` : "") +
+                `\nPlease confirm and let me know the next steps.`
+            );
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, "_blank");
+
+            setOrderNumber(num);
+            setSubmitted(true);
+        } catch (err: any) {
+            setError(err.message || "Something went wrong. Please try again.");
+        } finally {
             setLoading(false);
-            setTimeout(() => router.push("/login"), 2000);
-            return;
-          }
-
-          // Create new account
-          const authData = await authService.signUp(
-            formData.email,
-            formData.password!,
-            formData.fullName
-          );
-
-          userId = authData?.data?.user?.id || null;
-
-          // Update profile with additional info
-          if (userId) {
-            await supabase
-              .from("profiles")
-              .update({
-                phone: formData.phone,
-                address: formData.address,
-                city: formData.city,
-                state: formData.state,
-                zip_code: formData.zipCode,
-                business_name: formData.businessName,
-                is_guest: false
-              })
-              .eq("id", userId);
-          }
-        } catch (authError: any) {
-          console.error("Account creation error:", authError);
-          // Continue with guest checkout if account creation fails
-          console.log("Proceeding with guest checkout...");
         }
-      }
+    };
 
-      // Generate order number
-      const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+    return (
+        <>
+            <SEO
+                title="Get Started — ecomifyUSA"
+                description="Start your US LLC formation or compliance service. Fast, reliable, trusted by 500+ international sellers."
+            />
+            <div className="min-h-screen bg-slate-50 font-sans">
 
-      // Create order (works for both guest and registered users)
-      const orderData: any = {
-        user_id: userId,
-        order_number: orderNumber,
-        service_type: service as string,
-        business_name: formData.businessName || formData.fullName,
-        state: formData.state,
-        status: "pending",
-        amount: parseFloat(amount as string),
-        payment_status: "unpaid",
-        customer_email: formData.email,
-        customer_name: formData.fullName,
-        customer_phone: formData.phone,
-        notes: formData.notes || null
-      };
+                {/* Nav */}
+                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                    <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+                        <Logo />
+                        <nav className="hidden md:flex items-center gap-8">
+                            <Link href="/pricing" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Pricing</Link>
+                            <Link href="/which-state" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Which State?</Link>
+                            <Link href="/blog" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Blog</Link>
+                        </nav>
+                        <a
+                            href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%20have%20a%20question%20about%20your%20services.`}
+                            target="_blank" rel="noopener noreferrer"
+                        >
+                            <Button variant="outline" className="border-green-500 text-green-600 hover:bg-green-50 gap-2">
+                                <MessageCircle className="w-4 h-4" /> WhatsApp Us
+                            </Button>
+                        </a>
+                    </div>
+                </header>
 
-      const { data: order, error: orderError } = await supabase
-        .from("orders")
-        .insert(orderData)
-        .select()
-        .single();
-
-      if (orderError) {
-        console.error("Order creation error:", orderError);
-        throw new Error("Failed to create order. Please try again or contact support.");
-      }
-
-      console.log("✅ Order created:", order);
-
-      // Call Stripe invoice API
-      try {
-        const invoiceResponse = await fetch("/api/create-invoice", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            customer_email: formData.email,
-            customer_name: formData.fullName,
-            amount: parseFloat(amount as string),
-            description: `${service} - ${formData.state || "Service"}`,
-            order_id: order.id
-          })
-        });
-
-        if (!invoiceResponse.ok) {
-          console.error("Invoice API error:", await invoiceResponse.text());
-        } else {
-          console.log("✅ Invoice sent to:", formData.email);
-        }
-      } catch (invoiceError) {
-        console.error("Invoice generation error:", invoiceError);
-        // Don't block checkout if invoice fails
-      }
-
-      // Redirect based on account type
-      if (userId && formData.createAccount) {
-        router.push("/dashboard");
-      } else {
-        router.push(`/order-confirmation?order=${orderNumber}`);
-      }
-
-    } catch (err: any) {
-      console.error("Checkout error:", err);
-      setError(err.message || "Something went wrong. Please try again.");
-      setLoading(false);
-    }
-  };
-
-  return (
-    <>
-      <SEO
-        title="Checkout - ecomifyUSA"
-        description="Complete your LLC formation and tax compliance order"
-      />
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-        <div className="container mx-auto px-4 py-12">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold text-slate-900 mb-2">Complete Your Order</h1>
-              <p className="text-slate-600">Secure checkout powered by ecomifyUSA</p>
-            </div>
-
-            <div className="grid lg:grid-cols-3 gap-8">
-              {/* Left: Checkout Form */}
-              <div className="lg:col-span-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Contact & Business Information</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      {/* Contact Information */}
-                      <div className="space-y-4">
-                        <h3 className="font-semibold text-lg">Contact Details</h3>
-                        
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <div>
-                            <Label htmlFor="fullName">Full Name *</Label>
-                            <Input
-                              id="fullName"
-                              type="text"
-                              value={formData.fullName}
-                              onChange={(e) => handleInputChange("fullName", e.target.value)}
-                              required
-                              placeholder="John Doe"
-                            />
-                          </div>
-
-                          <div>
-                            <Label htmlFor="email">Email Address *</Label>
-                            <Input
-                              id="email"
-                              type="email"
-                              value={formData.email}
-                              onChange={(e) => handleInputChange("email", e.target.value)}
-                              required
-                              placeholder="john@example.com"
-                            />
-                          </div>
+                {submitted ? (
+                    /* ── Thank You Screen ── */
+                    <div className="max-w-2xl mx-auto px-4 py-24 text-center">
+                        <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <CheckCircle2 className="w-10 h-10 text-green-600" />
                         </div>
-
-                        <div className="grid md:grid-cols-2 gap-4">
-                          <div>
-                            <Label htmlFor="phone">Phone Number *</Label>
-                            <Input
-                              id="phone"
-                              type="tel"
-                              value={formData.phone}
-                              onChange={(e) => handleInputChange("phone", e.target.value)}
-                              required
-                              placeholder="+1 (555) 123-4567"
-                            />
-                          </div>
-
-                          <div>
-                            <Label htmlFor="businessName">Business Name</Label>
-                            <Input
-                              id="businessName"
-                              type="text"
-                              value={formData.businessName}
-                              onChange={(e) => handleInputChange("businessName", e.target.value)}
-                              placeholder="My Company LLC"
-                            />
-                          </div>
+                        <h1 className="text-4xl font-bold text-slate-900 mb-3">Order Received!</h1>
+                        <p className="text-slate-500 text-lg mb-2">Order <span className="font-semibold text-slate-700">{orderNumber}</span></p>
+                        <p className="text-slate-500 mb-8">
+                            We've received your request and a WhatsApp conversation has been opened.
+                            Our team typically responds within a few hours.
+                        </p>
+                        <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-8 text-left space-y-3">
+                            <p className="text-sm font-semibold text-slate-700 mb-4">What happens next?</p>
+                            {[
+                                { icon: "💬", text: "We'll confirm your order on WhatsApp shortly" },
+                                { icon: "📧", text: "A Stripe payment invoice will be sent to your email" },
+                                { icon: "⚡", text: "Processing begins as soon as payment is received" },
+                                { icon: "✅", text: "Documents delivered within 24–72 hours" },
+                            ].map((step, i) => (
+                                <div key={i} className="flex items-start gap-3">
+                                    <span className="text-lg">{step.icon}</span>
+                                    <span className="text-sm text-slate-600">{step.text}</span>
+                                </div>
+                            ))}
                         </div>
-                      </div>
-
-                      {/* Address */}
-                      <div className="space-y-4">
-                        <h3 className="font-semibold text-lg">Address</h3>
-                        
-                        <div>
-                          <Label htmlFor="address">Street Address</Label>
-                          <Input
-                            id="address"
-                            type="text"
-                            value={formData.address}
-                            onChange={(e) => handleInputChange("address", e.target.value)}
-                            placeholder="123 Main St"
-                          />
-                        </div>
-
-                        <div className="grid md:grid-cols-3 gap-4">
-                          <div>
-                            <Label htmlFor="city">City</Label>
-                            <Input
-                              id="city"
-                              type="text"
-                              value={formData.city}
-                              onChange={(e) => handleInputChange("city", e.target.value)}
-                              placeholder="New York"
-                            />
-                          </div>
-
-                          <div>
-                            <Label htmlFor="state">State</Label>
-                            <Input
-                              id="state"
-                              type="text"
-                              value={formData.state}
-                              onChange={(e) => handleInputChange("state", e.target.value)}
-                              placeholder="NY"
-                            />
-                          </div>
-
-                          <div>
-                            <Label htmlFor="zipCode">ZIP Code</Label>
-                            <Input
-                              id="zipCode"
-                              type="text"
-                              value={formData.zipCode}
-                              onChange={(e) => handleInputChange("zipCode", e.target.value)}
-                              placeholder="10001"
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Additional Notes */}
-                      <div>
-                        <Label htmlFor="notes">Additional Notes (Optional)</Label>
-                        <textarea
-                          id="notes"
-                          value={formData.notes}
-                          onChange={(e) => handleInputChange("notes", e.target.value)}
-                          className="w-full min-h-[100px] px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="Any special requests or additional information..."
-                        />
-                      </div>
-
-                      {/* Create Account Option */}
-                      <div className="border-t pt-6">
-                        <div className="flex items-start space-x-2">
-                          <Checkbox
-                            id="createAccount"
-                            checked={formData.createAccount}
-                            onCheckedChange={(checked) => handleInputChange("createAccount", checked as boolean)}
-                          />
-                          <div className="grid gap-1.5 leading-none">
-                            <label
-                              htmlFor="createAccount"
-                              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                            <a
+                                href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                                target="_blank" rel="noopener noreferrer"
                             >
-                              Create an account to track your order
-                            </label>
-                            <p className="text-sm text-slate-500">
-                              Get access to your dashboard, order history, and document downloads
-                            </p>
-                          </div>
+                                <Button className="bg-green-500 hover:bg-green-600 gap-2 px-6">
+                                    <MessageCircle className="w-4 h-4" /> Open WhatsApp
+                                </Button>
+                            </a>
+                            <Link href="/">
+                                <Button variant="outline" className="px-6">Back to Home</Button>
+                            </Link>
+                        </div>
+                    </div>
+                ) : (
+                    /* ── Order Form ── */
+                    <div className="max-w-6xl mx-auto px-4 py-12">
+
+                        {/* Page header */}
+                        <div className="text-center mb-10">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-medium mb-4">
+                                <Zap className="w-3.5 h-3.5" /> 500+ happy clients worldwide
+                            </div>
+                            <h1 className="text-4xl font-bold text-slate-900 mb-2">Get Started</h1>
+                            <p className="text-slate-500 text-lg">Fill in the form — we'll confirm via WhatsApp and send a payment link.</p>
                         </div>
 
-                        {formData.createAccount && (
-                          <div className="mt-4">
-                            <Label htmlFor="password">Password *</Label>
-                            <Input
-                              id="password"
-                              type="password"
-                              value={formData.password}
-                              onChange={(e) => handleInputChange("password", e.target.value)}
-                              placeholder="Min. 6 characters"
-                              minLength={6}
-                            />
-                          </div>
-                        )}
-                      </div>
+                        <div className="grid lg:grid-cols-3 gap-8 items-start">
 
-                      {error && (
-                        <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md">
-                          {error}
+                            {/* ── Left: Form ── */}
+                            <div className="lg:col-span-2">
+                                <form onSubmit={handleSubmit} className="bg-white rounded-3xl border border-slate-200 shadow-sm p-8 space-y-6">
+
+                                    {/* Contact details */}
+                                    <div>
+                                        <h2 className="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">
+                                            Your Details
+                                        </h2>
+                                        <div className="grid md:grid-cols-2 gap-4">
+                                            <div className="space-y-1.5">
+                                                <Label htmlFor="fullName">Full Name <span className="text-red-500">*</span></Label>
+                                                <Input
+                                                    id="fullName"
+                                                    value={form.fullName}
+                                                    onChange={e => set("fullName", e.target.value)}
+                                                    placeholder="Ahmed Khan"
+                                                    className="h-11"
+                                                />
+                                            </div>
+                                            <div className="space-y-1.5">
+                                                <Label htmlFor="email">Email Address <span className="text-red-500">*</span></Label>
+                                                <Input
+                                                    id="email"
+                                                    type="email"
+                                                    value={form.email}
+                                                    onChange={e => set("email", e.target.value)}
+                                                    placeholder="ahmed@example.com"
+                                                    className="h-11"
+                                                />
+                                            </div>
+                                            <div className="space-y-1.5">
+                                                <Label htmlFor="whatsapp">
+                                                    WhatsApp Number <span className="text-red-500">*</span>
+                                                    <span className="ml-1 text-xs text-slate-400 font-normal">(with country code)</span>
+                                                </Label>
+                                                <Input
+                                                    id="whatsapp"
+                                                    type="tel"
+                                                    value={form.whatsapp}
+                                                    onChange={e => set("whatsapp", e.target.value)}
+                                                    placeholder="+44 7700 123456"
+                                                    className="h-11"
+                                                />
+                                            </div>
+                                            <div className="space-y-1.5">
+                                                <Label htmlFor="country">Country <span className="text-red-500">*</span></Label>
+                                                <div className="relative">
+                                                    <select
+                                                        id="country"
+                                                        value={form.country}
+                                                        onChange={e => set("country", e.target.value)}
+                                                        className="w-full h-11 px-3 pr-10 border border-slate-300 rounded-md bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                                                    >
+                                                        <option value="">Select your country…</option>
+                                                        {COUNTRIES.map(c => (
+                                                            <option key={c} value={c}>{c}</option>
+                                                        ))}
+                                                    </select>
+                                                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Service selection */}
+                                    <div>
+                                        <h2 className="text-lg font-semibold text-slate-900 mb-4 pb-2 border-b border-slate-100">
+                                            Service
+                                        </h2>
+                                        <div className="space-y-2.5">
+                                            {SERVICES.map(svc => (
+                                                <label
+                                                    key={svc.value}
+                                                    className={`flex items-center justify-between p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                                                        form.service === svc.value
+                                                            ? "border-blue-500 bg-blue-50"
+                                                            : "border-slate-200 hover:border-blue-200 bg-white"
+                                                    }`}
+                                                >
+                                                    <div className="flex items-center gap-3">
+                                                        <input
+                                                            type="radio"
+                                                            name="service"
+                                                            value={svc.value}
+                                                            checked={form.service === svc.value}
+                                                            onChange={() => set("service", svc.value)}
+                                                            className="accent-blue-600 w-4 h-4"
+                                                        />
+                                                        <div>
+                                                            <span className="font-medium text-slate-800 text-sm">{svc.label}</span>
+                                                            {svc.badge && (
+                                                                <span className="ml-2 text-xs bg-blue-600 text-white px-2 py-0.5 rounded-full">{svc.badge}</span>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                    <span className="font-bold text-slate-700 text-sm shrink-0">
+                                                        {svc.price ? `$${svc.price}` : "Get quote"}
+                                                    </span>
+                                                </label>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Notes */}
+                                    <div className="space-y-1.5">
+                                        <Label htmlFor="notes">Message / Notes <span className="text-slate-400 font-normal text-xs">(optional)</span></Label>
+                                        <textarea
+                                            id="notes"
+                                            value={form.notes}
+                                            onChange={e => set("notes", e.target.value)}
+                                            rows={4}
+                                            placeholder="Tell us about your business, any specific requirements, questions, or the state you're considering for your LLC…"
+                                            className="w-full px-3 py-2.5 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                                        />
+                                    </div>
+
+                                    {/* Create account */}
+                                    <div className="border-t border-slate-100 pt-5">
+                                        <div className="flex items-start gap-3">
+                                            <Checkbox
+                                                id="createAccount"
+                                                checked={form.createAccount}
+                                                onCheckedChange={v => set("createAccount", v as boolean)}
+                                                className="mt-0.5"
+                                            />
+                                            <div>
+                                                <label htmlFor="createAccount" className="text-sm font-medium text-slate-800 cursor-pointer">
+                                                    Create a free account to track your order
+                                                </label>
+                                                <p className="text-xs text-slate-500 mt-0.5">Access your dashboard, order history, and document downloads</p>
+                                            </div>
+                                        </div>
+                                        {form.createAccount && (
+                                            <div className="mt-3 space-y-1.5">
+                                                <Label htmlFor="password">Password <span className="text-red-500">*</span></Label>
+                                                <Input
+                                                    id="password"
+                                                    type="password"
+                                                    value={form.password}
+                                                    onChange={e => set("password", e.target.value)}
+                                                    placeholder="Min. 6 characters"
+                                                    className="h-11 max-w-xs"
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {error && (
+                                        <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl">
+                                            {error}
+                                        </div>
+                                    )}
+
+                                    <Button
+                                        type="submit"
+                                        size="lg"
+                                        disabled={loading}
+                                        className="w-full bg-blue-600 hover:bg-blue-700 h-14 text-base rounded-xl shadow-lg shadow-blue-600/20"
+                                    >
+                                        {loading ? (
+                                            <span className="flex items-center gap-2">
+                                                <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                                                Submitting…
+                                            </span>
+                                        ) : (
+                                            <span className="flex items-center gap-2">
+                                                Submit Order <ArrowRight className="w-5 h-5" />
+                                            </span>
+                                        )}
+                                    </Button>
+                                    <p className="text-center text-xs text-slate-400">
+                                        By submitting you agree to our{" "}
+                                        <Link href="/terms-of-service" className="underline hover:text-slate-600">Terms of Service</Link>
+                                        {" "}and{" "}
+                                        <Link href="/privacy-policy" className="underline hover:text-slate-600">Privacy Policy</Link>.
+                                    </p>
+                                </form>
+                            </div>
+
+                            {/* ── Right: Order Summary ── */}
+                            <div className="lg:col-span-1 space-y-4">
+
+                                {/* Summary card */}
+                                <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sticky top-24">
+                                    <h3 className="font-semibold text-slate-900 mb-4 text-base">Order Summary</h3>
+
+                                    {form.service ? (
+                                        <div className="space-y-3 mb-4">
+                                            <div className="flex items-start justify-between gap-2">
+                                                <span className="text-sm text-slate-600 leading-snug">{selectedService?.label}</span>
+                                                <span className="font-bold text-slate-800 text-sm shrink-0">
+                                                    {selectedService?.price ? `$${selectedService.price}` : "Quote"}
+                                                </span>
+                                            </div>
+                                            {selectedService?.badge && (
+                                                <span className="inline-block text-xs bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full font-medium">
+                                                    {selectedService.badge}
+                                                </span>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <p className="text-sm text-slate-400 mb-4">Select a service to see your total.</p>
+                                    )}
+
+                                    <div className="border-t border-slate-100 pt-4 flex justify-between items-center">
+                                        <span className="font-semibold text-slate-800">Total</span>
+                                        <span className="text-xl font-bold text-blue-600">
+                                            {selectedService?.price ? `$${selectedService.price}` : selectedService ? "Custom" : "—"}
+                                        </span>
+                                    </div>
+
+                                    {selectedService?.price && (
+                                        <p className="text-xs text-slate-400 mt-2">
+                                            Payment link sent via email after order confirmation.
+                                        </p>
+                                    )}
+
+                                    {/* Trust */}
+                                    <div className="mt-5 pt-4 border-t border-slate-100 space-y-2.5">
+                                        {[
+                                            { icon: <Shield className="w-4 h-4 text-green-600" />, text: "Secure & confidential" },
+                                            { icon: <CheckCircle2 className="w-4 h-4 text-green-600" />, text: "Money-back guarantee" },
+                                            { icon: <Clock className="w-4 h-4 text-green-600" />, text: "24–72 hr delivery" },
+                                        ].map((item, i) => (
+                                            <div key={i} className="flex items-center gap-2 text-xs text-slate-500">
+                                                {item.icon} {item.text}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Social proof */}
+                                <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-6 text-white">
+                                    <div className="flex items-center gap-1 mb-2">
+                                        {[...Array(5)].map((_, i) => (
+                                            <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                        ))}
+                                    </div>
+                                    <p className="text-sm text-blue-100 leading-relaxed mb-3">
+                                        "Got my Wyoming LLC + EIN in 3 days. Best service for non-US sellers. Highly recommend!"
+                                    </p>
+                                    <p className="text-xs text-blue-200 font-medium">— Ahmed K., Amazon FBA seller 🇵🇰</p>
+                                </div>
+
+                                {/* WhatsApp shortcut */}
+                                <a
+                                    href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%20have%20a%20question%20before%20ordering.`}
+                                    target="_blank" rel="noopener noreferrer"
+                                    className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-2xl p-4 hover:bg-green-100 transition-colors"
+                                >
+                                    <MessageCircle className="w-5 h-5 text-green-600 shrink-0" />
+                                    <div>
+                                        <p className="text-sm font-medium text-green-800">Have questions first?</p>
+                                        <p className="text-xs text-green-600">WhatsApp us — reply in hours</p>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-                      )}
-
-                      <Button
-                        type="submit"
-                        className="w-full"
-                        size="lg"
-                        disabled={loading}
-                      >
-                        {loading ? "Processing..." : "Complete Order"}
-                      </Button>
-                    </form>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Right: Order Summary */}
-              <div className="lg:col-span-1">
-                <Card className="sticky top-4">
-                  <CardHeader>
-                    <CardTitle>Order Summary</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-slate-600">Service</span>
-                        <span className="font-medium">{service}</span>
-                      </div>
-                      {state && (
-                        <div className="flex justify-between text-sm">
-                          <span className="text-slate-600">State</span>
-                          <span className="font-medium">{state}</span>
-                        </div>
-                      )}
                     </div>
+                )}
 
-                    <div className="border-t pt-4">
-                      <div className="flex justify-between text-lg font-bold">
-                        <span>Total</span>
-                        <span className="text-blue-600">${amount}</span>
-                      </div>
-                    </div>
-
-                    {/* Trust Badges */}
-                    <div className="border-t pt-4 space-y-3">
-                      <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <Shield className="w-4 h-4 text-green-600" />
-                        <span>Secure Checkout</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <Lock className="w-4 h-4 text-green-600" />
-                        <span>Encrypted Payment</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <CheckCircle2 className="w-4 h-4 text-green-600" />
-                        <span>100% Money Back Guarantee</span>
-                      </div>
-                    </div>
-
-                    <div className="bg-blue-50 border border-blue-200 rounded-md p-4 text-sm">
-                      <p className="font-medium text-blue-900 mb-1">What happens next?</p>
-                      <ul className="text-blue-700 space-y-1 text-xs">
-                        <li>✓ You'll receive a Stripe invoice via email</li>
-                        <li>✓ Complete payment securely through Stripe</li>
-                        <li>✓ We'll start processing immediately</li>
-                        <li>✓ Receive updates via email & WhatsApp</li>
-                      </ul>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+                <Footer />
             </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
+        </>
+    );
 }
