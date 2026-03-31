@@ -1,0 +1,11 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# @netlify/plugin-nextjs handles SSR, dynamic routes, API routes,
+# and serves pages/404.tsx automatically — no manual redirects needed.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
