@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -6,7 +6,7 @@ import {
     DollarSign, FileText, CheckCircle2, MapPin,
     ArrowRightCircle, Zap, Globe, ChevronDown, ChevronUp,
     TrendingUp, Award, Headphones, Users, Mail, Phone,
-    ShoppingCart, Truck, HelpCircle
+    ShoppingCart, Truck, HelpCircle, Menu, X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -191,11 +191,23 @@ function CheckoutSection() {
 // --- MAIN PAGE COMPONENT ---
 export default function HomePage() {
     const [scrolled, setScrolled] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const headerRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+                setMobileOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
     return (
@@ -206,7 +218,7 @@ export default function HomePage() {
             />
             <div className="min-h-screen bg-slate-50 font-sans">
                 {/* Navigation */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header ref={headerRef} className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
@@ -220,12 +232,45 @@ export default function HomePage() {
                                 <Button className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20">Get Started</Button>
                             </Link>
                         </nav>
-                        <div className="md:hidden">
-                            <Link href="/checkout">
-                                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
-                            </Link>
-                        </div>
+                        <button
+                            className="md:hidden p-2 rounded-md text-slate-600 hover:text-blue-600 hover:bg-slate-100 transition-colors"
+                            onClick={() => setMobileOpen(prev => !prev)}
+                            aria-label="Toggle menu"
+                        >
+                            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+                        </button>
                     </div>
+                    {/* Mobile menu */}
+                    {mobileOpen && (
+                        <div className="md:hidden border-t border-slate-200 bg-white/95 backdrop-blur-md">
+                            <nav className="max-w-7xl mx-auto px-4 py-4 flex flex-col gap-1">
+                                {[
+                                    { href: "/case-studies", label: "Case Studies" },
+                                    { href: "/pricing", label: "Pricing" },
+                                    { href: "/which-state", label: "Which State?" },
+                                    { href: "/us-residents", label: "US Sellers" },
+                                    { href: "/blog", label: "Blog" },
+                                    { href: "/services", label: "Services" },
+                                ].map(({ href, label }) => (
+                                    <Link
+                                        key={href}
+                                        href={href}
+                                        onClick={() => setMobileOpen(false)}
+                                        className="text-slate-700 hover:text-blue-600 hover:bg-blue-50 font-medium px-3 py-3 rounded-lg transition-colors"
+                                    >
+                                        {label}
+                                    </Link>
+                                ))}
+                                <div className="pt-2 border-t border-slate-100 mt-1">
+                                    <Link href="/checkout" onClick={() => setMobileOpen(false)}>
+                                        <Button className="w-full bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20">
+                                            Get Started
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </nav>
+                        </div>
+                    )}
                 </header>
 
                 {/* Hero Section with Globe */}
