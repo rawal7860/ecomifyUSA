@@ -68,9 +68,39 @@ const posts = [
         audience: "🌍 All Sellers",
         featured: false,
     },
+    {
+        slug: "/blog/how-to-get-ein-non-us-resident",
+        title: "How to get an EIN as a non-US resident: Complete 2026 guide",
+        excerpt: "No SSN, no ITIN, no problem. Step-by-step IRS fax method, Form SS-4 line-by-line instructions, 15–30 day timeline, and the most common mistakes that delay your application.",
+        category: "EIN & Tax IDs",
+        categoryColor: "bg-red-100 text-red-700",
+        readTime: "6 min read",
+        audience: "🌍 International Sellers",
+        featured: false,
+    },
+    {
+        slug: "/blog/us-bank-account-non-resident",
+        title: "How to open a US bank account without SSN: Mercury, Wise and Payoneer guide",
+        excerpt: "A full comparison of Mercury, Wise Business, and Payoneer for international LLC owners — requirements, approval tips, and which option works best for Amazon disbursements.",
+        category: "Banking",
+        categoryColor: "bg-sky-100 text-sky-700",
+        readTime: "5 min read",
+        audience: "🌍 International Sellers",
+        featured: false,
+    },
+    {
+        slug: "/blog/amazon-fba-llc-guide",
+        title: "Amazon FBA LLC guide for international sellers: Wyoming vs Delaware",
+        excerpt: "Why FBA sellers need an LLC, Wyoming vs Delaware cost comparison, how sales tax nexus works for FBA inventory, resale certificates, and a step-by-step roadmap from LLC to first sale.",
+        category: "LLC Formation",
+        categoryColor: "bg-blue-100 text-blue-700",
+        readTime: "7 min read",
+        audience: "🌍 International Sellers",
+        featured: false,
+    },
 ];
 
-const categories = ["All", "LLC Formation", "State Comparison", "Sales Tax", "EIN & Tax IDs", "Tax Exemptions", "US Sellers"];
+const categories = ["All", "LLC Formation", "State Comparison", "Sales Tax", "EIN & Tax IDs", "Tax Exemptions", "Banking", "US Sellers"];
 
 export default function BlogIndexPage() {
     const router = useRouter();
