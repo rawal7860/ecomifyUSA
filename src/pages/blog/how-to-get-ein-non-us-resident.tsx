@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -233,7 +233,7 @@ export default function EINGuide() {
                             </thead>
                             <tbody>
                                 {[
-                                    { line: "1", val: "Your LLC's exact legal name as it appears on your state formation certificate (e.g., "Acme Trading LLC")" },
+                                    { line: "1", val: "Your LLC's exact legal name as it appears on your state formation certificate (e.g., 'Acme Trading LLC')" },
                                     { line: "2", val: "Leave blank (trade name / DBA — skip if same as line 1)" },
                                     { line: "3", val: "Leave blank (executor/trustee — not applicable)" },
                                     { line: "4a", val: "Your LLC's mailing address (can be your registered agent's address or your foreign address)" },

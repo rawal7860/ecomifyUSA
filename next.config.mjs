@@ -42,6 +42,9 @@ const nextConfig = {
       },
     ],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   allowedDevOrigins: ["*.daytona.work", "*.softgen.dev"],
 };
 

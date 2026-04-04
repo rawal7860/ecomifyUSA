@@ -24,9 +24,9 @@ export default function Footer() {
                             <a href="https://wa.me/13072180376" target="_blank" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
                                 <Phone className="w-5 h-5" />
                             </a>
-                            <a href="/" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <Link href="/" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
                                 <Globe className="w-5 h-5" />
-                            </a>
+                            </Link>
                         </div>
                     </div>
 

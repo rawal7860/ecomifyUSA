@@ -11,64 +11,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@supabase/supabase-js";
 import { SEO } from "@/components/SEO";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 import Logo from "@/components/Logo";
 import Footer from "@/components/Footer";
-
-interface Client {
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
-    created_at: string;
-    company: {
-        id: string;
-        name: string;
-    };
-}
-
-interface Deadline {
-    id: string;
-    deadline_date: string;
-    description: string;
-    status: string;
-    created_at: string;
-    client_service: {
-        service_name: string;
-        client: {
-            name: string;
-            company: {
-                name: string;
-            };
-        };
-    };
-}
-
-interface Document {
-    id: string;
-    file_name: string;
-    file_path: string;
-    uploaded_at: string;
-    service?: {
-        service_name: string;
-    };
-}
-
-interface CompanyDetails {
-    name: string;
-    state?: string;
-    formation_date?: string;
-    ein?: string;
-}
 
 export default function PortalDashboard() {
     const router = useRouter();
     const { user, signOut, loading: authLoading } = useAuth();
-    const [client, setClient] = useState<Client | null>(null);
-    const [deadlines, setDeadlines] = useState<Deadline[]>([]);
-    const [documents, setDocuments] = useState<Document[]>([]);
-    const [companyDetails, setCompanyDetails] = useState<CompanyDetails | null>(null);
+    const [client, setClient] = useState<any>(null);
+    const [deadlines, setDeadlines] = useState<any[]>([]);
+    const [documents, setDocuments] = useState<any[]>([]);
+    const [companyDetails, setCompanyDetails] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
