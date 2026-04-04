@@ -92,7 +92,7 @@ export default function PortalPage() {
                             <Link href="/pricing" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Pricing</Link>
                             <Link href="/services" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Services</Link>
                             <Link href="/login" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Login</Link>
-                            <Link href="/signup">
+                            <Link href="/portal/register">
                                 <Button className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20">Sign Up Free</Button>
                             </Link>
                         </nav>
@@ -124,7 +124,7 @@ export default function PortalPage() {
                             </p>
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                                <Link href="/signup">
+                                <Link href="/portal/register">
                                     <Button
                                         size="lg"
                                         className="bg-blue-600 hover:bg-blue-700 px-10 py-7 text-xl rounded-xl shadow-xl shadow-blue-600/20 transition-all hover:scale-105 font-bold"
@@ -245,7 +245,7 @@ export default function PortalPage() {
                             Don't let compliance stress hold your business back. Get organized, stay compliant, and focus on what matters most - growing your empire.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Link href="/signup">
+                            <Link href="/portal/register">
                                 <Button
                                     size="lg"
                                     className="bg-white text-blue-600 hover:bg-blue-50 px-10 py-7 text-xl rounded-xl shadow-xl transition-all hover:scale-105 font-bold"
