@@ -6,7 +6,7 @@ import {
     DollarSign, FileText, CheckCircle2, MapPin,
     ArrowRightCircle, Zap, Globe, ChevronDown, ChevronUp,
     TrendingUp, Award, Headphones, Users, Mail, Phone,
-    ShoppingCart, Truck, HelpCircle, Menu, X
+    ShoppingCart, Truck, HelpCircle, Menu, X, AlertTriangle, Bell, Calendar
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -658,6 +658,104 @@ export default function HomePage() {
                                     </Card>
                                 </Link>
                             ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Never Miss a Deadline Section */}
+                <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+                    <div className="max-w-7xl mx-auto px-4">
+                        <div className="grid lg:grid-cols-2 gap-12 items-center">
+                            <div>
+                                <div className="inline-flex items-center gap-2 bg-red-50 border border-red-200 px-4 py-2 rounded-full text-red-700 text-sm font-medium mb-6">
+                                    <AlertTriangle className="w-4 h-4" />
+                                    <span>$2.3M in penalties prevented annually</span>
+                                </div>
+                                <h2 className="text-4xl font-bold text-slate-900 mb-6">
+                                    Never Miss a <span className="text-blue-600">Deadline</span> Again
+                                </h2>
+                                <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                                    Our free client portal eliminates compliance stress. Track all your deadlines,
+                                    manage documents securely, and get automated reminders before penalties kick in.
+                                </p>
+                                <div className="space-y-4 mb-8">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                            <CheckCircle2 className="w-5 h-5 text-green-600" />
+                                        </div>
+                                        <span className="text-slate-700">Automated deadline tracking across all states</span>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                            <CheckCircle2 className="w-5 h-5 text-green-600" />
+                                        </div>
+                                        <span className="text-slate-700">Smart email & SMS reminders</span>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                            <CheckCircle2 className="w-5 h-5 text-green-600" />
+                                        </div>
+                                        <span className="text-slate-700">Secure document storage & organization</span>
+                                    </div>
+                                </div>
+                                <Link href="/portal">
+                                    <Button className="bg-blue-600 hover:bg-blue-700 px-8 py-6 text-lg rounded-xl shadow-xl shadow-blue-600/20 transition-all hover:scale-105 font-bold">
+                                        Create Free Account <ArrowRight className="ml-2 h-5 w-5" />
+                                    </Button>
+                                </Link>
+                            </div>
+                            <div className="relative">
+                                <div className="bg-white rounded-3xl p-8 shadow-2xl shadow-blue-100 border border-slate-100">
+                                    <div className="flex items-center justify-between mb-6">
+                                        <h3 className="text-xl font-bold text-slate-900">Your Compliance Dashboard</h3>
+                                        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <div className="flex items-center justify-between p-4 bg-green-50 rounded-xl border border-green-200">
+                                            <div className="flex items-center gap-3">
+                                                <Calendar className="w-5 h-5 text-green-600" />
+                                                <div>
+                                                    <p className="font-semibold text-slate-900">Delaware Franchise Tax</p>
+                                                    <p className="text-sm text-slate-600">Due in 14 days</p>
+                                                </div>
+                                            </div>
+                                            <CheckCircle2 className="w-5 h-5 text-green-600" />
+                                        </div>
+                                        <div className="flex items-center justify-between p-4 bg-yellow-50 rounded-xl border border-yellow-200">
+                                            <div className="flex items-center gap-3">
+                                                <Bell className="w-5 h-5 text-yellow-600" />
+                                                <div>
+                                                    <p className="font-semibold text-slate-900">Wyoming Annual Report</p>
+                                                    <p className="text-sm text-slate-600">Due in 30 days</p>
+                                                </div>
+                                            </div>
+                                            <Clock className="w-5 h-5 text-yellow-600" />
+                                        </div>
+                                        <div className="flex items-center justify-between p-4 bg-blue-50 rounded-xl border border-blue-200">
+                                            <div className="flex items-center gap-3">
+                                                <FileText className="w-5 h-5 text-blue-600" />
+                                                <div>
+                                                    <p className="font-semibold text-slate-900">Sales Tax Filing (CA)</p>
+                                                    <p className="text-sm text-slate-600">Due in 7 days</p>
+                                                </div>
+                                            </div>
+                                            <AlertTriangle className="w-5 h-5 text-orange-500" />
+                                        </div>
+                                    </div>
+                                    <div className="mt-6 p-4 bg-slate-50 rounded-xl">
+                                        <p className="text-sm text-slate-600 mb-2">Compliance Score</p>
+                                        <div className="flex items-center gap-2">
+                                            <div className="flex-1 bg-slate-200 rounded-full h-2">
+                                                <div className="bg-green-500 h-2 rounded-full w-4/5"></div>
+                                            </div>
+                                            <span className="text-sm font-bold text-slate-900">98%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="absolute -top-4 -right-4 w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <Shield className="w-10 h-10 text-blue-600" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>

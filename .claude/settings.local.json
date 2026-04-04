@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//g//**)",
+      "Bash(ls /mnt/)",
+      "Bash(cmd.exe /c 'wmic logicaldisk get caption')"
+    ]
+  }
+}
