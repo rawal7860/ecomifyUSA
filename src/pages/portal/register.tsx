@@ -629,19 +629,11 @@ export default function RegisterPage() {
                             {formationPackages.map((pkg) => (
                                 <Card
                                     key={pkg.id}
-                                    className={`cursor-pointer transition-all hover:shadow-lg ${
+                                    className={`transition-all hover:shadow-lg ${
                                         watchedSelectedServices.includes(pkg.id)
                                             ? 'border-blue-500 bg-blue-50'
                                             : 'border-slate-200 hover:border-blue-300'
                                     }`}
-                                    onClick={() => {
-                                        const current = watchedSelectedServices || [];
-                                        if (current.includes(pkg.id)) {
-                                            setValue("selectedServices", current.filter(id => id !== pkg.id));
-                                        } else {
-                                            setValue("selectedServices", [...current, pkg.id]);
-                                        }
-                                    }}
                                 >
                                     <CardContent className="p-4">
                                         <div className="flex items-start justify-between mb-3">
@@ -651,7 +643,14 @@ export default function RegisterPage() {
                                             </div>
                                             <Checkbox
                                                 checked={watchedSelectedServices.includes(pkg.id)}
-                                                onChange={() => {}} // Handled by card click
+                                                onCheckedChange={(checked) => {
+                                                    const current = watchedSelectedServices || [];
+                                                    if (checked) {
+                                                        setValue("selectedServices", [...current, pkg.id]);
+                                                    } else {
+                                                        setValue("selectedServices", current.filter(id => id !== pkg.id));
+                                                    }
+                                                }}
                                             />
                                         </div>
                                         <div className="text-lg font-bold text-blue-600">
