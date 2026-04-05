@@ -151,33 +151,61 @@ export default function RegisterPage() {
         setSubmitError(null);
 
         try {
-            // Create company first
-            const { data: company, error: companyError } = await supabase
-                .from('companies')
-                .insert({
-                    name: data.companyName || `${data.fullName}'s Company`,
-                    user_id: null // Will be set when user authenticates
-                })
-                .select()
-                .single();
-
-            if (companyError) throw companyError;
-
-            // Create client
+            // First insert into clients table
             const { data: client, error: clientError } = await supabase
                 .from('clients')
                 .insert({
-                    company_id: company.id,
                     name: data.fullName,
                     email: data.email,
-                    phone: `${data.whatsappCountryCode}${data.whatsappNumber}`
+                    phone: `${data.whatsappCountryCode}${data.whatsappNumber}`,
+                    country: data.country,
+                    address: data.address
                 })
                 .select()
                 .single();
 
             if (clientError) throw clientError;
 
-            // Create services based on selection
+            // If company details exist (existing or reminders), insert into companies table
+            if ((data.companyStatus === 'existing' || data.companyStatus === 'reminders') && data.companyName) {
+                const { data: company, error: companyError } = await supabase
+                    .from('companies')
+                    .insert({
+                        client_id: client.id,
+                        name: data.companyName,
+                        state_of_incorporation: data.stateOfIncorporation,
+                        date_of_formation: data.dateOfFormation,
+                        ein_number: data.einNumber,
+                        sales_tax_frequency: data.salesTaxFrequency
+                    })
+                    .select()
+                    .single();
+
+                if (companyError) throw companyError;
+
+                // Insert active services
+                if (data.activeServices && data.activeServices.length > 0) {
+                    const existingServices = data.activeServices.map(serviceId => {
+                        const service = serviceOptions.find(s => s.id === serviceId);
+                        return {
+                            client_id: client.id,
+                            service_name: service?.name || serviceId,
+                            description: service?.description || '',
+                            status: 'active'
+                        };
+                    });
+
+                    if (existingServices.length > 0) {
+                        const { error: existingServicesError } = await supabase
+                            .from('client_services')
+                            .insert(existingServices);
+
+                        if (existingServicesError) throw existingServicesError;
+                    }
+                }
+            }
+
+            // Insert selected services (formation packages)
             if (data.selectedServices && data.selectedServices.length > 0) {
                 const servicesToInsert = data.selectedServices.map(serviceId => {
                     const service = formationPackages.find(p => p.id === serviceId);
@@ -194,27 +222,6 @@ export default function RegisterPage() {
                     .insert(servicesToInsert);
 
                 if (servicesError) throw servicesError;
-            }
-
-            // If existing company, create services from active services
-            if ((data.companyStatus === 'existing' || data.companyStatus === 'reminders') && data.activeServices) {
-                const existingServices = data.activeServices.map(serviceId => {
-                    const service = serviceOptions.find(s => s.id === serviceId);
-                    return {
-                        client_id: client.id,
-                        service_name: service?.name || serviceId,
-                        description: service?.description || '',
-                        status: 'active'
-                    };
-                });
-
-                if (existingServices.length > 0) {
-                    const { error: existingServicesError } = await supabase
-                        .from('client_services')
-                        .insert(existingServices);
-
-                    if (existingServicesError) throw existingServicesError;
-                }
             }
 
             // Move to confirmation step
