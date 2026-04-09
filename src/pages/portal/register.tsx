@@ -173,10 +173,10 @@ export default function RegisterPage() {
                     .insert({
                         client_id: client.id,
                         name: data.companyName,
-                        state_of_incorporation: data.stateOfIncorporation,
-                        date_of_formation: data.dateOfFormation,
-                        ein_number: data.einNumber,
-                        sales_tax_frequency: data.salesTaxFrequency
+                        state: data.stateOfIncorporation || null,
+                        formation_date: data.dateOfFormation || null,
+                        ein: data.einNumber || null,
+                        sales_tax_frequency: data.salesTaxFrequency || null
                     })
                     .select()
                     .single();
@@ -190,7 +190,7 @@ export default function RegisterPage() {
                         return {
                             client_id: client.id,
                             service_name: service?.name || serviceId,
-                            description: service?.description || '',
+                            description: service?.description || null,
                             status: 'active'
                         };
                     });
@@ -212,7 +212,7 @@ export default function RegisterPage() {
                     return {
                         client_id: client.id,
                         service_name: service?.name || serviceId,
-                        description: service?.description || '',
+                        description: service?.description || null,
                         status: 'active'
                     };
                 });
