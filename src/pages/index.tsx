@@ -275,6 +275,15 @@ export default function HomePage() {
 
                 {/* Hero Section with Globe */}
                 <section className="pt-32 pb-20 lg:pt-48 lg:pb-32 bg-slate-50 relative overflow-hidden">
+                    {/* Animated Ribbon Background */}
+                    <div className="absolute inset-0 z-0 pointer-events-none">
+                        <svg className="w-full h-full" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+                            <path className="ribbon-path ribbon-path-1" d="M-200 200 Q300 100 600 250 T1200 200" />
+                            <path className="ribbon-path ribbon-path-2" d="M-150 400 Q400 300 700 450 T1150 400" />
+                            <path className="ribbon-path ribbon-path-3" d="M-250 600 Q350 500 650 650 T1250 600" />
+                            <path className="ribbon-path ribbon-path-4" d="M-100 100 Q450 50 750 200 T1300 150" />
+                        </svg>
+                    </div>
                     <div className="absolute top-0 left-0 w-1/2 h-full z-0 overflow-hidden">
                         <div
                             className="w-full h-full bg-cover bg-center bg-no-repeat opacity-40"
@@ -832,6 +841,47 @@ export default function HomePage() {
 
                 {/* Footer */}
                 <Footer />
+                <style jsx>{`
+                    .ribbon-path {
+                        fill: none;
+                        stroke-width: 2;
+                        stroke-linecap: round;
+                        stroke-linejoin: round;
+                        opacity: 0.15;
+                    }
+                    .ribbon-path-1 {
+                        stroke: #3b82f6;
+                        animation: flow1 25s ease-in-out infinite;
+                    }
+                    .ribbon-path-2 {
+                        stroke: #6366f1;
+                        animation: flow2 30s ease-in-out infinite;
+                    }
+                    .ribbon-path-3 {
+                        stroke: #2563eb;
+                        animation: flow3 28s ease-in-out infinite;
+                    }
+                    .ribbon-path-4 {
+                        stroke: #4f46e5;
+                        animation: flow4 26s ease-in-out infinite;
+                    }
+                    @keyframes flow1 {
+                        0%, 100% { transform: translateX(-5%) translateY(0); }
+                        50% { transform: translateX(5%) translateY(2%); }
+                    }
+                    @keyframes flow2 {
+                        0%, 100% { transform: translateX(5%) translateY(0); }
+                        50% { transform: translateX(-5%) translateY(-2%); }
+                    }
+                    @keyframes flow3 {
+                        0%, 100% { transform: translateX(-3%) translateY(0); }
+                        50% { transform: translateX(7%) translateY(3%); }
+                    }
+                    @keyframes flow4 {
+                        0%, 100% { transform: translateX(4%) translateY(0); }
+                        50% { transform: translateX(-6%) translateY(-1%); }
+                    }
+                `}</style>
             </div>
         </>
     );
