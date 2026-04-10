@@ -38,6 +38,7 @@ export default function EstoniaEResidencyPage() {
         </div>
 
         <header className="bg-white border-b sticky top-0 z-10">
+          <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
               <Link href="/services" className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700">
                 <ArrowLeft className="w-4 h-4" /> Back to Services
