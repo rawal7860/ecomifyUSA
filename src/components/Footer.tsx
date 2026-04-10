@@ -38,6 +38,7 @@ export default function Footer() {
                             <li><Link href="/services" className="hover:text-white transition-colors">UK Limited Company</Link></li>
                             <li><Link href="/services" className="hover:text-white transition-colors">Sales Tax Compliance</Link></li>
                             <li><Link href="/services" className="hover:text-white transition-colors">Delaware Franchise Tax</Link></li>
+                            <li><Link href="/services/estonia-e-residency" className="hover:text-white transition-colors">Estonia e-Residency</Link></li>
                             <li><Link href="/services" className="hover:text-white transition-colors">Tax Exemption</Link></li>
                             <li><Link href="/services" className="hover:text-white transition-colors">IRS Tax Filing</Link></li>
                         </ul>

@@ -49,6 +49,13 @@ export default function ServicesPage() {
       price: "Contact for Quote",
       desc: "Form 1120 + Form 5472 compliance for foreign-owned US LLCs. Avoid $25,000+ penalties.",
       features: ["Form 1120 Preparation", "Form 5472 Preparation", "Financial Data Review", "Deadline Management"]
+    },
+    {
+      icon: Globe,
+      title: "Estonia e-Residency & OÜ Formation",
+      price: "From $597 + €190 fee",
+      desc: "Remote EU business setup with Estonia e-Residency, OÜ formation, and VAT registration support.",
+      features: ["100% online e-Residency help", "Estonia OÜ company formation", "EU VAT registration support", "EU market-ready business structure"]
     }
   ];
 

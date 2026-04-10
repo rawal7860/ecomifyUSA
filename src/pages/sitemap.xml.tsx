@@ -17,6 +17,7 @@ const PAGES = [
     { path: "/services/delaware-franchise-tax",         priority: "0.7",  changefreq: "monthly" },
     { path: "/services/global-ecommerce-support",       priority: "0.7",  changefreq: "monthly" },
     { path: "/services/income-tax-cleanup",             priority: "0.7",  changefreq: "monthly" },
+    { path: "/services/estonia-e-residency",            priority: "0.7",  changefreq: "monthly" },
     { path: "/about",                                   priority: "0.6",  changefreq: "monthly" },
     { path: "/case-studies",                            priority: "0.6",  changefreq: "monthly" },
     { path: "/privacy-policy",                          priority: "0.3",  changefreq: "yearly"  },
