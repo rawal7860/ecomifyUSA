@@ -19,6 +19,16 @@ const posts = [
         featured: true,
     },
     {
+        slug: "/blog/wa-excise-tax-sst-avalara-case-study",
+        title: "How We Fixed a Washington State Excise Tax Crisis for an Amazon FBA Seller (And Why Avalara Missed It)",
+        excerpt: "A foreign-owned US LLC selling on Amazon FBA owed Washington B&O tax that Avalara never flagged. We assessed the liability, filed three months of overdue returns, and brought total tax due to $0 using Washington's Small Business Credit.",
+        category: "Case Study",
+        categoryColor: "bg-purple-100 text-purple-700",
+        readTime: "6 min read",
+        audience: "🌍 FBA Sellers",
+        featured: false,
+    },
+    {
         slug: "/which-state",
         title: "Which US state should you form your LLC in? Complete 2026 guide",
         excerpt: "Wyoming, New Mexico, Missouri or Arizona? We compare the best states for international e-commerce sellers — and expose why Delaware, California, and New York are traps that cost you thousands.",
@@ -100,7 +110,7 @@ const posts = [
     },
 ];
 
-const categories = ["All", "LLC Formation", "State Comparison", "Sales Tax", "EIN & Tax IDs", "Tax Exemptions", "Banking", "US Sellers"];
+const categories = ["All", "LLC Formation", "State Comparison", "Sales Tax", "EIN & Tax IDs", "Tax Exemptions", "Banking", "US Sellers", "Case Study"];
 
 export default function BlogIndexPage() {
     const router = useRouter();
