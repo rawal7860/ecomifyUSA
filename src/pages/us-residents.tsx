@@ -2,65 +2,13 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
-    CheckCircle2, ArrowRight, Zap, Shield, Clock,
-    DollarSign, Star, ChevronDown, Phone, Mail,
-    ShoppingBag, TrendingUp, FileText, Building2, AlertTriangle
+    CheckCircle2, ArrowRight, ChevronDown, Phone, AlertTriangle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
 import { SEO } from "@/components/SEO";
 
-const advantages = [
-    {
-        icon: "⚡",
-        title: "EIN in 1 hour",
-        desc: "As a US citizen with an SSN, you get your EIN instantly online via the IRS website — no fax, no waiting 15-30 days. Your business is ready to operate the same day.",
-        highlight: true,
-    },
-    {
-        icon: "🏠",
-        title: "No registered agent needed",
-        desc: "When you form your LLC in your home state, you can be your own registered agent. That's $100-$300/year saved — every year — compared to international clients who always need one.",
-        highlight: true,
-    },
-    {
-        icon: "🏦",
-        title: "Real physical bank accounts",
-        desc: "Walk into Chase, Bank of America, Wells Fargo, or any local credit union and open a real US business account same day. International clients are limited to fintech-only options like Wise, Mercury, and Payoneer — which have transfer limits, holding risks, and no physical branches.",
-        highlight: true,
-    },
-    {
-        icon: "🏛️",
-        title: "Form in your home state",
-        desc: "No need to form in Wyoming or Delaware. Form in your own state — simpler compliance, no foreign LLC fees, and you already know your state's rules. Forming out of state creates double compliance costs.",
-        highlight: true,
-    },
-    {
-        icon: "💳",
-        title: "Business credit cards & loans",
-        desc: "US citizens can apply for business credit cards (Chase Ink, AmEx Business, Capital One Spark), SBA loans, and business lines of credit. International clients have almost no access to US business credit.",
-        highlight: false,
-    },
-    {
-        icon: "💰",
-        title: "Full payment processing",
-        desc: "Stripe, PayPal, Square, Shopify Payments — all available without verification hurdles. Your SSN makes KYC instant. International sellers often get accounts frozen or rejected.",
-        highlight: false,
-    },
-    {
-        icon: "📦",
-        title: "Amazon & Walmart priority",
-        desc: "US-based LLCs get faster seller account approvals, access to all seller programs, Brand Registry, FBA, and Walmart Fulfillment Services without extra documentation hurdles.",
-        highlight: false,
-    },
-    {
-        icon: "📊",
-        title: "Simpler US tax filing",
-        desc: "File Schedule C or Form 1065 with your personal return. No Form 5472, no Form 1120 complexity that foreign-owned LLCs must navigate. Your CPA can handle it affordably.",
-        highlight: false,
-    },
-];
 
 const bankComparison = [
     {
@@ -74,7 +22,7 @@ const bankComparison = [
         type: "🌍 International Client",
         banks: ["Mercury (fintech only)", "Wise Business", "Payoneer", "Relay", "Airwallex"],
         features: ["Online only — no branches", "Debit card (limited)", "No SBA loans", "No business credit line", "Limited check support", "Higher wire fees"],
-        color: "border-slate-200 bg-slate-50",
+        color: "border-slate-200 bg-paper",
         labelColor: "bg-slate-400",
     },
 ];
@@ -131,10 +79,11 @@ export default function USResidentsPage() {
             <SEO
                 title="LLC Formation for US Citizens Starting Ecommerce | ecomifyUSA"
                 description="US citizens get huge advantages forming an LLC — EIN in 1 hour, real bank accounts at Chase and BofA, no registered agent needed. Start your Amazon, Walmart or Shopify business today."
+                url="https://ecomifyusa.com/us-residents"
             />
-            <div className="min-h-screen bg-slate-50 font-sans">
+            <div className="min-h-screen bg-paper font-sans">
                 {/* Nav */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
@@ -142,16 +91,18 @@ export default function USResidentsPage() {
                             <Link href="/which-state" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Which State?</Link>
                             <Link href="/services" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Services</Link>
                             <Link href="/checkout">
-                                <Button className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </nav>
                         <div className="md:hidden">
                             <Link href="/checkout">
-                                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button size="sm" className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </div>
                     </div>
                 </header>
+
+                <main id="main-content">
 
                 {/* Hero */}
                 <section className="pt-20 pb-16 px-4 bg-white border-b border-slate-100 relative overflow-hidden">
@@ -169,7 +120,7 @@ export default function USResidentsPage() {
                                     As a US citizen, forming an LLC for your ecommerce business is faster, cheaper, and simpler. EIN in 1 hour. Real bank accounts. No registered agent. Form in your home state today.
                                 </p>
                                 <div className="flex flex-col sm:flex-row gap-4">
-                                    <Button size="lg" className="bg-blue-600 hover:bg-blue-700 px-8 py-6 text-lg rounded-xl font-semibold" onClick={() => router.push("/checkout")}>
+                                    <Button size="lg" className="bg-gold hover:bg-gold-bright text-white px-8 py-6 text-lg rounded-xl font-semibold" onClick={() => router.push("/checkout")}>
                                         Start My LLC Today <ArrowRight className="ml-2 w-5 h-5" />
                                     </Button>
                                     <Button size="lg" variant="outline" className="px-8 py-6 text-lg rounded-xl border-slate-200" onClick={() => router.push("/pricing")}>
@@ -196,7 +147,7 @@ export default function USResidentsPage() {
                 </section>
 
                 {/* US vs International comparison table */}
-                <section className="py-16 px-4 bg-slate-50">
+                <section className="py-16 px-4 bg-paper">
                     <div className="max-w-4xl mx-auto">
                         <h2 className="text-3xl font-bold text-slate-900 text-center mb-3">Your advantages over international sellers</h2>
                         <p className="text-slate-500 text-center mb-10">International clients face significant hurdles at every step. As a US citizen, you skip all of them.</p>
@@ -217,7 +168,7 @@ export default function USResidentsPage() {
                                 { item: "State choice", us: "Form in home state — simple", intl: "Must choose carefully to avoid double fees" },
                                 { item: "Annual compliance", us: "One state only", intl: "Complex multi-state requirements" },
                             ].map((r, i) => (
-                                <div key={i} className={`grid grid-cols-3 border-t border-slate-100 ${i % 2 === 0 ? "bg-white" : "bg-slate-50/50"}`}>
+                                <div key={i} className={`grid grid-cols-3 border-t border-slate-100 ${i % 2 === 0 ? "bg-white" : "bg-paper/50"}`}>
                                     <div className="p-4 text-sm font-medium text-slate-700">{r.item}</div>
                                     <div className="p-4 text-sm text-center text-green-600 font-semibold">{r.us}</div>
                                     <div className="p-4 text-sm text-center text-slate-400">{r.intl}</div>
@@ -308,7 +259,7 @@ export default function USResidentsPage() {
                         <p className="text-slate-500 text-center mb-10">Your LLC works across all major US ecommerce platforms.</p>
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {platforms.map((p, i) => (
-                                <div key={i} className="bg-slate-50 rounded-2xl border border-slate-200 p-5 hover:border-blue-300 hover:shadow-md transition-all">
+                                <div key={i} className="bg-paper rounded-2xl border border-slate-200 p-5 hover:border-blue-300 hover:shadow-md transition-all">
                                     <div className="text-2xl mb-2">{p.icon}</div>
                                     <h3 className="font-bold text-slate-900 mb-1">{p.name}</h3>
                                     <p className="text-sm text-slate-500 leading-relaxed">{p.desc}</p>
@@ -319,7 +270,7 @@ export default function USResidentsPage() {
                 </section>
 
                 {/* Steps */}
-                <section className="py-16 px-4 bg-slate-50">
+                <section className="py-16 px-4 bg-paper">
                     <div className="max-w-4xl mx-auto">
                         <h2 className="text-3xl font-bold text-slate-900 text-center mb-3">From idea to selling in 6 steps</h2>
                         <p className="text-slate-500 text-center mb-10">We handle the paperwork. You focus on building your business.</p>
@@ -366,6 +317,8 @@ export default function USResidentsPage() {
                         <p className="text-blue-200 text-sm mt-6">All 50 states covered · Same-day EIN guidance · Sales tax compliance included</p>
                     </div>
                 </section>
+
+                </main>
 
                 <Footer />
             </div>

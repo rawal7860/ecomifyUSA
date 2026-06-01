@@ -1,17 +1,22 @@
 import { cn } from "@/lib/utils";
 import { Html, Head, Main, NextScript } from "next/document";
-import { SEOElements } from "@/components/SEO";
 
 export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <SEOElements />
+        {/* Document-level static meta only.
+            Page-level <SEO /> components inject title, description, canonical, OG, JSON-LD. */}
+        <meta charSet="utf-8" />
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="theme-color" content="#2563eb" />
+
         {/*
           CRITICAL: DO NOT REMOVE THIS SCRIPT
           The Softgen AI monitoring script is essential for core app functionality.
           The application will not function without it.
         */}
+        <link rel="preconnect" href="https://cdn.softgen.ai" />
         <script
           src="https://cdn.softgen.ai/script.js"
           async
@@ -20,7 +25,7 @@ export default function Document() {
       </Head>
       <body
         className={cn(
-          "min-h-screen w-full scroll-smooth bg-background text-foreground antialiased"
+          "min-h-screen w-full scroll-smooth bg-background text-foreground antialiased",
         )}
       >
         <Main />

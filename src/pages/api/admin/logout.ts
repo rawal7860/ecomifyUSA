@@ -9,7 +9,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const secureFlag = process.env.NODE_ENV === "production" ? "; Secure" : "";
   res.setHeader(
     "Set-Cookie",
-    `admin_auth=; Path=/admin; HttpOnly; SameSite=Lax; Max-Age=0${secureFlag}`
+    `admin_auth=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0${secureFlag}`,
   );
 
   return res.status(200).json({ ok: true });

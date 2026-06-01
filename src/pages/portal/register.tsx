@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import {
     ArrowRight, ArrowLeft, CheckCircle, User, Building2,
-    FileText, CreditCard, Phone, MapPin, Calendar,
-    Mail, Globe, ChevronDown, AlertCircle, Loader2
+    FileText, CreditCard, AlertCircle, Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,14 +13,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Progress } from "@/components/ui/progress";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { createClient } from "@supabase/supabase-js";
+import { Card, CardContent } from "@/components/ui/card";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { supabase as typedSupabase } from "@/integrations/supabase/client";
 import { SEO } from "@/components/SEO";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// The generated Database type does not yet include the portal tables, so use the
+// untyped client view for these inserts instead of casting to `any`.
+const supabase: SupabaseClient = typedSupabase;
 import Logo from "@/components/Logo";
 import Footer from "@/components/Footer";
 
@@ -113,7 +111,6 @@ type FormData = {
 };
 
 export default function RegisterPage() {
-    const router = useRouter();
     const [currentStep, setCurrentStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState<string | null>(null);
@@ -168,7 +165,7 @@ export default function RegisterPage() {
 
             // If company details exist (existing or reminders), insert into companies table
             if ((data.companyStatus === 'existing' || data.companyStatus === 'reminders') && data.companyName) {
-                const { data: company, error: companyError } = await supabase
+                const { error: companyError } = await supabase
                     .from('companies')
                     .insert({
                         client_id: client.id,
@@ -227,9 +224,9 @@ export default function RegisterPage() {
             // Move to confirmation step
             setCurrentStep(5);
 
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Registration error:', error);
-            setSubmitError(error.message || 'An error occurred during registration');
+            setSubmitError(error instanceof Error ? error.message : 'An error occurred during registration');
         } finally {
             setIsSubmitting(false);
         }
@@ -669,7 +666,7 @@ export default function RegisterPage() {
                         </div>
 
                         {watchedSelectedServices.length > 0 && (
-                            <div className="mt-6 p-4 bg-slate-50 rounded-lg">
+                            <div className="mt-6 p-4 bg-paper rounded-lg">
                                 <h3 className="font-semibold text-slate-900 mb-2">Selected Services:</h3>
                                 <div className="space-y-1">
                                     {watchedSelectedServices.map((serviceId) => {
@@ -707,7 +704,7 @@ export default function RegisterPage() {
                             Welcome to ecomifyUSA! Your client portal account has been set up.
                         </p>
 
-                        <div className="bg-slate-50 rounded-lg p-6 text-left max-w-md mx-auto">
+                        <div className="bg-paper rounded-lg p-6 text-left max-w-md mx-auto">
                             <h3 className="font-semibold text-slate-900 mb-4">Next Steps:</h3>
                             <ul className="space-y-2 text-sm text-slate-600">
                                 <li className="flex items-center gap-2">
@@ -731,7 +728,7 @@ export default function RegisterPage() {
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Link href="/portal">
-                                <Button className="bg-blue-600 hover:bg-blue-700">
+                                <Button className="bg-gold hover:bg-gold-bright text-white">
                                     Go to Portal <ArrowRight className="ml-2 h-4 w-4" />
                                 </Button>
                             </Link>
@@ -773,10 +770,11 @@ export default function RegisterPage() {
             <SEO
                 title="Register for Client Portal - ecomifyUSA"
                 description="Create your free client portal account for deadline tracking, document management, and compliance monitoring."
+                noIndex
             />
-            <div className="min-h-screen bg-slate-50 font-sans">
+            <div className="min-h-screen bg-paper font-sans">
                 {/* Navigation */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
@@ -837,7 +835,7 @@ export default function RegisterPage() {
                                         type="button"
                                         onClick={nextStep}
                                         disabled={!canProceedToNext() || isSubmitting}
-                                        className="bg-blue-600 hover:bg-blue-700"
+                                        className="bg-gold hover:bg-gold-bright text-white"
                                     >
                                         Next
                                         <ArrowRight className="ml-2 h-4 w-4" />
@@ -846,7 +844,7 @@ export default function RegisterPage() {
                                     <Button
                                         type="submit"
                                         disabled={!canProceedToNext() || isSubmitting}
-                                        className="bg-blue-600 hover:bg-blue-700"
+                                        className="bg-gold hover:bg-gold-bright text-white"
                                     >
                                         {isSubmitting ? (
                                             <>

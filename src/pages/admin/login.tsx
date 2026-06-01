@@ -1,7 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
-import Link from "next/link";
 import { Eye, EyeOff, AlertCircle, Lock } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -46,9 +45,10 @@ export default function AdminLoginPage() {
       <SEO
         title="Admin Login - ecomifyUSA"
         description="Secure admin login for ecomifyUSA client portal management."
+        noIndex
       />
-      <div className="min-h-screen bg-slate-50 flex flex-col">
-        <header className="bg-white/80 backdrop-blur-md border-b border-slate-200">
+      <div className="min-h-screen bg-paper flex flex-col">
+        <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
           <div className="max-w-7xl mx-auto px-4 h-20 flex items-center">
             <Logo />
           </div>
@@ -112,7 +112,7 @@ export default function AdminLoginPage() {
                       </div>
                     )}
 
-                    <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
+                    <Button type="submit" className="w-full bg-gold hover:bg-gold-bright text-white">
                       {loading ? "Signing in..." : "Sign In"}
                     </Button>
                   </form>

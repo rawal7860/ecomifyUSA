@@ -18,7 +18,9 @@ export default function SignupPage() {
     const [fullName, setFullName] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const [success, setSuccess] = useState(false);
+    // success state is reserved for the inline confirmation Alert; signup currently
+    // redirects on success, so only the value is read.
+    const [success] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -45,9 +47,9 @@ export default function SignupPage() {
 
             // Success - redirect to login
             router.push("/login?message=Check your email to confirm your account");
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error("Signup error:", err);
-            setError(err.message || "Failed to create account. Please try again.");
+            setError(err instanceof Error ? err.message : "Failed to create account. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -58,6 +60,7 @@ export default function SignupPage() {
             <SEO
                 title="Sign Up - ecomifyUSA"
                 description="Create your ecomifyUSA account to start your US business formation journey."
+                noIndex
             />
 
             <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-4">
@@ -85,7 +88,7 @@ export default function SignupPage() {
 
                                 <div className="space-y-3">
                                     <p className="text-2xl font-bold text-slate-900">Join 300+ entrepreneurs</p>
-                                    <p className="text-slate-600">who trust Salestaxus LLC for their business needs</p>
+                                    <p className="text-slate-600">who trust ecomifyUSA LLC for their business needs</p>
                                 </div>
 
                                 <div className="space-y-2 pt-4">
@@ -110,20 +113,20 @@ export default function SignupPage() {
                         <CardHeader className="space-y-2">
                             <CardTitle className="text-2xl font-bold text-slate-900">Create Your Account</CardTitle>
                             <CardDescription className="text-slate-600">
-                                Start your business journey with Salestaxus LLC
+                                Start your business journey with ecomifyUSA LLC
                             </CardDescription>
                         </CardHeader>
 
                         <form onSubmit={handleSubmit}>
                             <CardContent className="space-y-4">
                                 {error && (
-                                    <Alert variant="destructive">
+                                    <Alert variant="destructive" role="alert" aria-live="assertive">
                                         <AlertDescription>{error}</AlertDescription>
                                     </Alert>
                                 )}
 
                                 {success && (
-                                    <Alert className="border-green-200 bg-green-50">
+                                    <Alert className="border-green-200 bg-green-50" role="status" aria-live="polite">
                                         <CheckCircle2 className="w-4 h-4 text-green-600" />
                                         <AlertDescription className="text-green-800">
                                             Account created! Redirecting to sign in...
@@ -136,6 +139,7 @@ export default function SignupPage() {
                                     <Input
                                         id="fullName"
                                         type="text"
+                                        autoComplete="name"
                                         placeholder="John Doe"
                                         value={fullName}
                                         onChange={(e) => setFullName(e.target.value)}
@@ -149,6 +153,7 @@ export default function SignupPage() {
                                     <Input
                                         id="email"
                                         type="email"
+                                        autoComplete="email"
                                         placeholder="you@example.com"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
@@ -162,6 +167,7 @@ export default function SignupPage() {
                                     <Input
                                         id="password"
                                         type="password"
+                                        autoComplete="new-password"
                                         placeholder="••••••••"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
@@ -176,6 +182,7 @@ export default function SignupPage() {
                                     <Input
                                         id="confirmPassword"
                                         type="password"
+                                        autoComplete="new-password"
                                         placeholder="••••••••"
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
@@ -189,7 +196,7 @@ export default function SignupPage() {
                             <CardFooter className="flex flex-col gap-4">
                                 <Button
                                     type="submit"
-                                    className="w-full bg-blue-600 hover:bg-blue-700"
+                                    className="w-full bg-gold hover:bg-gold-bright text-white"
                                     disabled={loading}
                                 >
                                     {loading ? "Creating Account..." : "Create Account"}

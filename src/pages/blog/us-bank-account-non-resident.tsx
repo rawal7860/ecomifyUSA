@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
-    ArrowRight, CheckCircle2, XCircle, Phone,
-    AlertTriangle, ChevronDown, ChevronUp, Building2
+    ArrowRight, CheckCircle2, Phone, ChevronDown, ChevronUp, Building2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
-import { SEO } from "@/components/SEO";
+import { SEO, articleJsonLd, breadcrumbJsonLd, faqJsonLd } from "@/components/SEO";
 
 const faqs = [
     {
@@ -52,7 +51,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
             className="border border-slate-200 rounded-xl overflow-hidden cursor-pointer"
             onClick={() => setOpen(o => !o)}
         >
-            <div className="flex items-center justify-between p-5 bg-white hover:bg-slate-50 transition-colors">
+            <div className="flex items-center justify-between p-5 bg-white hover:bg-paper transition-colors">
                 <span className="font-semibold text-slate-800 text-sm pr-4">{q}</span>
                 {open ? <ChevronUp className="w-4 h-4 text-slate-400 flex-shrink-0" /> : <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />}
             </div>
@@ -137,10 +136,23 @@ export default function USBankAccountGuide() {
                 title="How to Open a US Bank Account Without SSN: Mercury, Wise & Payoneer Guide | ecomifyUSA"
                 description="Complete guide for international LLC owners on opening a US bank account without an SSN. Mercury vs Wise vs Payoneer comparison, requirements, and step-by-step approval tips."
                 url="https://ecomifyusa.com/blog/us-bank-account-non-resident"
+                jsonLd={[
+                    articleJsonLd({
+                        title: "How to Open a US Bank Account Without SSN: Mercury, Wise & Payoneer Guide",
+                        description: "Complete guide for international LLC owners on opening a US bank account without an SSN. Mercury vs Wise vs Payoneer comparison, requirements, and step-by-step approval tips.",
+                        url: "https://ecomifyusa.com/blog/us-bank-account-non-resident",
+                    }),
+                    breadcrumbJsonLd([
+                        { name: "Home", url: "https://ecomifyusa.com/" },
+                        { name: "Blog", url: "https://ecomifyusa.com/blog" },
+                        { name: "US Bank Account for Non-Residents", url: "https://ecomifyusa.com/blog/us-bank-account-non-resident" },
+                    ]),
+                    faqJsonLd(faqs),
+                ]}
             />
             <div className="min-h-screen bg-white font-sans">
                 {/* Nav */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
@@ -149,17 +161,18 @@ export default function USBankAccountGuide() {
                             <Link href="/which-state" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Which State?</Link>
                             <Link href="/blog" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Blog</Link>
                             <Link href="/checkout">
-                                <Button className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </nav>
                         <div className="md:hidden">
                             <Link href="/checkout">
-                                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button size="sm" className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </div>
                     </div>
                 </header>
 
+                <main id="main-content">
                 <article className="max-w-3xl mx-auto px-4 py-16">
 
                     {/* Breadcrumb */}
@@ -214,7 +227,7 @@ export default function USBankAccountGuide() {
                             { title: "Tax separation", desc: "A dedicated US business account makes it straightforward to identify business income and expenses for your annual IRS filings." },
                             { title: "Lower conversion fees", desc: "Holding USD in a US account and converting only what you need, when you need it, saves money versus mandatory conversion on every payout." },
                         ].map((item, i) => (
-                            <div key={i} className="flex gap-4 p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                            <div key={i} className="flex gap-4 p-4 bg-paper border border-slate-200 rounded-xl">
                                 <CheckCircle2 className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
                                 <div>
                                     <div className="font-semibold text-slate-900 text-sm">{item.title}</div>
@@ -241,7 +254,7 @@ export default function USBankAccountGuide() {
                             </thead>
                             <tbody>
                                 {comparisonData.map((row, i) => (
-                                    <tr key={i} className={`border-t border-slate-100 ${i % 2 === 0 ? "bg-white" : "bg-slate-50"}`}>
+                                    <tr key={i} className={`border-t border-slate-100 ${i % 2 === 0 ? "bg-white" : "bg-paper"}`}>
                                         <td className="p-4 font-medium text-slate-700">{row.feature}</td>
                                         <td className="p-4 text-center text-slate-600">{row.mercury}</td>
                                         <td className="p-4 text-center text-slate-600">{row.wise}</td>
@@ -403,7 +416,7 @@ export default function USBankAccountGuide() {
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3">
                             <a href="https://wa.me/13072180376?text=Hi%2C%20I%20need%20help%20setting%20up%20a%20US%20LLC%20and%20opening%20a%20Mercury%20bank%20account." target="_blank" rel="noopener noreferrer">
-                                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                                <Button className="bg-gold hover:bg-gold-bright text-white text-white">
                                     <Phone className="mr-2 w-4 h-4" /> Chat on WhatsApp
                                 </Button>
                             </a>
@@ -461,6 +474,7 @@ export default function USBankAccountGuide() {
                         </div>
                     </div>
                 </section>
+                </main>
 
                 <Footer />
             </div>

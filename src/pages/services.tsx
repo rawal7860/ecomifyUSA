@@ -1,4 +1,4 @@
-import { SEO } from "@/components/SEO";
+import { SEO, serviceJsonLd } from "@/components/SEO";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -64,9 +64,16 @@ export default function ServicesPage() {
       <SEO
         title="Services - ecomifyUSA"
         description="Complete US business formation and tax compliance services for international entrepreneurs."
+        url="https://ecomifyusa.com/services"
+        jsonLd={serviceJsonLd({
+          name: "US LLC Formation & Tax Compliance Services",
+          description:
+            "Everything you need to form, comply, and scale your US business — LLC formation, EIN, sales tax, and IRS filings for international entrepreneurs.",
+          url: "https://ecomifyusa.com/services",
+        })}
       />
-      <div className="min-h-screen bg-slate-50">
-        <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
+      <div className="min-h-screen bg-paper">
+        <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
           <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
             <Logo />
             <Link href="/">
@@ -77,6 +84,8 @@ export default function ServicesPage() {
           </div>
         </header>
 
+        <main id="main-content">
+
         <div className="max-w-7xl mx-auto px-4 py-16">
           <div className="text-center mb-16">
             <h1 className="text-5xl font-bold text-slate-900 mb-4">Our Services</h1>
@@ -85,7 +94,7 @@ export default function ServicesPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 ec-reveal ec-reveal-up">
             {services.map((service, i) => (
               <Card key={i} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                 <CardHeader>
@@ -145,6 +154,8 @@ export default function ServicesPage() {
             </div>
           </div>
         </div>
+
+        </main>
 
         <Footer />
       </div>

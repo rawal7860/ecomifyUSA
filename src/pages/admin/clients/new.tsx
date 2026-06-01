@@ -13,13 +13,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Logo from "@/components/Logo";
 import { requireAdminAuth } from "@/lib/adminAuth";
-import { createClient } from "@supabase/supabase-js";
-import { ArrowLeft, Plus, CheckCircle2, MessageCircle } from "lucide-react";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { supabase as typedSupabase } from "@/integrations/supabase/client";
+import { ArrowLeft } from "lucide-react";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// The generated Database type does not yet include the portal tables, so use the
+// untyped client view for these inserts instead of casting to `any`.
+const supabase: SupabaseClient = typedSupabase;
 
 const countryCodes = [
   { code: "+1", label: "United States" },
@@ -63,6 +63,11 @@ type NewClientForm = {
   salesTaxFrequency: string;
   sendWelcomeMessage: boolean;
 };
+
+interface InsertedService {
+  id: string;
+  service_name: string;
+}
 
 const deadlineOffsets: Record<string, number> = {
   sales_tax: 30,
@@ -111,7 +116,7 @@ export default function AdminNewClientPage() {
     setIsSubmitting(true);
 
     try {
-      const adminSupabase = supabase as any;
+      const adminSupabase = supabase;
       const { data: company, error: companyError } = await adminSupabase
         .from("companies")
         .insert({
@@ -166,7 +171,7 @@ export default function AdminNewClientPage() {
         throw servicesError;
       }
 
-      const deadlinesInsert = (services || []).flatMap((service: any, index: number) => {
+      const deadlinesInsert = ((services || []) as InsertedService[]).flatMap((service, index) => {
         const serviceId = values.activeServices[index];
         const offset = deadlineOffsets[serviceId] || 30;
         return [
@@ -191,8 +196,8 @@ export default function AdminNewClientPage() {
 
       setMessage("Client created successfully.");
       router.push(`/admin/clients/${client.id}`);
-    } catch (err: any) {
-      setError(err?.message || "Unable to create client.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Unable to create client.");
     } finally {
       setIsSubmitting(false);
     }
@@ -203,9 +208,10 @@ export default function AdminNewClientPage() {
       <SEO
         title="Add New Client - Admin | ecomifyUSA"
         description="Create a new client record for the ecomifyUSA admin portal."
+        noIndex
       />
-      <div className="min-h-screen bg-slate-50">
-        <header className="bg-white border-b border-slate-200">
+      <div className="min-h-screen bg-paper">
+        <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
           <div className="max-w-7xl mx-auto px-4 py-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <div className="flex items-center gap-3">
@@ -318,7 +324,7 @@ export default function AdminNewClientPage() {
                 <CardContent className="space-y-4">
                   <div className="grid gap-3">
                     {serviceOptions.map((service) => (
-                      <label key={service.id} className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 cursor-pointer hover:border-blue-300">
+                      <label key={service.id} className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-paper p-4 cursor-pointer hover:border-blue-300">
                         <Checkbox
                           checked={watchedServices.includes(service.id)}
                           onCheckedChange={(checked) => {
@@ -378,7 +384,7 @@ export default function AdminNewClientPage() {
                     <p className="font-medium">Auto deadline calculation</p>
                     <p>Deadlines are generated based on state and selected services.</p>
                   </div>
-                  <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+                  <div className="rounded-3xl border border-slate-200 bg-paper p-4 text-sm text-slate-600">
                     <p className="font-semibold">Example due dates:</p>
                     <ul className="list-disc pl-5 mt-2 space-y-1">
                       <li>Sales tax: 30 days after formation</li>
@@ -402,10 +408,10 @@ export default function AdminNewClientPage() {
             )}
 
             <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-              <Link href="/admin" className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+              <Link href="/admin" className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 hover:bg-paper">
                 Cancel
               </Link>
-              <Button type="submit" className="bg-blue-600 hover:bg-blue-700" disabled={isSubmitting}>
+              <Button type="submit" className="bg-gold hover:bg-gold-bright text-white" disabled={isSubmitting}>
                 {isSubmitting ? "Creating client…" : "Create Client"}
               </Button>
             </div>

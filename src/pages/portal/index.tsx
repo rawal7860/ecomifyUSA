@@ -1,10 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import {
     Calendar, Bell, FileText, Shield, CheckCircle2,
     ArrowRight, Star, TrendingUp, Clock, AlertTriangle,
-    Users, Zap, DollarSign, Heart, Award, Lock
+    Users, Zap, DollarSign, Heart, Lock
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,8 +12,6 @@ import Logo from "@/components/Logo";
 import { SEO } from "@/components/SEO";
 
 export default function PortalPage() {
-    const router = useRouter();
-
     const features = [
         {
             icon: <Calendar className="w-6 h-6" />,
@@ -81,10 +78,11 @@ export default function PortalPage() {
             <SEO
                 title="Client Portal - Never Miss a Deadline | ecomifyUSA"
                 description="Free client portal for e-commerce entrepreneurs. Track deadlines, manage documents, and stay compliant across all US states. Prevent costly penalties with automated reminders."
+                url="https://ecomifyusa.com/portal"
             />
-            <div className="min-h-screen bg-slate-50 font-sans">
+            <div className="min-h-screen bg-paper font-sans">
                 {/* Navigation */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
@@ -93,14 +91,14 @@ export default function PortalPage() {
                             <Link href="/services" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Services</Link>
                             <Link href="/login" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Login</Link>
                             <Link href="/portal/register">
-                                <Button className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20">Sign Up Free</Button>
+                                <Button className="bg-gold hover:bg-gold-bright text-white shadow-lg shadow-blue-600/20">Sign Up Free</Button>
                             </Link>
                         </nav>
                     </div>
                 </header>
 
                 {/* Hero Section */}
-                <section className="pt-32 pb-20 bg-slate-50 relative overflow-hidden">
+                <section className="pt-32 pb-20 bg-paper relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-red-100 rounded-full blur-3xl opacity-30 -translate-y-1/2 translate-x-1/3"></div>
                     <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-100 rounded-full blur-3xl opacity-50 translate-y-1/3 -translate-x-1/4"></div>
 
@@ -127,7 +125,7 @@ export default function PortalPage() {
                                 <Link href="/portal/register">
                                     <Button
                                         size="lg"
-                                        className="bg-blue-600 hover:bg-blue-700 px-10 py-7 text-xl rounded-xl shadow-xl shadow-blue-600/20 transition-all hover:scale-105 font-bold"
+                                        className="bg-gold hover:bg-gold-bright text-white px-10 py-7 text-xl rounded-xl shadow-xl shadow-blue-600/20 transition-all hover:scale-105 font-bold"
                                     >
                                         Create Free Account <ArrowRight className="ml-2 h-6 w-6" />
                                     </Button>
@@ -176,7 +174,7 @@ export default function PortalPage() {
                 </section>
 
                 {/* Features Section */}
-                <section id="features" className="py-20 bg-slate-50">
+                <section id="features" className="py-20 bg-paper">
                     <div className="max-w-7xl mx-auto px-4">
                         <div className="text-center mb-16">
                             <h2 className="text-4xl font-bold text-slate-900 mb-4">Everything You Need to Stay Compliant</h2>
@@ -215,7 +213,7 @@ export default function PortalPage() {
 
                         <div className="grid md:grid-cols-3 gap-8">
                             {testimonials.map((testimonial, i) => (
-                                <Card key={i} className="bg-slate-50 border-slate-200 hover:shadow-xl transition-all duration-300">
+                                <Card key={i} className="bg-paper border-slate-200 hover:shadow-xl transition-all duration-300">
                                     <CardContent className="p-6">
                                         <div className="flex items-center gap-1 mb-4">
                                             {[...Array(testimonial.rating)].map((_, j) => (

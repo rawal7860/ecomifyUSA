@@ -8,10 +8,11 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import {
-    Shield, Lock, CheckCircle2, ArrowRight,
+    Shield, CheckCircle2, ArrowRight,
     MessageCircle, Star, Clock, Zap, ChevronDown
 } from "lucide-react";
 import { authService } from "@/services/authService";
+import { WHATSAPP_E164 as WHATSAPP_NUMBER } from "@/lib/contact";
 import Logo from "@/components/Logo";
 import Footer from "@/components/Footer";
 
@@ -32,8 +33,6 @@ const COUNTRIES = [
     "Brazil", "Mexico", "Indonesia", "Malaysia", "Philippines",
     "United States", "Other",
 ];
-
-const WHATSAPP_NUMBER = "13072180376";
 
 interface FormData {
     fullName: string;
@@ -66,6 +65,7 @@ export default function CheckoutPage() {
     const [error, setError] = useState("");
     const [submitted, setSubmitted] = useState(false);
     const [orderNumber, setOrderNumber] = useState("");
+    const [signupWarning, setSignupWarning] = useState("");
 
     const selectedService = SERVICES.find(s => s.value === form.service);
 
@@ -110,15 +110,21 @@ export default function CheckoutPage() {
 
                     const authData = await authService.signUp(form.email, form.password, form.fullName);
                     userId = authData?.data?.user?.id || null;
-                } catch {
-                    // proceed as guest
+                } catch (signupErr: unknown) {
+                    // Account creation failed — proceed as guest but tell the user so they
+                    // don't think they have a login they can't actually use.
+                    const reason =
+                        signupErr instanceof Error ? signupErr.message : "Account creation failed.";
+                    setSignupWarning(
+                        `We couldn't create your account (${reason}). Your order was saved as a guest — you can sign up later with the same email.`,
+                    );
                 }
             }
 
             const num = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
             const amount = selectedService?.price ?? 0;
 
-            const { data: order, error: orderError } = await supabase
+            const { error: orderError } = await supabase
                 .from("orders")
                 .insert({
                     user_id: userId,
@@ -144,12 +150,18 @@ export default function CheckoutPage() {
                     await fetch("/api/create-invoice", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
+                        // Field names must match the Zod schema in /api/create-invoice
+                        // (camelCase). Previously sent snake_case, so invoicing silently failed.
                         body: JSON.stringify({
-                            customer_email: form.email,
-                            customer_name: form.fullName,
+                            customerEmail: form.email,
+                            customerName: form.fullName,
                             amount,
                             description: form.service,
-                            order_id: order.id,
+                            metadata: {
+                                businessName: form.fullName,
+                                state: form.country,
+                                phone: form.whatsapp,
+                            },
                         }),
                     });
                 } catch {
@@ -172,8 +184,8 @@ export default function CheckoutPage() {
 
             setOrderNumber(num);
             setSubmitted(true);
-        } catch (err: any) {
-            setError(err.message || "Something went wrong. Please try again.");
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -184,11 +196,12 @@ export default function CheckoutPage() {
             <SEO
                 title="Get Started — ecomifyUSA"
                 description="Start your US LLC formation or compliance service. Fast, reliable, trusted by 500+ international sellers."
+                noIndex
             />
-            <div className="min-h-screen bg-slate-50 font-sans">
+            <div className="min-h-screen bg-paper font-sans">
 
                 {/* Nav */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
@@ -219,6 +232,11 @@ export default function CheckoutPage() {
                             We've received your request and a WhatsApp conversation has been opened.
                             Our team typically responds within a few hours.
                         </p>
+                        {signupWarning && (
+                            <div role="alert" className="bg-amber-50 border border-amber-200 text-amber-800 rounded-xl p-4 mb-8 text-sm text-left max-w-md mx-auto">
+                                {signupWarning}
+                            </div>
+                        )}
                         <div className="bg-white rounded-2xl border border-slate-200 p-6 mb-8 text-left space-y-3">
                             <p className="text-sm font-semibold text-slate-700 mb-4">What happens next?</p>
                             {[
@@ -411,7 +429,7 @@ export default function CheckoutPage() {
                                     </div>
 
                                     {error && (
-                                        <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl">
+                                        <div role="alert" aria-live="assertive" className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-xl">
                                             {error}
                                         </div>
                                     )}
@@ -420,7 +438,7 @@ export default function CheckoutPage() {
                                         type="submit"
                                         size="lg"
                                         disabled={loading}
-                                        className="w-full bg-blue-600 hover:bg-blue-700 h-14 text-base rounded-xl shadow-lg shadow-blue-600/20"
+                                        className="w-full bg-gold hover:bg-gold-bright text-white h-14 text-base rounded-xl shadow-lg shadow-blue-600/20"
                                     >
                                         {loading ? (
                                             <span className="flex items-center gap-2">

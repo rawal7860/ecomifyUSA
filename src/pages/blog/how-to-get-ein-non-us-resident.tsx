@@ -2,13 +2,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
-    ArrowRight, CheckCircle2, AlertTriangle, Phone,
-    FileText, Clock, ChevronDown, ChevronUp, Mail
+    ArrowRight, CheckCircle2, AlertTriangle, Phone, Clock, ChevronDown, ChevronUp
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
-import { SEO } from "@/components/SEO";
+import { SEO, articleJsonLd, breadcrumbJsonLd, faqJsonLd } from "@/components/SEO";
 
 const faqs = [
     {
@@ -52,7 +51,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
             className="border border-slate-200 rounded-xl overflow-hidden cursor-pointer"
             onClick={() => setOpen(o => !o)}
         >
-            <div className="flex items-center justify-between p-5 bg-white hover:bg-slate-50 transition-colors">
+            <div className="flex items-center justify-between p-5 bg-white hover:bg-paper transition-colors">
                 <span className="font-semibold text-slate-800 text-sm pr-4">{q}</span>
                 {open ? <ChevronUp className="w-4 h-4 text-slate-400 flex-shrink-0" /> : <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />}
             </div>
@@ -74,10 +73,23 @@ export default function EINGuide() {
                 title="How to Get an EIN as a Non-US Resident: Complete 2026 Guide | ecomifyUSA"
                 description="Step-by-step guide to getting a US EIN (Employer Identification Number) as a non-US resident using the IRS fax method. Covers Form SS-4 instructions, timeline, and common mistakes."
                 url="https://ecomifyusa.com/blog/how-to-get-ein-non-us-resident"
+                jsonLd={[
+                    articleJsonLd({
+                        title: "How to Get an EIN as a Non-US Resident: Complete 2026 Guide",
+                        description: "Step-by-step guide to getting a US EIN (Employer Identification Number) as a non-US resident using the IRS fax method. Covers Form SS-4 instructions, timeline, and common mistakes.",
+                        url: "https://ecomifyusa.com/blog/how-to-get-ein-non-us-resident",
+                    }),
+                    breadcrumbJsonLd([
+                        { name: "Home", url: "https://ecomifyusa.com/" },
+                        { name: "Blog", url: "https://ecomifyusa.com/blog" },
+                        { name: "EIN for Non-US Residents", url: "https://ecomifyusa.com/blog/how-to-get-ein-non-us-resident" },
+                    ]),
+                    faqJsonLd(faqs),
+                ]}
             />
             <div className="min-h-screen bg-white font-sans">
                 {/* Nav */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
@@ -86,17 +98,18 @@ export default function EINGuide() {
                             <Link href="/which-state" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Which State?</Link>
                             <Link href="/blog" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Blog</Link>
                             <Link href="/checkout">
-                                <Button className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </nav>
                         <div className="md:hidden">
                             <Link href="/checkout">
-                                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button size="sm" className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </div>
                     </div>
                 </header>
 
+                <main id="main-content">
                 <article className="max-w-3xl mx-auto px-4 py-16">
 
                     {/* Breadcrumb */}
@@ -158,7 +171,7 @@ export default function EINGuide() {
                             { title: "Contracts and invoices", desc: "US clients may require your EIN on W-9 forms for contractor payments over $600/year." },
                             { title: "Sales tax permits", desc: "States require an EIN when you apply for a sales tax permit or reseller certificate." },
                         ].map((item, i) => (
-                            <div key={i} className="flex gap-4 p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                            <div key={i} className="flex gap-4 p-4 bg-paper border border-slate-200 rounded-xl">
                                 <CheckCircle2 className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
                                 <div>
                                     <div className="font-semibold text-slate-900 text-sm">{item.title}</div>
@@ -251,7 +264,7 @@ export default function EINGuide() {
                                     { line: "14", val: "Principal business activity — e.g., 'E-commerce retail' or 'Import/export'" },
                                     { line: "16", val: "Check 'Other' and describe: 'LLC taxed as disregarded entity / sole proprietorship'" },
                                 ].map((r, i) => (
-                                    <tr key={i} className={`border-t border-slate-100 ${i % 2 === 0 ? "bg-white" : "bg-slate-50"}`}>
+                                    <tr key={i} className={`border-t border-slate-100 ${i % 2 === 0 ? "bg-white" : "bg-paper"}`}>
                                         <td className="p-4 font-mono font-semibold text-blue-600">{r.line}</td>
                                         <td className="p-4 text-slate-600">{r.val}</td>
                                     </tr>
@@ -262,7 +275,7 @@ export default function EINGuide() {
 
                     {/* Section 5 — Timeline */}
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">What to expect: the 15–30 day timeline</h2>
-                    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-8">
+                    <div className="bg-paper border border-slate-200 rounded-2xl p-6 mb-8">
                         <div className="space-y-4">
                             {[
                                 { day: "Day 1", event: "You fax your completed SS-4 to the IRS." },
@@ -333,7 +346,7 @@ export default function EINGuide() {
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3">
                             <a href="https://wa.me/13072180376?text=Hi%2C%20I%20need%20help%20getting%20an%20EIN%20for%20my%20US%20LLC%20as%20a%20non-US%20resident." target="_blank" rel="noopener noreferrer">
-                                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                                <Button className="bg-gold hover:bg-gold-bright text-white text-white">
                                     <Phone className="mr-2 w-4 h-4" /> Get EIN via WhatsApp
                                 </Button>
                             </a>
@@ -391,6 +404,7 @@ export default function EINGuide() {
                         </div>
                     </div>
                 </section>
+                </main>
 
                 <Footer />
             </div>

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { CheckCircle2, ArrowRight, Shield, Zap, Star, HelpCircle, ChevronDown, Phone, Mail } from "lucide-react";
+import { CheckCircle2, ArrowRight, Shield, Zap, Star, ChevronDown, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
-import { SEO } from "@/components/SEO";
+import { SEO, organizationJsonLd, faqJsonLd } from "@/components/SEO";
 
 const plans = [
     {
@@ -34,8 +34,8 @@ const plans = [
         price: 297,
         stateFee: 100,
         stateNote: "+ $100 Wyoming state fee",
-        color: "border-blue-500",
-        btnClass: "bg-blue-600 hover:bg-blue-700 text-white",
+        color: "border-gold",
+        btnClass: "bg-gold hover:bg-gold-bright text-white",
         features: [
             "Everything in Wyoming LLC",
             "BOI report filing (required by law)",
@@ -133,26 +133,30 @@ export default function PricingPage() {
             <SEO
                 title="Pricing — ecomifyUSA | US LLC Formation for Non-Residents"
                 description="Transparent pricing for US LLC formation. Wyoming LLC from $197, Delaware LLC from $347. EIN for non-residents included. No hidden fees."
+                url="https://ecomifyusa.com/pricing"
+                jsonLd={[organizationJsonLd, faqJsonLd(faqs)]}
             />
-            <div className="min-h-screen bg-slate-50 font-sans">
+            <div className="min-h-screen bg-paper font-sans">
                 {/* Nav */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
                             <Link href="/case-studies" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Case Studies</Link>
                             <Link href="/services" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Services</Link>
                             <Link href="/checkout">
-                                <Button className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </nav>
                         <div className="md:hidden">
                             <Link href="/checkout">
-                                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button size="sm" className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </div>
                     </div>
                 </header>
+
+                <main id="main-content">
 
                 {/* Hero */}
                 <section className="pt-20 pb-12 text-center px-4">
@@ -173,11 +177,11 @@ export default function PricingPage() {
 
                 {/* Pricing Cards */}
                 <section className="max-w-6xl mx-auto px-4 pb-16">
-                    <div className="grid md:grid-cols-3 gap-6">
+                    <div className="grid md:grid-cols-3 gap-6 ec-reveal ec-reveal-up">
                         {plans.map((plan, i) => (
                             <div key={i} className={`bg-white rounded-3xl border-2 ${plan.color} p-8 flex flex-col relative ${plan.badge === "Most Popular" ? "shadow-2xl shadow-blue-100 scale-[1.02]" : "shadow-sm"}`}>
                                 {plan.badge && (
-                                    <div className={`absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap ${plan.badge === "Most Popular" ? "bg-blue-600 text-white" : "bg-slate-800 text-white"}`}>
+                                    <div className={`absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap ${plan.badge === "Most Popular" ? "bg-gold text-white" : "bg-slate-800 text-white"}`}>
                                         {plan.badge === "Most Popular" ? "★ Most Popular" : plan.badge}
                                     </div>
                                 )}
@@ -185,11 +189,11 @@ export default function PricingPage() {
                                 <div className="mb-6">
                                     <h3 className="text-xl font-bold text-slate-900 mb-3">{plan.name}</h3>
                                     <div className="flex items-baseline gap-1">
-                                        <span className="text-4xl font-bold text-slate-900">${plan.price}</span>
+                                        <span className="font-mono text-4xl font-bold text-slate-900">${plan.price}</span>
                                         <span className="text-slate-500 text-sm">our fee</span>
                                     </div>
                                     <div className="mt-1 text-sm text-slate-500">{plan.stateNote}</div>
-                                    <div className="mt-2 text-xs font-semibold text-green-600 bg-green-50 px-3 py-1 rounded-full inline-block">
+                                    <div className="mt-2 text-xs font-semibold text-verify bg-green-50 px-3 py-1 rounded-full inline-block font-mono">
                                         Total: ${plan.price + plan.stateFee} all-in
                                     </div>
                                 </div>
@@ -209,7 +213,7 @@ export default function PricingPage() {
                                     ))}
                                 </ul>
 
-                                <div className="text-xs text-slate-500 bg-slate-50 rounded-xl p-3 mb-5 leading-relaxed">
+                                <div className="text-xs text-slate-500 bg-paper rounded-xl p-3 mb-5 leading-relaxed">
                                     {plan.ideal}
                                 </div>
 
@@ -237,7 +241,7 @@ export default function PricingPage() {
                     <div className="max-w-4xl mx-auto">
                         <h2 className="text-3xl font-bold text-slate-900 text-center mb-3">What you get with every plan</h2>
                         <p className="text-slate-500 text-center mb-10">We handle the entire process remotely. You never need to visit the US.</p>
-                        <div className="grid md:grid-cols-2 gap-6">
+                        <div className="grid md:grid-cols-2 gap-6 ec-reveal ec-reveal-up">
                             {[
                                 { icon: "📄", title: "Articles of Organization", desc: "We prepare and file your LLC formation documents with the Secretary of State. You receive certified copies." },
                                 { icon: "🔢", title: "EIN for non-residents", desc: "We obtain your Employer Identification Number from the IRS via fax — the only method available to non-US residents. Takes 15-30 days." },
@@ -259,7 +263,7 @@ export default function PricingPage() {
                 </section>
 
                 {/* Add-ons */}
-                <section className="py-16 px-4 bg-slate-50">
+                <section className="py-16 px-4 bg-paper">
                     <div className="max-w-4xl mx-auto">
                         <h2 className="text-3xl font-bold text-slate-900 text-center mb-3">Add-on services</h2>
                         <p className="text-slate-500 text-center mb-10">Add to any plan — before or after formation.</p>
@@ -310,6 +314,8 @@ export default function PricingPage() {
                         <p className="text-blue-200 text-sm mt-6">100% remote · No US visit needed · Money-back guarantee</p>
                     </div>
                 </section>
+
+                </main>
 
                 <Footer />
             </div>

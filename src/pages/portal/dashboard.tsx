@@ -1,35 +1,69 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import {
     Calendar, FileText, Building2, Clock, CheckCircle2,
     AlertTriangle, Download, MessageCircle, Upload, Settings,
-    LogOut, User, Bell, TrendingUp, DollarSign, MapPin
+    LogOut, User, Bell, TrendingUp, MapPin
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useAuth } from "@/contexts/AuthContext";
-import { createClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { supabase as typedSupabase } from "@/integrations/supabase/client";
 import { SEO } from "@/components/SEO";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// The generated Database type does not yet include the portal tables, so use the
+// untyped client view for these queries instead of casting to `any`.
+const supabase: SupabaseClient = typedSupabase;
 import Logo from "@/components/Logo";
 import Footer from "@/components/Footer";
+
+interface DashboardClient {
+    id: string;
+    name: string;
+    email?: string;
+    phone?: string;
+    created_at?: string;
+    company: { id: string; name: string };
+}
+
+interface DashboardDeadline {
+    id: string;
+    deadline_date: string;
+    description?: string;
+    status: string;
+    created_at?: string;
+    client_service: {
+        service_name: string;
+        client: { name: string; company: { name: string } };
+    };
+}
+
+interface DashboardDocument {
+    id: string;
+    file_name: string;
+    file_path?: string;
+    uploaded_at: string;
+    service?: { service_name: string } | null;
+}
+
+interface CompanyDetails {
+    state?: string;
+    formation_date?: string;
+    ein?: string;
+}
 
 export default function PortalDashboard() {
     const router = useRouter();
     const { user, signOut, loading: authLoading } = useAuth();
-    const [client, setClient] = useState<any>(null);
-    const [deadlines, setDeadlines] = useState<any[]>([]);
-    const [documents, setDocuments] = useState<any[]>([]);
-    const [companyDetails, setCompanyDetails] = useState<any>(null);
+    const [client, setClient] = useState<DashboardClient | null>(null);
+    const [deadlines, setDeadlines] = useState<DashboardDeadline[]>([]);
+    const [documents, setDocuments] = useState<DashboardDocument[]>([]);
+    const [companyDetails] = useState<CompanyDetails | null>(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const [, setError] = useState("");
 
     useEffect(() => {
         if (!authLoading && !user) {
@@ -40,9 +74,14 @@ export default function PortalDashboard() {
         if (user) {
             fetchDashboardData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user, authLoading, router]);
 
     const fetchDashboardData = async () => {
+        if (!user) {
+            return;
+        }
+
         try {
             setLoading(true);
 
@@ -57,7 +96,7 @@ export default function PortalDashboard() {
                     created_at,
                     company:companies(id, name)
                 `)
-                .eq('id', user!.id) // Assuming client ID matches user ID for now
+                .eq('id', user.id) // Assuming client ID matches user ID for now
                 .single();
 
             if (clientError) {
@@ -69,17 +108,17 @@ export default function PortalDashboard() {
                         name,
                         clients(id, name, email, phone, created_at)
                     `)
-                    .eq('user_id', user!.id)
+                    .eq('user_id', user.id)
                     .single();
 
                 if (companyData?.clients?.[0]) {
                     setClient({
                         ...companyData.clients[0],
                         company: { id: companyData.id, name: companyData.name }
-                    });
+                    } as unknown as DashboardClient);
                 }
             } else {
-                setClient(clientData);
+                setClient(clientData as unknown as DashboardClient);
             }
 
             // Fetch deadlines
@@ -102,7 +141,7 @@ export default function PortalDashboard() {
                 .order('deadline_date', { ascending: true });
 
             if (!deadlinesError) {
-                setDeadlines(deadlinesData || []);
+                setDeadlines((deadlinesData || []) as unknown as DashboardDeadline[]);
             }
 
             // Fetch documents
@@ -118,11 +157,11 @@ export default function PortalDashboard() {
                 .order('uploaded_at', { ascending: false });
 
             if (!documentsError) {
-                setDocuments(documentsData || []);
+                setDocuments((documentsData || []) as unknown as DashboardDocument[]);
             }
 
-        } catch (err: any) {
-            setError(err.message || "Failed to load dashboard data");
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : "Failed to load dashboard data");
         } finally {
             setLoading(false);
         }
@@ -175,7 +214,7 @@ export default function PortalDashboard() {
 
     if (authLoading || loading) {
         return (
-            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+            <div className="min-h-screen bg-paper flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
                     <p className="text-slate-600">Loading your dashboard...</p>
@@ -193,10 +232,11 @@ export default function PortalDashboard() {
             <SEO
                 title="Client Portal Dashboard - ecomifyUSA"
                 description="Manage your compliance deadlines, documents, and business information."
+                noIndex
             />
-            <div className="min-h-screen bg-slate-50 font-sans">
+            <div className="min-h-screen bg-paper font-sans">
                 {/* Header */}
-                <header className="bg-white border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
                         <div className="flex items-center gap-4">
                             <Logo />

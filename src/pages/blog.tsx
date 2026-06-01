@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ArrowRight, Clock, Tag } from "lucide-react";
+import { ArrowRight, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
@@ -26,56 +26,6 @@ const posts = [
         categoryColor: "bg-purple-100 text-purple-700",
         readTime: "6 min read",
         audience: "🌍 FBA Sellers",
-        featured: false,
-    },
-    {
-        slug: "/which-state",
-        title: "Which US state should you form your LLC in? Complete 2026 guide",
-        excerpt: "Wyoming, New Mexico, Missouri or Arizona? We compare the best states for international e-commerce sellers — and expose why Delaware, California, and New York are traps that cost you thousands.",
-        category: "State Comparison",
-        categoryColor: "bg-green-100 text-green-700",
-        readTime: "8 min read",
-        audience: "🌍 International Sellers",
-        featured: true,
-    },
-    {
-        slug: "/us-residents",
-        title: "US citizens starting ecommerce: Your massive advantages over international sellers",
-        excerpt: "EIN in 1 hour, real bank accounts at Chase and BofA, no registered agent needed. Here's the complete guide for US citizens launching an Amazon, Walmart, or Shopify business.",
-        category: "US Sellers",
-        categoryColor: "bg-purple-100 text-purple-700",
-        readTime: "6 min read",
-        audience: "🇺🇸 US Residents",
-        featured: false,
-    },
-    {
-        slug: "/services/us-sales-tax-compliance",
-        title: "US sales tax for ecommerce sellers: What you actually need to know",
-        excerpt: "Economic nexus, thresholds, multi-state filing — sales tax is the compliance area that trips up most international Amazon and Walmart sellers. Here's a plain-English breakdown.",
-        category: "Sales Tax",
-        categoryColor: "bg-amber-100 text-amber-700",
-        readTime: "6 min read",
-        audience: "🌍 All Sellers",
-        featured: false,
-    },
-    {
-        slug: "/services/llc-formation-structuring",
-        title: "How to get an EIN as a non-US resident: Complete IRS guide",
-        excerpt: "No SSN, no ITIN, no problem. Here's the exact process for foreign LLC owners to obtain an EIN from the IRS — including the fax method, Form SS-4 instructions, and typical timelines.",
-        category: "EIN & Tax IDs",
-        categoryColor: "bg-red-100 text-red-700",
-        readTime: "5 min read",
-        audience: "🌍 International Sellers",
-        featured: false,
-    },
-    {
-        slug: "/services/ecommerce-tax-exemptions",
-        title: "How to get tax exemption certificates for Amazon, Walmart and Home Depot",
-        excerpt: "Resale certificates let you buy inventory tax-free. Most states accept ITIN — you don't need an SSN. We've secured exemptions in 44+ states for international sellers.",
-        category: "Tax Exemptions",
-        categoryColor: "bg-teal-100 text-teal-700",
-        readTime: "4 min read",
-        audience: "🌍 All Sellers",
         featured: false,
     },
     {
@@ -110,7 +60,7 @@ const posts = [
     },
 ];
 
-const categories = ["All", "LLC Formation", "State Comparison", "Sales Tax", "EIN & Tax IDs", "Tax Exemptions", "Banking", "US Sellers", "Case Study"];
+const categories = ["All", "LLC Formation", "EIN & Tax IDs", "Banking", "Case Study"];
 
 export default function BlogIndexPage() {
     const router = useRouter();
@@ -118,17 +68,17 @@ export default function BlogIndexPage() {
 
     const filtered = active === "All" ? posts : posts.filter(p => p.category === active);
     const featured = posts.filter(p => p.featured);
-    const rest = filtered.filter(p => !p.featured);
 
     return (
         <>
             <SEO
                 title="Blog & Guides — ecomifyUSA | US LLC Formation for International Sellers"
                 description="Expert guides on US LLC formation, state comparison, sales tax compliance, and EIN for non-residents. Written by ecomifyUSA — specialists in international e-commerce business setup."
+                url="https://ecomifyusa.com/blog"
             />
-            <div className="min-h-screen bg-slate-50 font-sans">
+            <div className="min-h-screen bg-paper font-sans">
                 {/* Nav */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
@@ -136,16 +86,18 @@ export default function BlogIndexPage() {
                             <Link href="/which-state" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Which State?</Link>
                             <Link href="/blog" className="text-blue-600 font-medium">Blog</Link>
                             <Link href="/checkout">
-                                <Button className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </nav>
                         <div className="md:hidden">
                             <Link href="/checkout">
-                                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button size="sm" className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </div>
                     </div>
                 </header>
+
+                <main id="main-content">
 
                 {/* Hero */}
                 <section className="py-16 px-4 bg-white border-b border-slate-100">
@@ -240,6 +192,8 @@ export default function BlogIndexPage() {
                         </div>
                     </div>
                 </div>
+
+                </main>
 
                 <Footer />
             </div>

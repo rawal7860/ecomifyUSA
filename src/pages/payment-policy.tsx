@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, CreditCard, Lock, CheckCircle } from "lucide-react";
 import Footer from "@/components/Footer";
+import SiteHeader from "@/components/SiteHeader";
 
 export default function PaymentPolicyPage() {
   return (
@@ -11,8 +12,11 @@ export default function PaymentPolicyPage() {
       <SEO
         title="Payment Policy - ecomifyUSA"
         description="Learn about our secure payment methods and billing practices"
+        url="https://ecomifyusa.com/payment-policy"
       />
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <div className="min-h-screen bg-paper">
+        <SiteHeader />
+        <main id="main-content">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">
             <Link href="/">
@@ -182,6 +186,7 @@ export default function PaymentPolicyPage() {
             </div>
           </div>
         </div>
+        </main>
         <Footer />
       </div>
     </>

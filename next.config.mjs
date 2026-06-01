@@ -33,17 +33,23 @@ const nextConfig = {
     turbo: {
       rules: getTurboRules(),
     },
+    // Next.js 15 tree-shakes lucide-react via optimizePackageImports — no manual
+    // modularizeImports transform needed (a custom path breaks this lucide version).
+    optimizePackageImports: ["lucide-react"],
   },
   images: {
+    formats: ["image/avif", "image/webp"],
+    // Enumerate only the domains we actually load images from. Avoid wildcards —
+    // they turn Next.js into an open image proxy / SSRF surface.
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
+      { protocol: "https", hostname: "*.supabase.co" },
+      { protocol: "https", hostname: "images.unsplash.com" },
     ],
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    // Lint runs during `next build`. 0 errors today (122 warnings are non-blocking).
+    // Errors will now correctly fail CI instead of being silently ignored.
+    ignoreDuringBuilds: false,
   },
   allowedDevOrigins: ["*.daytona.work", "*.softgen.dev"],
 };

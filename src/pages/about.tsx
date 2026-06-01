@@ -1,9 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
-    ArrowRight, MessageCircle, Shield, CheckCircle2,
-    Star, Globe, Users, TrendingUp, Heart, Zap,
-    FileText, DollarSign, Clock, Award
+    ArrowRight, MessageCircle, Shield,
+    Star, Globe, Users, TrendingUp, Heart, Zap, Award
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
@@ -123,11 +122,12 @@ export default function AboutPage() {
             <SEO
                 title="About ecomifyUSA — US LLC Formation Specialists for International Sellers"
                 description="Learn about ecomifyUSA — founded by a Pakistani entrepreneur who experienced the complexity of US business setup firsthand. 500+ clients, 50+ countries, 5-star rated."
+                url="https://ecomifyusa.com/about"
             />
-            <div className="min-h-screen bg-slate-50 font-sans">
+            <div className="min-h-screen bg-paper font-sans">
 
                 {/* Nav */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
@@ -136,16 +136,18 @@ export default function AboutPage() {
                             <Link href="/blog" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Blog</Link>
                             <Link href="/about" className="text-blue-600 font-medium">About</Link>
                             <Link href="/checkout">
-                                <Button className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </nav>
                         <div className="md:hidden">
                             <Link href="/checkout">
-                                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button size="sm" className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </div>
                     </div>
                 </header>
+
+                <main id="main-content">
 
                 {/* ── Hero ── */}
                 <section className="py-20 px-4 bg-white border-b border-slate-100">
@@ -163,15 +165,16 @@ export default function AboutPage() {
                 </section>
 
                 {/* ── Stats bar ── */}
-                <section className="bg-blue-600 py-10 px-4">
-                    <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-white">
-                        {stats.map((s, i) => (
-                            <div key={i}>
-                                <div className="text-3xl mb-1">{s.icon}</div>
-                                <div className="text-3xl font-bold">{s.number}</div>
-                                <div className="text-blue-200 text-sm mt-1">{s.label}</div>
-                            </div>
-                        ))}
+                <section className="bg-paper py-12 px-4">
+                    <div className="max-w-4xl mx-auto bg-hairline border border-hairline rounded-2xl overflow-hidden">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-px">
+                            {stats.map((s, i) => (
+                                <div key={i} className="bg-white px-4 py-8 text-center">
+                                    <div className="font-mono text-3xl font-bold text-ink">{s.number}</div>
+                                    <div className="text-sm font-semibold text-slate-700 mt-1">{s.label}</div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </section>
 
@@ -292,7 +295,7 @@ export default function AboutPage() {
                         <div className="grid md:grid-cols-2 gap-6">
                             {values.map((v, i) => (
                                 <div key={i} className="bg-white rounded-2xl border border-slate-200 p-6 flex gap-4">
-                                    <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center shrink-0">
+                                    <div className="w-12 h-12 bg-paper rounded-xl flex items-center justify-center shrink-0">
                                         {v.icon}
                                     </div>
                                     <div>
@@ -406,6 +409,8 @@ export default function AboutPage() {
                     </section>
 
                 </div>
+
+                </main>
 
                 <Footer />
             </div>

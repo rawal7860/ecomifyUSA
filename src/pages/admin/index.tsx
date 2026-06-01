@@ -5,15 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import Logo from "@/components/Logo";
 import { requireAdminAuth } from "@/lib/adminAuth";
-import { createClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { supabase as typedSupabase } from "@/integrations/supabase/client";
 import { LogOut, Plus, Clock, Calendar, FileText, Users, Bell, ArrowRight } from "lucide-react";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// The generated Database type does not yet include the portal tables, so use the
+// untyped client view for these queries instead of casting to `any`.
+const supabase: SupabaseClient = typedSupabase;
 
 interface ClientRow {
   id: string;
@@ -52,9 +51,10 @@ export default function AdminDashboard({
       <SEO
         title="Admin Dashboard - ecomifyUSA"
         description="Admin control panel for ecomifyUSA client portal management."
+        noIndex
       />
-      <div className="min-h-screen bg-slate-50">
-        <header className="bg-white border-b border-slate-200">
+      <div className="min-h-screen bg-paper">
+        <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
           <div className="max-w-7xl mx-auto px-4 py-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <div className="flex items-center gap-3 mb-3">
@@ -72,7 +72,7 @@ export default function AdminDashboard({
             </div>
             <div className="flex flex-wrap gap-3">
               <Link href="/admin/clients/new">
-                <Button className="bg-blue-600 hover:bg-blue-700">
+                <Button className="bg-gold hover:bg-gold-bright text-white">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Client
                 </Button>
@@ -182,7 +182,7 @@ export default function AdminDashboard({
                     <p className="text-sm text-slate-600">No reminders scheduled for the next 30 days.</p>
                   ) : (
                     upcomingReminders.map((reminder) => (
-                      <div key={reminder.id} className="rounded-3xl border border-slate-200 p-4 bg-slate-50">
+                      <div key={reminder.id} className="rounded-3xl border border-slate-200 p-4 bg-paper">
                         <div className="flex items-center justify-between gap-4">
                           <p className="font-medium text-slate-900">{new Date(reminder.reminder_date).toLocaleDateString()}</p>
                           <Badge className="bg-blue-100 text-blue-700">Upcoming</Badge>
@@ -235,7 +235,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return authRedirect;
   }
 
-  const adminSupabase = supabase as any;
+  const adminSupabase = supabase;
   const today = new Date();
   const nextWeek = new Date(today);
   nextWeek.setDate(today.getDate() + 7);

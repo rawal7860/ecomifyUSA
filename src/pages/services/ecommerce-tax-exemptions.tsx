@@ -1,4 +1,4 @@
-import { SEO } from "@/components/SEO";
+import { SEO, serviceJsonLd } from "@/components/SEO";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,17 +7,24 @@ import { ArrowLeft, Check, ShoppingCart, ShieldCheck, Package } from "lucide-rea
 export default function EcommerceTaxExemptionsPage() {
   return (
     <>
-      <SEO 
-        title="E-commerce Tax Exemptions | Salestaxus"
+      <SEO
+        title="E-commerce Tax Exemptions | ecomifyUSA"
         description="Streamlining the process to secure resale certificates for Amazon, Walmart, and Home Depot."
+        url="https://ecomifyusa.com/services/ecommerce-tax-exemptions"
+        jsonLd={serviceJsonLd({
+          name: "E-commerce Tax Exemptions",
+          description:
+            "Streamlining the process to secure resale certificates for Amazon, Walmart, and Home Depot.",
+          url: "https://ecomifyusa.com/services/ecommerce-tax-exemptions",
+        })}
       />
 
-      <div className="min-h-screen bg-slate-50">
-        <header className="bg-white border-b sticky top-0 z-10">
+      <div className="min-h-screen bg-paper">
+        <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <Link href="/" className="font-bold text-xl text-blue-900 flex items-center gap-2">
               <ShieldCheck className="h-6 w-6 text-blue-600" />
-              Salestaxus LLC
+              ecomifyUSA LLC
             </Link>
             <Link href="/">
               <Button variant="ghost" size="sm" className="gap-2">
@@ -27,7 +34,7 @@ export default function EcommerceTaxExemptionsPage() {
           </div>
         </header>
 
-        <main className="container mx-auto px-4 py-16 max-w-5xl">
+        <main id="main-content" className="container mx-auto px-4 py-16 max-w-5xl">
           <div className="text-center mb-16">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
               <ShoppingCart className="h-10 w-10 text-green-600" />

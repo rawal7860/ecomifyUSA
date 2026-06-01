@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { Building2, Mail, Phone, Globe, MapPin } from "lucide-react";
+import { Mail, Phone, Globe, MapPin } from "lucide-react";
 import Logo from "@/components/Logo";
 
 export default function Footer() {
     return (
-        <footer className="bg-slate-900 text-slate-400 py-16 border-t border-slate-800">
+        <footer className="bg-ink text-slate-400 py-16 border-t border-white/5">
             <div className="max-w-7xl mx-auto px-4">
                 <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
 
@@ -18,14 +18,14 @@ export default function Footer() {
                             solutions for freelancers and entrepreneurs worldwide.
                         </p>
                         <div className="flex gap-3">
-                            <a href="mailto:support@ecomifyusa.com" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
-                                <Mail className="w-5 h-5" />
+                            <a href="mailto:support@ecomifyusa.com" aria-label="Email us at support@ecomifyusa.com" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                                <Mail className="w-5 h-5" aria-hidden="true" />
                             </a>
-                            <a href="https://wa.me/13072180376" target="_blank" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
-                                <Phone className="w-5 h-5" />
+                            <a href="https://wa.me/13072180376" target="_blank" rel="noopener noreferrer" aria-label="Message us on WhatsApp" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors">
+                                <Phone className="w-5 h-5" aria-hidden="true" />
                             </a>
-                            <Link href="/" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
-                                <Globe className="w-5 h-5" />
+                            <Link href="/" aria-label="Go to homepage" className="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                                <Globe className="w-5 h-5" aria-hidden="true" />
                             </Link>
                         </div>
                     </div>
@@ -79,8 +79,16 @@ export default function Footer() {
 
                 </div>
 
+                {/* Secure-payment proof */}
+                <div className="border-t border-white/5 pt-8 mb-8 flex flex-wrap items-center justify-center gap-3">
+                    <span className="text-xs uppercase tracking-widest text-slate-500 mr-1">Secure payment via</span>
+                    {["Wise", "PayPal", "Credit / Debit Card", "Bank Transfer"].map((m) => (
+                        <span key={m} className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-medium text-slate-300">{m}</span>
+                    ))}
+                </div>
+
                 {/* Bottom Bar */}
-                <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="text-sm text-slate-500">
                         © {new Date().getFullYear()} ecomifyUSA. All rights reserved.
                     </div>

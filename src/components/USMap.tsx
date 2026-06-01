@@ -1,20 +1,27 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import { ComposableMap, Geographies, Geography, type RsmGeography } from "react-simple-maps";
 import { Tooltip } from "react-tooltip";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { stateData } from "@/lib/stateData";
+import { STATE_FORMATION_SERVICE_FEE, usd } from "@/lib/pricing";
 
 const geoUrl = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
 
+// Built once at module load: O(1) lookup by state name instead of an O(n)
+// Object.values(...).find(...) scan on every render, hover, and tooltip.
+const stateDataByName = Object.fromEntries(
+  Object.values(stateData).map((s) => [s.name, s]),
+);
+
 export function USMap() {
   const router = useRouter();
-  const [hoveredState, setHoveredState] = useState<string | null>(null);
+  const [, setHoveredState] = useState<string | null>(null);
 
-  const handleStateClick = (geo: any) => {
-    const stateCode = geo.properties.name; // This map uses full names, we map to codes
-    const entry = Object.values(stateData).find(s => s.name === stateCode);
+  const handleStateClick = (geo: RsmGeography) => {
+    const stateName = geo.properties.name; // This map uses full names, we map to codes
+    const entry = stateDataByName[stateName];
     if (entry) {
       router.push(`/state/${entry.id}`);
     }
@@ -29,8 +36,6 @@ export function USMap() {
               {({ geographies }) =>
                 geographies.map((geo) => {
                   const stateName = geo.properties.name;
-                  const stateInfo = Object.values(stateData).find(s => s.name === stateName);
-                  const isHovered = hoveredState === stateName;
 
                   return (
                     <Geography
@@ -43,14 +48,13 @@ export function USMap() {
                       data-tooltip-content={stateName}
                       style={{
                         default: {
-                          fill: "#DBEAFE", // blue-100
-                          stroke: "#3B82F6", // blue-500
+                          fill: "#EFF6FF", // blue-50 — lighter resting state for the light system
+                          stroke: "#93C5FD", // blue-300 hairline
                           strokeWidth: 0.75,
                           outline: "none",
                           pointerEvents: "visiblePainted",
-                          willChange: "transform",
-                          WebkitBackfaceVisibility: "hidden",
-                          backfaceVisibility: "hidden",
+                          // No will-change here — promoting all 50 paths to their own
+                          // compositor layer wastes GPU memory. The transition handles hover.
                           transition: "all 0.2s ease-out",
                         },
                         hover: {
@@ -81,15 +85,15 @@ export function USMap() {
             id="state-tooltip"
             place="right"
             float
+            opacity={1}
             style={{
               backgroundColor: "transparent",
               padding: 0,
-              opacity: 1,
               zIndex: 100,
             }}
             render={({ content }) => {
               if (!content) return null;
-              const stateInfo = Object.values(stateData).find(s => s.name === content);
+              const stateInfo = stateDataByName[content];
               if (!stateInfo) return null;
 
               return (
@@ -109,7 +113,7 @@ export function USMap() {
                     
                     <div className="flex justify-between items-center">
                       <span className="text-slate-500">Service Fee</span>
-                      <span className="font-semibold text-green-600">$150.00</span>
+                      <span className="font-semibold text-green-600">{usd(STATE_FORMATION_SERVICE_FEE)}</span>
                     </div>
 
                     <div className="border-t border-dashed border-slate-200 my-2"></div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { Eye, EyeOff, AlertCircle, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -57,17 +57,18 @@ export default function PortalLoginPage() {
             <SEO
                 title="Client Portal Login - ecomifyUSA"
                 description="Access your client portal to manage deadlines, documents, and compliance tracking."
+                noIndex
             />
-            <div className="min-h-screen bg-slate-50 font-sans">
+            <div className="min-h-screen bg-paper font-sans">
                 {/* Navigation */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
                             <Link href="/" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Home</Link>
                             <Link href="/portal" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Portal</Link>
                             <Link href="/portal/register">
-                                <Button className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20">Sign Up Free</Button>
+                                <Button className="bg-gold hover:bg-gold-bright text-white shadow-lg shadow-blue-600/20">Sign Up Free</Button>
                             </Link>
                         </nav>
                     </div>
@@ -128,7 +129,7 @@ export default function PortalLoginPage() {
 
                                         <Button
                                             type="submit"
-                                            className="w-full bg-blue-600 hover:bg-blue-700"
+                                            className="w-full bg-gold hover:bg-gold-bright text-white"
                                             disabled={loading}
                                         >
                                             {loading ? "Signing in..." : "Sign In"}

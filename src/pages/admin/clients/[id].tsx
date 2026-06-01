@@ -5,14 +5,15 @@ import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { createClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { supabase as typedSupabase } from "@/integrations/supabase/client";
 import { requireAdminAuth } from "@/lib/adminAuth";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 import Logo from "@/components/Logo";
+
+// The generated Database type does not yet include the portal tables (clients,
+// companies, client_services, deadlines, documents). Use the untyped client view
+// so these queries type-check without resorting to `any`.
+const supabase: SupabaseClient = typedSupabase;
 
 type Company = {
   id: string;
@@ -70,9 +71,10 @@ export default function AdminClientDetailPage({ client, services, documents }: C
       <SEO
         title="Client Detail - Admin | ecomifyUSA"
         description="Admin view for client detail, deadlines, documents, and activity."
+        noIndex
       />
-      <div className="min-h-screen bg-slate-50">
-        <header className="bg-white border-b border-slate-200">
+      <div className="min-h-screen bg-paper">
+        <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
           <div className="max-w-7xl mx-auto px-4 py-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-3">
               <Logo />
@@ -166,7 +168,7 @@ export default function AdminClientDetailPage({ client, services, documents }: C
                       ) : (
                         <div className="space-y-3">
                           {service.deadlines.map((deadline) => (
-                            <div key={deadline.id} className="rounded-3xl border border-slate-200 p-4 bg-slate-50">
+                            <div key={deadline.id} className="rounded-3xl border border-slate-200 p-4 bg-paper">
                               <p className="font-medium text-slate-900">{deadline.description}</p>
                               <p className="text-sm text-slate-600 mt-2">Due date: {formatDate(deadline.deadline_date)}</p>
                               <Badge className={deadline.status === "completed" ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"}>

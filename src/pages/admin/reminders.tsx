@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { requireAdminAuth } from "@/lib/adminAuth";
-import { ArrowRight, Bell, Clock } from "lucide-react";
+import { ArrowRight, Bell } from "lucide-react";
 
 interface ReminderRow {
   id: string;
@@ -57,12 +57,12 @@ export default function AdminRemindersPage() {
         throw new Error(json.error || "Failed to send reminders.");
       }
 
-      const successCount = json.sent?.filter((item: any) => item.success).length || 0;
+      const successCount = json.sent?.filter((item: { success?: boolean }) => item.success).length || 0;
       setMessage(`${successCount} reminder email(s) sent successfully.`);
       await loadReminders();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
-      setMessage(error.message || "Failed to send reminder emails.");
+      setMessage(error instanceof Error ? error.message : "Failed to send reminder emails.");
     } finally {
       setSending(false);
     }
@@ -70,9 +70,9 @@ export default function AdminRemindersPage() {
 
   return (
     <>
-      <SEO title="Admin Reminders - ecomifyUSA" description="Manage upcoming deadline reminders for ecomifyUSA clients." />
-      <div className="min-h-screen bg-slate-50">
-        <header className="bg-white border-b border-slate-200">
+      <SEO title="Admin Reminders - ecomifyUSA" description="Manage upcoming deadline reminders for ecomifyUSA clients." noIndex />
+      <div className="min-h-screen bg-paper">
+        <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
           <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <div className="flex items-center gap-3 mb-3">
@@ -87,7 +87,7 @@ export default function AdminRemindersPage() {
               <p className="text-slate-600 max-w-2xl">Review deadlines due in the next 60 days and send reminder emails with one click.</p>
             </div>
             <div className="flex flex-wrap gap-3 items-center">
-              <Button className="bg-blue-600 hover:bg-blue-700" onClick={handleSendReminders} disabled={sending || loading}>
+              <Button className="bg-gold hover:bg-gold-bright text-white" onClick={handleSendReminders} disabled={sending || loading}>
                 {sending ? "Sending…" : "Send Reminder Emails"}
               </Button>
               <Link href="/admin">

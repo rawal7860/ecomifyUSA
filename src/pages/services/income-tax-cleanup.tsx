@@ -1,4 +1,4 @@
-import { SEO } from "@/components/SEO";
+import { SEO, serviceJsonLd } from "@/components/SEO";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,17 +7,24 @@ import { ArrowLeft, Check, Calculator, ShieldCheck, BookOpen } from "lucide-reac
 export default function IncomeTaxCleanupPage() {
   return (
     <>
-      <SEO 
-        title="Income Tax & Cleanup | Salestaxus"
+      <SEO
+        title="Income Tax & Cleanup | ecomifyUSA"
         description="Professional income tax preparation for corporations/LLCs and cleaning up prior year bookkeeping."
+        url="https://ecomifyusa.com/services/income-tax-cleanup"
+        jsonLd={serviceJsonLd({
+          name: "Income Tax & Cleanup",
+          description:
+            "Professional income tax preparation for corporations/LLCs and cleaning up prior year bookkeeping.",
+          url: "https://ecomifyusa.com/services/income-tax-cleanup",
+        })}
       />
 
-      <div className="min-h-screen bg-slate-50">
-        <header className="bg-white border-b sticky top-0 z-10">
+      <div className="min-h-screen bg-paper">
+        <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <Link href="/" className="font-bold text-xl text-blue-900 flex items-center gap-2">
               <ShieldCheck className="h-6 w-6 text-blue-600" />
-              Salestaxus LLC
+              ecomifyUSA LLC
             </Link>
             <Link href="/">
               <Button variant="ghost" size="sm" className="gap-2">
@@ -27,7 +34,7 @@ export default function IncomeTaxCleanupPage() {
           </div>
         </header>
 
-        <main className="container mx-auto px-4 py-16 max-w-5xl">
+        <main id="main-content" className="container mx-auto px-4 py-16 max-w-5xl">
           <div className="text-center mb-16">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-full mb-6">
               <Calculator className="h-10 w-10 text-indigo-600" />
@@ -124,15 +131,15 @@ export default function IncomeTaxCleanupPage() {
             </CardHeader>
             <CardContent className="pt-6">
               <div className="space-y-4">
-                <div className="flex justify-between items-center p-4 bg-slate-50 rounded-lg">
+                <div className="flex justify-between items-center p-4 bg-paper rounded-lg">
                   <span className="font-semibold text-slate-900">Corporate Tax Return (1120/1120-S)</span>
                   <span className="text-2xl font-bold text-indigo-600">$800</span>
                 </div>
-                <div className="flex justify-between items-center p-4 bg-slate-50 rounded-lg">
+                <div className="flex justify-between items-center p-4 bg-paper rounded-lg">
                   <span className="font-semibold text-slate-900">Partnership/LLC Return (1065)</span>
                   <span className="text-2xl font-bold text-indigo-600">$700</span>
                 </div>
-                <div className="flex justify-between items-center p-4 bg-slate-50 rounded-lg">
+                <div className="flex justify-between items-center p-4 bg-paper rounded-lg">
                   <span className="font-semibold text-slate-900">Bookkeeping Cleanup (per year)</span>
                   <span className="text-2xl font-bold text-indigo-600">$500</span>
                 </div>

@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
-    ArrowRight, CheckCircle2, XCircle, Phone,
-    AlertTriangle, ChevronDown, ChevronUp, ShoppingCart, MapPin
+    ArrowRight, CheckCircle2, Phone,
+    AlertTriangle, ChevronDown, ChevronUp, ShoppingCart
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
-import { SEO } from "@/components/SEO";
+import { SEO, articleJsonLd, breadcrumbJsonLd, faqJsonLd } from "@/components/SEO";
 
 const faqs = [
     {
@@ -52,7 +52,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
             className="border border-slate-200 rounded-xl overflow-hidden cursor-pointer"
             onClick={() => setOpen(o => !o)}
         >
-            <div className="flex items-center justify-between p-5 bg-white hover:bg-slate-50 transition-colors">
+            <div className="flex items-center justify-between p-5 bg-white hover:bg-paper transition-colors">
                 <span className="font-semibold text-slate-800 text-sm pr-4">{q}</span>
                 {open ? <ChevronUp className="w-4 h-4 text-slate-400 flex-shrink-0" /> : <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />}
             </div>
@@ -74,10 +74,23 @@ export default function AmazonFBALLCGuide() {
                 title="Amazon FBA LLC Guide for International Sellers: Wyoming vs Delaware | ecomifyUSA"
                 description="Should you use Wyoming or Delaware for your Amazon FBA LLC? Complete guide covering sales tax nexus, tax exemption certificates, and step-by-step from LLC formation to your first FBA sale."
                 url="https://ecomifyusa.com/blog/amazon-fba-llc-guide"
+                jsonLd={[
+                    articleJsonLd({
+                        title: "Amazon FBA LLC Guide for International Sellers: Wyoming vs Delaware",
+                        description: "Should you use Wyoming or Delaware for your Amazon FBA LLC? Complete guide covering sales tax nexus, tax exemption certificates, and step-by-step from LLC formation to your first FBA sale.",
+                        url: "https://ecomifyusa.com/blog/amazon-fba-llc-guide",
+                    }),
+                    breadcrumbJsonLd([
+                        { name: "Home", url: "https://ecomifyusa.com/" },
+                        { name: "Blog", url: "https://ecomifyusa.com/blog" },
+                        { name: "Amazon FBA LLC Guide", url: "https://ecomifyusa.com/blog/amazon-fba-llc-guide" },
+                    ]),
+                    faqJsonLd(faqs),
+                ]}
             />
             <div className="min-h-screen bg-white font-sans">
                 {/* Nav */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
@@ -86,17 +99,18 @@ export default function AmazonFBALLCGuide() {
                             <Link href="/which-state" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Which State?</Link>
                             <Link href="/blog" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Blog</Link>
                             <Link href="/checkout">
-                                <Button className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </nav>
                         <div className="md:hidden">
                             <Link href="/checkout">
-                                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button size="sm" className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </div>
                     </div>
                 </header>
 
+                <main id="main-content">
                 <article className="max-w-3xl mx-auto px-4 py-16">
 
                     {/* Breadcrumb */}
@@ -163,7 +177,7 @@ export default function AmazonFBALLCGuide() {
                                 desc: "Depending on your home country, a US LLC may allow you to take advantage of US-foreign tax treaties, reducing double taxation on your business income.",
                             },
                         ].map((item, i) => (
-                            <div key={i} className="flex gap-4 p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                            <div key={i} className="flex gap-4 p-4 bg-paper border border-slate-200 rounded-xl">
                                 <CheckCircle2 className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
                                 <div>
                                     <div className="font-semibold text-slate-900 text-sm">{item.title}</div>
@@ -195,7 +209,7 @@ export default function AmazonFBALLCGuide() {
                                     { factor: "Investor acceptance", wy: "Limited (VCs often prefer Delaware)", de: "Excellent — VC/angel standard" },
                                     { factor: "5-year total cost (approx)", wy: "~$400–500", de: "~$1,800–2,500" },
                                 ].map((r, i) => (
-                                    <tr key={i} className={`border-t border-slate-100 ${i % 2 === 0 ? "bg-white" : "bg-slate-50"}`}>
+                                    <tr key={i} className={`border-t border-slate-100 ${i % 2 === 0 ? "bg-white" : "bg-paper"}`}>
                                         <td className="p-4 font-medium text-slate-700">{r.factor}</td>
                                         <td className="p-4 text-center text-slate-600">{r.wy}</td>
                                         <td className="p-4 text-center text-slate-600">{r.de}</td>
@@ -214,13 +228,13 @@ export default function AmazonFBALLCGuide() {
                         Sales tax nexus is the legal connection between your business and a US state that triggers a sales tax collection obligation. For Amazon FBA sellers, two types of nexus matter:
                     </p>
                     <div className="space-y-4 mb-6">
-                        <div className="p-5 bg-slate-50 border border-slate-200 rounded-xl">
+                        <div className="p-5 bg-paper border border-slate-200 rounded-xl">
                             <h3 className="font-bold text-slate-900 mb-2">Physical nexus</h3>
                             <p className="text-slate-600 text-sm leading-relaxed">
                                 Created when your inventory is stored in a state's Amazon fulfillment centre. If Amazon stores your products in California, Texas, New York, or any other state — even briefly — you have physical nexus there. This was a major concern before marketplace facilitator laws changed the landscape.
                             </p>
                         </div>
-                        <div className="p-5 bg-slate-50 border border-slate-200 rounded-xl">
+                        <div className="p-5 bg-paper border border-slate-200 rounded-xl">
                             <h3 className="font-bold text-slate-900 mb-2">Economic nexus</h3>
                             <p className="text-slate-600 text-sm leading-relaxed">
                                 Triggered when your sales into a state exceed a threshold — typically $100,000/year or 200 transactions. All 50 states plus Washington D.C. now have economic nexus laws following the 2018 <em>South Dakota v. Wayfair</em> Supreme Court ruling.
@@ -368,7 +382,7 @@ export default function AmazonFBALLCGuide() {
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3">
                             <a href="https://wa.me/13072180376?text=Hi%2C%20I%20want%20to%20set%20up%20a%20Wyoming%20LLC%20for%20Amazon%20FBA%20as%20an%20international%20seller." target="_blank" rel="noopener noreferrer">
-                                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                                <Button className="bg-gold hover:bg-gold-bright text-white text-white">
                                     <Phone className="mr-2 w-4 h-4" /> Chat on WhatsApp
                                 </Button>
                             </a>
@@ -429,6 +443,7 @@ export default function AmazonFBALLCGuide() {
                         </div>
                     </div>
                 </section>
+                </main>
 
                 <Footer />
             </div>

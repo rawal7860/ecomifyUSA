@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { CheckCircle2, XCircle, ArrowRight, Shield, AlertTriangle, ChevronDown, Star, Phone } from "lucide-react";
+import { CheckCircle2, XCircle, ArrowRight, Star, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
@@ -167,15 +167,15 @@ function StateCard({ state }: { state: typeof goodStates[0] }) {
                 <span className="text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-600">{state.badge}</span>
             </div>
             <div className="grid grid-cols-3 gap-2 mb-4">
-                <div className="bg-slate-50 rounded-xl p-2 text-center">
+                <div className="bg-paper rounded-xl p-2 text-center">
                     <div className="text-xs text-slate-400 mb-0.5">Filing</div>
                     <div className="text-sm font-bold text-slate-800">{state.filingFee}</div>
                 </div>
-                <div className="bg-slate-50 rounded-xl p-2 text-center">
+                <div className="bg-paper rounded-xl p-2 text-center">
                     <div className="text-xs text-slate-400 mb-0.5">Annual</div>
                     <div className="text-sm font-bold text-slate-800">{state.annualFee}</div>
                 </div>
-                <div className="bg-slate-50 rounded-xl p-2 text-center">
+                <div className="bg-paper rounded-xl p-2 text-center">
                     <div className="text-xs text-slate-400 mb-0.5">Privacy</div>
                     <div className="text-xs text-yellow-500">{state.privacy}</div>
                 </div>
@@ -239,10 +239,11 @@ export default function WhichStatePage() {
             <SEO
                 title="Which US State Should I Form My LLC In? Complete Guide for International Sellers"
                 description="Wyoming, New Mexico, Missouri or Arizona? Expert guide for international e-commerce sellers on which US state to form your LLC. Avoid costly mistakes with Delaware, California and New York."
+                url="https://ecomifyusa.com/which-state"
             />
-            <div className="min-h-screen bg-slate-50 font-sans">
+            <div className="min-h-screen bg-paper font-sans">
                 {/* Nav */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
@@ -250,16 +251,18 @@ export default function WhichStatePage() {
                             <Link href="/pricing" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Pricing</Link>
                             <Link href="/services" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Services</Link>
                             <Link href="/checkout">
-                                <Button className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </nav>
                         <div className="md:hidden">
                             <Link href="/checkout">
-                                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button size="sm" className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </div>
                     </div>
                 </header>
+
+                <main id="main-content">
 
                 {/* Hero */}
                 <section className="pt-16 pb-10 px-4 text-center bg-white border-b border-slate-100">
@@ -405,6 +408,8 @@ export default function WhichStatePage() {
                         </div>
                     </div>
                 </section>
+
+                </main>
 
                 <Footer />
             </div>

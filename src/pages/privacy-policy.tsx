@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Shield, Lock, Eye } from "lucide-react";
 import Footer from "@/components/Footer";
+import SiteHeader from "@/components/SiteHeader";
 
 export default function PrivacyPolicyPage() {
   return (
@@ -11,8 +12,11 @@ export default function PrivacyPolicyPage() {
       <SEO
         title="Privacy Policy - ecomifyUSA"
         description="Learn how ecomifyUSA protects your personal information and privacy"
+        url="https://ecomifyusa.com/privacy-policy"
       />
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <div className="min-h-screen bg-paper">
+        <SiteHeader />
+        <main id="main-content">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">
             <Link href="/">
@@ -178,6 +182,7 @@ export default function PrivacyPolicyPage() {
             </div>
           </div>
         </div>
+        </main>
         <Footer />
       </div>
     </>

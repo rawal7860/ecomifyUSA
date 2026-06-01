@@ -16,7 +16,6 @@ export const profileService = {
       .eq("id", user.id)
       .single();
 
-    console.log("Get current profile:", { data, error });
     if (error) {
       console.error("Profile fetch error:", error);
       return null;
@@ -36,7 +35,6 @@ export const profileService = {
       .select()
       .single();
 
-    console.log("Update profile:", { data, error });
     if (error) throw error;
     return data;
   },
@@ -55,7 +53,6 @@ export const profileService = {
       .select()
       .single();
 
-    console.log("Upsert profile:", { data, error });
     if (error) throw error;
     return data;
   },

@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ArrowRight, AlertTriangle, CheckCircle2, XCircle, Phone } from "lucide-react";
+import { ArrowRight, AlertTriangle, CheckCircle2, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
-import { SEO } from "@/components/SEO";
+import { SEO, articleJsonLd, breadcrumbJsonLd } from "@/components/SEO";
 
 export default function ForeignLLCMistakePage() {
     const router = useRouter();
@@ -15,10 +15,23 @@ export default function ForeignLLCMistakePage() {
             <SEO
                 title="The Foreign LLC Mistake That Costs US Residents Hundreds Every Year | ecomifyUSA Blog"
                 description="Forming your LLC in Wyoming or Delaware while living in another state is one of the most expensive mistakes US ecommerce sellers make. Here's exactly what happens and how to avoid it."
+                url="https://ecomifyusa.com/blog/foreign-llc-mistake"
+                jsonLd={[
+                    articleJsonLd({
+                        title: "The Foreign LLC Mistake That Costs US Residents Hundreds Every Year",
+                        description: "Forming your LLC in Wyoming or Delaware while living in another state is one of the most expensive mistakes US ecommerce sellers make. Here's exactly what happens and how to avoid it.",
+                        url: "https://ecomifyusa.com/blog/foreign-llc-mistake",
+                    }),
+                    breadcrumbJsonLd([
+                        { name: "Home", url: "https://ecomifyusa.com/" },
+                        { name: "Blog", url: "https://ecomifyusa.com/blog" },
+                        { name: "The Foreign LLC Mistake", url: "https://ecomifyusa.com/blog/foreign-llc-mistake" },
+                    ]),
+                ]}
             />
             <div className="min-h-screen bg-white font-sans">
                 {/* Nav */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
@@ -26,17 +39,18 @@ export default function ForeignLLCMistakePage() {
                             <Link href="/which-state" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Which State?</Link>
                             <Link href="/us-residents" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">US Sellers</Link>
                             <Link href="/checkout">
-                                <Button className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </nav>
                         <div className="md:hidden">
                             <Link href="/checkout">
-                                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button size="sm" className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </div>
                     </div>
                 </header>
 
+                <main id="main-content">
                 {/* Article */}
                 <article className="max-w-3xl mx-auto px-4 py-16">
 
@@ -81,7 +95,7 @@ export default function ForeignLLCMistakePage() {
 
                     {/* Section 2 — Real example */}
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">A real-world example</h2>
-                    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-8">
+                    <div className="bg-paper border border-slate-200 rounded-2xl p-6 mb-8">
                         <p className="text-slate-700 leading-relaxed mb-3">
                             <strong>John lives in Florida.</strong> He's starting an Amazon FBA business and reads online that Wyoming LLCs have great privacy and low fees. He pays $100 to form a Wyoming LLC. Problem solved, right?
                         </p>
@@ -122,7 +136,7 @@ export default function ForeignLLCMistakePage() {
                                     { item: "5-year total cost", wy: "$1,458.75", fl: "$818.75", bold: true },
                                     { item: "Extra cost of \"smart\" Wyoming choice", wy: "+$640 over 5 years", fl: "—", highlight: true },
                                 ].map((r, i) => (
-                                    <tr key={i} className={`border-t border-slate-100 ${r.highlight ? "bg-red-50" : i % 2 === 0 ? "bg-white" : "bg-slate-50"}`}>
+                                    <tr key={i} className={`border-t border-slate-100 ${r.highlight ? "bg-red-50" : i % 2 === 0 ? "bg-white" : "bg-paper"}`}>
                                         <td className={`p-4 ${r.bold ? "font-semibold text-slate-900" : "text-slate-600"}`}>{r.item}</td>
                                         <td className={`p-4 text-center ${r.highlight ? "text-red-600 font-bold" : r.bold ? "font-semibold text-slate-900" : "text-slate-600"}`}>{r.wy}</td>
                                         <td className={`p-4 text-center ${r.bold ? "font-semibold text-green-600" : "text-slate-600"}`}>{r.fl}</td>
@@ -173,7 +187,7 @@ export default function ForeignLLCMistakePage() {
                             Don't worry — it's fixable. WhatsApp us and we'll help you figure out the most cost-effective path forward, whether that's dissolving and re-forming, or registering as a Foreign LLC in your home state.
                         </p>
                         <a href="https://wa.me/13072180376?text=Hi%2C%20I%20think%20I%20formed%20my%20LLC%20in%20the%20wrong%20state.%20Can%20you%20help%3F" target="_blank" rel="noopener noreferrer">
-                            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                            <Button className="bg-gold hover:bg-gold-bright text-white text-white">
                                 <Phone className="mr-2 w-4 h-4" /> Get help on WhatsApp
                             </Button>
                         </a>
@@ -231,6 +245,7 @@ export default function ForeignLLCMistakePage() {
                         </div>
                     </div>
                 </section>
+                </main>
 
                 <Footer />
             </div>

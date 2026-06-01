@@ -1,8 +1,8 @@
-import { SEO } from "@/components/SEO";
+import { SEO, serviceJsonLd } from "@/components/SEO";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, CheckCircle2, Globe2, ShieldCheck, CalendarDays, Clock3 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Globe2, ShieldCheck, CalendarDays } from "lucide-react";
 import Footer from "@/components/Footer";
 
 export default function EstoniaEResidencyPage() {
@@ -11,9 +11,16 @@ export default function EstoniaEResidencyPage() {
       <SEO
         title="Estonia e-Residency & OÜ Formation | ecomifyUSA"
         description="Launch your EU business remotely with Estonia e-Residency, OÜ formation, VAT registration, and digital EU market access."
+        url="https://ecomifyusa.com/services/estonia-e-residency"
+        jsonLd={serviceJsonLd({
+          name: "Estonia e-Residency & OÜ Formation",
+          description:
+            "Launch your EU business remotely with Estonia e-Residency, OÜ formation, VAT registration, and digital EU market access.",
+          url: "https://ecomifyusa.com/services/estonia-e-residency",
+        })}
       />
 
-      <div className="relative min-h-screen bg-slate-50 overflow-hidden">
+      <div className="relative min-h-screen bg-paper overflow-hidden">
         <div className="pointer-events-none absolute inset-0 -z-10" style={{ opacity: 0.07 }}>
           <svg viewBox="0 0 1200 1000" className="w-full h-full">
             <path d="M120 280 L180 220 L250 200 L310 180 L380 190 L430 210 L490 200 L540 220 L620 200 L680 210 L740 250 L780 290 L810 340 L840 420 L860 520 L850 620 L800 700 L720 760 L630 780 L560 760 L510 720 L470 680 L430 640 L390 620 L340 600 L290 560 L250 520 L220 470 L200 420 L180 360 Z" fill="none" stroke="#cbd5e1" strokeWidth="4" />
@@ -37,7 +44,7 @@ export default function EstoniaEResidencyPage() {
           </svg>
         </div>
 
-        <header className="bg-white border-b sticky top-0 z-10">
+        <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
           <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
               <Link href="/services" className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700">
@@ -49,7 +56,7 @@ export default function EstoniaEResidencyPage() {
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/checkout">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white">Order Estonia Package</Button>
+                <Button className="bg-gold hover:bg-gold-bright text-white text-white">Order Estonia Package</Button>
               </Link>
               <a
                 href="https://wa.me/13072180376?text=Hi%2C%20I'm%20interested%20in%20Estonia%20e-Residency%20and%20O%C3%9C%20formation."
@@ -64,7 +71,7 @@ export default function EstoniaEResidencyPage() {
           </div>
         </header>
 
-        <main className="max-w-7xl mx-auto px-4 py-16 space-y-20">
+        <main id="main-content" className="max-w-7xl mx-auto px-4 py-16 space-y-20">
           <section className="grid gap-10 lg:grid-cols-[1.5fr_1fr] items-start">
             <div className="space-y-6">
               <p className="text-sm uppercase tracking-[0.3em] text-blue-600 font-semibold">Estonia e-Residency</p>

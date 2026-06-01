@@ -5,7 +5,7 @@ import { ArrowRight, AlertTriangle, CheckCircle2, XCircle, Phone } from "lucide-
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
-import { SEO } from "@/components/SEO";
+import { SEO, articleJsonLd, breadcrumbJsonLd } from "@/components/SEO";
 
 export default function WAExciseTaxCaseStudyPage() {
     const router = useRouter();
@@ -15,10 +15,23 @@ export default function WAExciseTaxCaseStudyPage() {
             <SEO
                 title="How We Fixed a Washington State Excise Tax Crisis for an Amazon FBA Seller (And Why Avalara Missed It) | ecomifyUSA Blog"
                 description="A foreign-owned US LLC selling on Amazon FBA owed Washington B&O tax and retail sales tax — but Avalara never flagged it. We assessed the liability, filed correctly, and resolved the issue. Here's exactly what happened."
+                url="https://ecomifyusa.com/blog/wa-excise-tax-sst-avalara-case-study"
+                jsonLd={[
+                    articleJsonLd({
+                        title: "How We Fixed a Washington State Excise Tax Crisis for an Amazon FBA Seller (And Why Avalara Missed It)",
+                        description: "A foreign-owned US LLC selling on Amazon FBA owed Washington B&O tax and retail sales tax — but Avalara never flagged it. We assessed the liability, filed correctly, and resolved the issue. Here's exactly what happened.",
+                        url: "https://ecomifyusa.com/blog/wa-excise-tax-sst-avalara-case-study",
+                    }),
+                    breadcrumbJsonLd([
+                        { name: "Home", url: "https://ecomifyusa.com/" },
+                        { name: "Blog", url: "https://ecomifyusa.com/blog" },
+                        { name: "Washington Excise Tax Case Study", url: "https://ecomifyusa.com/blog/wa-excise-tax-sst-avalara-case-study" },
+                    ]),
+                ]}
             />
             <div className="min-h-screen bg-white font-sans">
                 {/* Nav */}
-                <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
+                <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
                     <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
                         <Logo />
                         <nav className="hidden md:flex items-center gap-8">
@@ -26,17 +39,18 @@ export default function WAExciseTaxCaseStudyPage() {
                             <Link href="/which-state" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Which State?</Link>
                             <Link href="/blog" className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Blog</Link>
                             <Link href="/checkout">
-                                <Button className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </nav>
                         <div className="md:hidden">
                             <Link href="/checkout">
-                                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">Get Started</Button>
+                                <Button size="sm" className="bg-gold hover:bg-gold-bright text-white">Get Started</Button>
                             </Link>
                         </div>
                     </div>
                 </header>
 
+                <main id="main-content">
                 {/* Article */}
                 <article className="max-w-3xl mx-auto px-4 py-16">
 
@@ -106,7 +120,7 @@ export default function WAExciseTaxCaseStudyPage() {
                                     { type: "B&O – Retailing", rate: "0.471%", trigger: "Gross receipts from WA sales", who: "You, via My DOR" },
                                     { type: "Retail Sales Tax", rate: "~10.1% (varies by city)", trigger: "Taxable sales to WA customers", who: "Avalara SST (if enrolled)" },
                                 ].map((r, i) => (
-                                    <tr key={i} className={`border-t border-slate-100 ${i % 2 === 0 ? "bg-white" : "bg-slate-50"}`}>
+                                    <tr key={i} className={`border-t border-slate-100 ${i % 2 === 0 ? "bg-white" : "bg-paper"}`}>
                                         <td className="p-4 font-semibold text-slate-900">{r.type}</td>
                                         <td className="p-4 text-center text-slate-600">{r.rate}</td>
                                         <td className="p-4 text-center text-slate-600">{r.trigger}</td>
@@ -130,7 +144,7 @@ export default function WAExciseTaxCaseStudyPage() {
                         What the dashboard didn't make obvious was that Avalara's SST enrollment only covered <em>retail sales tax</em>. The B&O portion of the Washington Combined Excise Return was left entirely unfiled. For months.
                     </p>
 
-                    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-8">
+                    <div className="bg-paper border border-slate-200 rounded-2xl p-6 mb-8">
                         <p className="text-slate-700 leading-relaxed mb-3">
                             <strong>The timeline:</strong> The client started selling in Washington through Amazon FBA in early 2026. Amazon has FBA fulfillment centers in Washington, which creates physical nexus — and a clear B&O tax obligation from the first sale.
                         </p>
@@ -212,7 +226,7 @@ export default function WAExciseTaxCaseStudyPage() {
                                     { outcome: "Collections / enforcement", result: "Closed" },
                                     { outcome: "Ongoing monthly compliance", result: "Set up" },
                                 ].map((r, i) => (
-                                    <tr key={i} className={`border-t border-slate-100 ${i % 2 === 0 ? "bg-white" : "bg-slate-50"}`}>
+                                    <tr key={i} className={`border-t border-slate-100 ${i % 2 === 0 ? "bg-white" : "bg-paper"}`}>
                                         <td className="p-4 text-slate-600">{r.outcome}</td>
                                         <td className="p-4 text-center font-semibold text-green-600">{r.result}</td>
                                     </tr>
@@ -295,7 +309,7 @@ export default function WAExciseTaxCaseStudyPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                            <Button className="bg-gold hover:bg-gold-bright text-white text-white">
                                 <Phone className="mr-2 w-4 h-4" /> Get a free compliance check
                             </Button>
                         </a>
@@ -363,6 +377,7 @@ export default function WAExciseTaxCaseStudyPage() {
                         </div>
                     </div>
                 </section>
+                </main>
 
                 <Footer />
             </div>
