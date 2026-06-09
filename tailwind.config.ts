@@ -10,17 +10,7 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ["var(--font-geist)", "ui-sans-serif", "system-ui", "sans-serif"],
-        mono: ["var(--font-geist-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
-      },
       colors: {
-        // Brand tokens for the Phase 1 design system (light-first "private banking" palette).
-        ink: "#0E1424",
-        paper: "#F6F4EE",
-        gold: { DEFAULT: "#B98A2E", bright: "#E5B567" },
-        verify: "#1F6B4A",
-        hairline: "#E4E0D6",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

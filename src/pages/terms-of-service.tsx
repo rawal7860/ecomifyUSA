@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, FileText, Scale, AlertCircle } from "lucide-react";
 import Footer from "@/components/Footer";
-import SiteHeader from "@/components/SiteHeader";
 
 export default function TermsOfServicePage() {
   return (
@@ -12,11 +11,8 @@ export default function TermsOfServicePage() {
       <SEO
         title="Terms of Service - ecomifyUSA"
         description="Read the terms and conditions for using ecomifyUSA services"
-        url="https://ecomifyusa.com/terms-of-service"
       />
-      <div className="min-h-screen bg-paper">
-        <SiteHeader />
-        <main id="main-content">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">
             <Link href="/">
@@ -193,7 +189,6 @@ export default function TermsOfServicePage() {
             </div>
           </div>
         </div>
-        </main>
         <Footer />
       </div>
     </>

@@ -1,10 +1,9 @@
 import { SEO } from "@/components/SEO";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Shield, Clock, DollarSign } from "lucide-react";
 import Footer from "@/components/Footer";
-import SiteHeader from "@/components/SiteHeader";
 
 export default function RefundPolicyPage() {
   return (
@@ -12,11 +11,8 @@ export default function RefundPolicyPage() {
       <SEO
         title="Refund Policy - ecomifyUSA"
         description="Understand our refund policy for LLC formation and tax compliance services"
-        url="https://ecomifyusa.com/refund-policy"
       />
-      <div className="min-h-screen bg-paper">
-        <SiteHeader />
-        <main id="main-content">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">
             <Link href="/">
@@ -140,7 +136,6 @@ export default function RefundPolicyPage() {
             </div>
           </div>
         </div>
-        </main>
         <Footer />
       </div>
     </>

@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Clock, Mail, FileText } from "lucide-react";
 import Footer from "@/components/Footer";
-import SiteHeader from "@/components/SiteHeader";
 
 export default function DeliveryPolicyPage() {
   return (
@@ -12,11 +11,8 @@ export default function DeliveryPolicyPage() {
       <SEO
         title="Delivery Policy - ecomifyUSA"
         description="Learn about our document delivery process and timelines"
-        url="https://ecomifyusa.com/delivery-policy"
       />
-      <div className="min-h-screen bg-paper">
-        <SiteHeader />
-        <main id="main-content">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">
             <Link href="/">
@@ -208,7 +204,6 @@ export default function DeliveryPolicyPage() {
             </div>
           </div>
         </div>
-        </main>
         <Footer />
       </div>
     </>

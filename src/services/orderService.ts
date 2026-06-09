@@ -1,6 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
-import type { Json } from "@/integrations/supabase/database.types";
 
 type Order = Database["public"]["Tables"]["orders"]["Row"];
 type OrderInsert = Database["public"]["Tables"]["orders"]["Insert"];
@@ -15,7 +14,7 @@ export interface CreateOrderData {
   total_amount: number;
   formation_fee?: number;
   service_fee?: number;
-  addons?: Json;
+  addons?: any;
   entity_type?: string;
 }
 
@@ -27,6 +26,7 @@ export const orderService = {
       .select("*")
       .order("created_at", { ascending: false });
 
+    console.log("Get user orders:", { data, error });
     if (error) throw error;
     return data || [];
   },
@@ -39,6 +39,7 @@ export const orderService = {
       .eq("id", orderId)
       .single();
 
+    console.log("Get order by ID:", { data, error });
     if (error) throw error;
     return data;
   },
@@ -57,6 +58,7 @@ export const orderService = {
       .select()
       .single();
 
+    console.log("Create order:", { data, error });
     if (error) throw error;
     return data;
   },
@@ -70,6 +72,7 @@ export const orderService = {
       .select()
       .single();
 
+    console.log("Update order:", { data, error });
     if (error) throw error;
     return data;
   },
@@ -81,6 +84,7 @@ export const orderService = {
       .delete()
       .eq("id", orderId);
 
+    console.log("Delete order:", { error });
     if (error) throw error;
   },
 
@@ -90,6 +94,7 @@ export const orderService = {
       .from("orders")
       .select("status");
 
+    console.log("Get order stats:", { data, error });
     if (error) throw error;
 
     const orders = data || [];

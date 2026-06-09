@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import type { GetStaticPaths, GetStaticProps } from "next";
-import { ArrowLeft, CheckCircle2, MapPin, Info } from "lucide-react";
+import Link from "next/link";
+import { Building2, ArrowLeft, CheckCircle2, MapPin, DollarSign, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import Logo from "@/components/Logo";
-import { SEO, serviceJsonLd, breadcrumbJsonLd } from "@/components/SEO";
-import { STATE_FORMATION_SERVICE_FEE } from "@/lib/pricing";
 
 // US States with Formation Fees
 const usStates = [
@@ -66,19 +64,25 @@ const usStates = [
     { name: "District of Columbia", code: "DC", fee: 220 },
 ];
 
-const serviceFee = STATE_FORMATION_SERVICE_FEE; // single source of truth (src/lib/pricing.ts)
+const serviceFee = 150; // Your service fee
 
-export default function StateFormationPage({ initialStateCode }: { initialStateCode: string }) {
+export default function StateFormationPage() {
     const router = useRouter();
-    // initialStateCode comes from getStaticProps so the correct state renders server-side (SEO).
-    const [selectedState, setSelectedState] = useState(initialStateCode);
+    const { state } = router.query;
+    const [selectedState, setSelectedState] = useState("CO"); // Default Colorado
     const [entityType, setEntityType] = useState("LLC");
     const [einAddon, setEinAddon] = useState(false);
 
-    // Keep state in sync when navigating between pre-rendered state pages.
+    // Load state from URL parameter
     useEffect(() => {
-        setSelectedState(initialStateCode);
-    }, [initialStateCode]);
+        if (state && typeof state === "string") {
+            const stateUpper = state.toUpperCase();
+            const foundState = usStates.find(s => s.code === stateUpper || s.name.toLowerCase() === state.toLowerCase());
+            if (foundState) {
+                setSelectedState(foundState.code);
+            }
+        }
+    }, [state]);
 
     const currentState = usStates.find(s => s.code === selectedState) || usStates[0];
     const total = currentState.fee + serviceFee + (einAddon ? 50 : 0);
@@ -106,30 +110,13 @@ export default function StateFormationPage({ initialStateCode }: { initialStateC
     };
 
     return (
-        <>
-        <SEO
-            title={`Form Your ${currentState.name} LLC for Non-Residents | ecomifyUSA`}
-            description={`Start a ${currentState.name} LLC from anywhere in the world. State filing fee $${currentState.fee} + service. EIN for non-US residents included. Bank account setup, sales tax, and compliance handled.`}
-            url={`https://ecomifyusa.com/state/${currentState.code.toLowerCase()}`}
-            jsonLd={[
-                serviceJsonLd({
-                    name: `${currentState.name} LLC Formation for Non-Residents`,
-                    description: `${currentState.name} LLC formation for non-US residents — state filing, EIN, registered agent, and compliance handled 100% remotely.`,
-                    url: `https://ecomifyusa.com/state/${currentState.code.toLowerCase()}`,
-                    price: String(currentState.fee + serviceFee),
-                }),
-                breadcrumbJsonLd([
-                    { name: "Home", url: "https://ecomifyusa.com/" },
-                    { name: "Which State", url: "https://ecomifyusa.com/which-state" },
-                    { name: `${currentState.name} LLC`, url: `https://ecomifyusa.com/state/${currentState.code.toLowerCase()}` },
-                ]),
-            ]}
-        />
-        <div className="min-h-screen bg-paper">
+        <div className="min-h-screen bg-slate-50">
             {/* Header */}
-            <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
+            <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-                    <Logo />
+                    <Link href="/" className="hover:opacity-80 transition-opacity">
+                        <Logo />
+                    </Link>
                     <Button variant="ghost" onClick={() => router.back()} className="gap-2">
                         <ArrowLeft className="w-4 h-4" />
                         Back
@@ -137,16 +124,7 @@ export default function StateFormationPage({ initialStateCode }: { initialStateC
                 </div>
             </header>
 
-            <div className="max-w-6xl mx-auto px-4 pt-10">
-                <h1 className="text-3xl lg:text-4xl font-bold text-ink">
-                    Form your {currentState.name} LLC — for non-US residents
-                </h1>
-                <p className="text-slate-600 mt-2 max-w-2xl">
-                    State filing fee ${currentState.fee} + service fee. EIN included. 100% remote — no SSN or US visit required.
-                </p>
-            </div>
-
-            <div className="max-w-6xl mx-auto px-4 pt-8 pb-12">
+            <div className="max-w-6xl mx-auto px-4 py-12">
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Main Form */}
                     <div className="lg:col-span-2 space-y-6">
@@ -157,7 +135,7 @@ export default function StateFormationPage({ initialStateCode }: { initialStateC
                                         <MapPin className="w-6 h-6 text-blue-600" />
                                     </div>
                                     <div>
-                                        <CardTitle className="text-2xl">Configure your {currentState.name} formation</CardTitle>
+                                        <CardTitle className="text-2xl">Form Your {currentState.name} Company</CardTitle>
                                         <p className="text-slate-600 text-sm">Complete service for registration in {currentState.name}</p>
                                     </div>
                                 </div>
@@ -283,7 +261,7 @@ export default function StateFormationPage({ initialStateCode }: { initialStateC
                                 </div>
 
                                 <Button 
-                                    className="w-full bg-gold hover:bg-gold-bright text-white text-white py-6 text-lg"
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg"
                                     onClick={handleProceedToCheckout}
                                 >
                                     Proceed to Checkout
@@ -320,22 +298,5 @@ export default function StateFormationPage({ initialStateCode }: { initialStateC
                 </div>
             </div>
         </div>
-        </>
     );
 }
-
-// Pre-render one static page per state so the correct content, <h1>, and
-// canonical URL are present in the server-rendered HTML (indexability + SEO).
-export const getStaticPaths: GetStaticPaths = () => {
-    return {
-        paths: usStates.map((s) => ({ params: { state: s.code.toLowerCase() } })),
-        fallback: false,
-    };
-};
-
-export const getStaticProps: GetStaticProps<{ initialStateCode: string }> = (ctx) => {
-    const code = String(ctx.params?.state ?? "").toUpperCase();
-    const found = usStates.find((s) => s.code === code);
-    if (!found) return { notFound: true };
-    return { props: { initialStateCode: found.code } };
-};

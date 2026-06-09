@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import type { GetStaticPaths, GetStaticProps } from "next";
 import Link from "next/link";
-import { SEO, serviceJsonLd, breadcrumbJsonLd } from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 import { TrustBadge } from "@/components/TrustBadge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,10 +11,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft, Check, ShieldCheck, Building2, FileText, CheckCircle, DollarSign } from "lucide-react";
 import { ukData, convertGBPtoUSD, GBP_TO_USD } from "@/lib/ukData";
 
-export default function UKServicePage({ countryCode }: { countryCode: string }) {
+export default function UKServicePage() {
   const router = useRouter();
-  // countryCode comes from getStaticProps so the correct country renders server-side (SEO).
-  const countryInfo = ukData[countryCode] ?? null;
+  const { country: countryParam } = router.query;
+  
+  const countryInfo = typeof countryParam === 'string' 
+    ? ukData[countryParam.toUpperCase()] 
+    : null;
 
   const [entityType, setEntityType] = useState("Limited Company");
   const [includeVAT, setIncludeVAT] = useState(false);
@@ -69,42 +71,32 @@ export default function UKServicePage({ countryCode }: { countryCode: string }) 
     router.push("/checkout");
   };
 
+  if (!router.isReady) return null;
+
   if (!countryInfo) {
     return (
-      <main id="main-content" className="min-h-screen flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
         <h1 className="text-2xl font-bold text-red-600 mb-4">Country Not Found</h1>
         <Link href="/">
           <Button>Return Home</Button>
         </Link>
-      </main>
+      </div>
     );
   }
 
   return (
     <>
-      <SEO
-        title={`${countryInfo.name} Company Formation | ecomifyUSA`}
+      <SEO 
+        title={`${countryInfo.name} Company Formation | Salestaxus`}
         description={`Form your ${countryInfo.name} Limited Company with Companies House. Includes incorporation, registered office, HMRC compliance, and annual filing services.`}
-        url={`https://ecomifyusa.com/uk/${countryCode.toLowerCase().replace(/ /g, "-")}`}
-        jsonLd={[
-          serviceJsonLd({
-            name: `${countryInfo.name} Company Formation`,
-            description: `Form your ${countryInfo.name} Limited Company with Companies House — incorporation, registered office, and HMRC compliance for non-residents.`,
-            url: `https://ecomifyusa.com/uk/${countryCode.toLowerCase().replace(/ /g, "-")}`,
-          }),
-          breadcrumbJsonLd([
-            { name: "Home", url: "https://ecomifyusa.com/" },
-            { name: `${countryInfo.name} Company Formation`, url: `https://ecomifyusa.com/uk/${countryCode.toLowerCase().replace(/ /g, "-")}` },
-          ]),
-        ]}
       />
 
-      <div className="min-h-screen bg-paper">
-        <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
+      <div className="min-h-screen bg-slate-50">
+        <header className="bg-white border-b sticky top-0 z-10">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <Link href="/" className="font-bold text-xl text-blue-900 flex items-center gap-2">
               <ShieldCheck className="h-6 w-6 text-blue-600" />
-              ecomifyUSA LLC
+              Salestaxus LLC
             </Link>
             <Link href="/">
               <Button variant="ghost" size="sm" className="gap-2">
@@ -114,7 +106,7 @@ export default function UKServicePage({ countryCode }: { countryCode: string }) 
           </div>
         </header>
 
-        <main id="main-content" className="container mx-auto px-4 py-10">
+        <main className="container mx-auto px-4 py-10">
           <div className="grid lg:grid-cols-3 gap-8">
             
             {/* Left Column - Service Configurator */}
@@ -125,7 +117,7 @@ export default function UKServicePage({ countryCode }: { countryCode: string }) 
                     <Building2 className="h-6 w-6 text-emerald-600" />
                   </div>
                   <div>
-                    <h1 className="text-3xl lg:text-4xl font-bold text-ink">Form your {countryInfo.name} company</h1>
+                    <h1 className="text-2xl font-bold text-slate-900">Form Your {countryInfo.name} Company</h1>
                     <p className="text-slate-600">Complete Companies House registration for {countryInfo.name}</p>
                   </div>
                 </div>
@@ -145,7 +137,7 @@ export default function UKServicePage({ countryCode }: { countryCode: string }) 
                         <SelectItem value="Community Interest Company">Community Interest Company (CIC)</SelectItem>
                       </SelectContent>
                     </Select>
-                    <p className="text-sm text-slate-500 bg-paper p-3 rounded-md">
+                    <p className="text-sm text-slate-500 bg-slate-50 p-3 rounded-md">
                       <strong>Note:</strong> Most entrepreneurs choose <strong>Limited Company</strong> for liability protection and tax efficiency.
                     </p>
                   </div>
@@ -287,7 +279,7 @@ export default function UKServicePage({ countryCode }: { countryCode: string }) 
                       <span className="font-medium">£{countryInfo.confirmationStatementFee} (${convertGBPtoUSD(countryInfo.confirmationStatementFee)})</span>
                     </div>
                     <div className="flex justify-between items-center text-sm">
-                      <span className="text-slate-600">ecomifyUSA Service Fee</span>
+                      <span className="text-slate-600">Salestaxus Service Fee</span>
                       <span className="font-medium text-emerald-600">£{SERVICE_FEE_GBP} (${SERVICE_FEE_USD})</span>
                     </div>
                     
@@ -347,22 +339,3 @@ export default function UKServicePage({ countryCode }: { countryCode: string }) 
     </>
   );
 }
-
-// Pre-render one static page per UK country so the correct content, <h1>, and
-// canonical URL are present in the server-rendered HTML (indexability + SEO).
-// Multi-word countries use a hyphenated slug (e.g. "northern-ireland") for clean,
-// valid URLs; getStaticProps reverses the slug back to the ukData key.
-export const getStaticPaths: GetStaticPaths = () => {
-  return {
-    paths: Object.keys(ukData).map((key) => ({
-      params: { country: key.toLowerCase().replace(/ /g, "-") },
-    })),
-    fallback: false,
-  };
-};
-
-export const getStaticProps: GetStaticProps<{ countryCode: string }> = (ctx) => {
-  const code = String(ctx.params?.country ?? "").replace(/-/g, " ").toUpperCase();
-  if (!ukData[code]) return { notFound: true };
-  return { props: { countryCode: code } };
-};

@@ -33,8 +33,8 @@ export default function LoginPage() {
     try {
       await authService.signIn(email, password);
       router.push("/dashboard");
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Invalid login credentials");
+    } catch (err: any) {
+      setError(err.message || "Invalid login credentials");
     } finally {
       setLoading(false);
     }
@@ -45,7 +45,6 @@ export default function LoginPage() {
       <SEO
         title="Login - ecomifyUSA"
         description="Access your ecomifyUSA dashboard to manage your LLC formation and tax compliance services."
-        noIndex
       />
       
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-4">
@@ -55,7 +54,7 @@ export default function LoginPage() {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <Building2 className="w-12 h-12 text-blue-600" />
-                <h1 className="text-4xl font-bold text-slate-900">ecomifyUSA LLC</h1>
+                <h1 className="text-4xl font-bold text-slate-900">Salestaxus LLC</h1>
               </div>
               <p className="text-xl text-slate-600">Your trusted partner in business formation</p>
             </div>
@@ -73,7 +72,7 @@ export default function LoginPage() {
                 
                 <div className="space-y-3">
                   <p className="text-2xl font-bold text-slate-900">Join 300+ entrepreneurs</p>
-                  <p className="text-slate-600">who trust ecomifyUSA LLC for their business needs</p>
+                  <p className="text-slate-600">who trust Salestaxus LLC for their business needs</p>
                 </div>
 
                 <div className="space-y-2 pt-4">
@@ -105,7 +104,7 @@ export default function LoginPage() {
             <form onSubmit={handleLogin}>
               <CardContent className="space-y-4">
                 {error && (
-                  <Alert variant="destructive" role="alert" aria-live="assertive">
+                  <Alert variant="destructive">
                     <AlertDescription>{error}</AlertDescription>
                   </Alert>
                 )}
@@ -122,7 +121,6 @@ export default function LoginPage() {
                   <Input
                     id="email"
                     type="email"
-                    autoComplete="email"
                     placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -144,7 +142,6 @@ export default function LoginPage() {
                   <Input
                     id="password"
                     type="password"
-                    autoComplete="current-password"
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -157,7 +154,7 @@ export default function LoginPage() {
               <CardFooter className="flex flex-col gap-4">
                 <Button 
                   type="submit" 
-                  className="w-full bg-gold hover:bg-gold-bright text-white"
+                  className="w-full bg-blue-600 hover:bg-blue-700"
                   disabled={loading}
                 >
                   {loading ? "Signing In..." : "Sign In"}

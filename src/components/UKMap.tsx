@@ -7,15 +7,8 @@ import { Badge } from "@/components/ui/badge";
 // Using the local file you saved in the public folder
 const geoUrl = "/uk.json";
 
-interface UkRegionInfo {
-    id: string;
-    formationFee: string;
-    serviceFee: string;
-    office: string;
-}
-
-// Regional data mapping for ecomifyUSA LLC
-const ukRegionData: Record<string, UkRegionInfo> = {
+// Regional data mapping for Salestaxus LLC
+const ukRegionData: Record<string, any> = {
     "England": { id: "ENG", formationFee: "£100", serviceFee: "$150", office: "London" },
     "Scotland": { id: "SCT", formationFee: "£100", serviceFee: "$150", office: "Edinburgh" },
     "Wales": { id: "WLS", formationFee: "£100", serviceFee: "$150", office: "Cardiff" },
@@ -23,7 +16,7 @@ const ukRegionData: Record<string, UkRegionInfo> = {
 };
 
 export function UKMap() {
-    const [, setHoveredRegion] = useState<string | null>(null);
+    const [hoveredRegion, setHoveredRegion] = useState < string | null > (null);
     const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf2LOGK6eY5rxr-RVUwC1vvCPNTFr1HmnbbKCYSa1nfL9m4AA/viewform";
 
     return (
@@ -43,6 +36,7 @@ export function UKMap() {
                                 geographies.map((geo) => {
                                     // Ensure this matches the property name in your uk.json (usually 'name' or 'areanm')
                                     const regionName = geo.properties.name || geo.properties.areanm;
+                                    const isHovered = hoveredRegion === regionName;
 
                                     return (
                                         <Geography
@@ -55,8 +49,8 @@ export function UKMap() {
                                             data-tooltip-content={regionName}
                                             style={{
                                                 default: {
-                                                    fill: "#EFF6FF", // blue-50 — matches US map light resting state
-                                                    stroke: "#93C5FD",
+                                                    fill: "#DBEAFE", // blue-100 to match US map
+                                                    stroke: "#3B82F6",
                                                     strokeWidth: 0.5,
                                                     outline: "none",
                                                 },

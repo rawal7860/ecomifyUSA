@@ -23,10 +23,8 @@ export default function OrderConfirmationPage() {
       <SEO
         title="Order Confirmation - ecomifyUSA"
         description="Your order has been received. Check your email for payment instructions."
-        noIndex
       />
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-        <main id="main-content">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-3xl mx-auto">
             {/* Success Icon */}
@@ -140,7 +138,6 @@ export default function OrderConfirmationPage() {
             </div>
           </div>
         </div>
-        </main>
         <Footer />
       </div>
     </>

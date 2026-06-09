@@ -12,10 +12,9 @@ export default function CaseStudiesPage() {
       <SEO
         title="Client Success Stories - ecomifyUSA"
         description="Real case studies from international entrepreneurs who built successful US businesses with ecomifyUSA."
-        url="https://ecomifyusa.com/case-studies"
       />
-      <div className="min-h-screen bg-paper">
-        <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
+      <div className="min-h-screen bg-slate-50">
+        <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
             <Logo />
             <Link href="/">
@@ -25,8 +24,6 @@ export default function CaseStudiesPage() {
             </Link>
           </div>
         </header>
-
-        <main id="main-content">
 
         <div className="max-w-5xl mx-auto px-4 py-16">
           <div className="text-center mb-16">
@@ -59,7 +56,7 @@ export default function CaseStudiesPage() {
                     <p className="text-slate-600 text-sm">Fully automated from Day 1. Scalable for thousands of transactions.</p>
                   </div>
                 </div>
-                <div className="bg-paper p-6 rounded-xl border border-slate-100">
+                <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
                   <div className="flex text-yellow-400 mb-4">
                     {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-4 h-4 fill-current" />)}
                   </div>
@@ -93,7 +90,7 @@ export default function CaseStudiesPage() {
                     <p className="text-slate-600 text-sm">$99,550 tax savings. Brought back to good standing.</p>
                   </div>
                 </div>
-                <div className="bg-paper p-6 rounded-xl border border-slate-100">
+                <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
                   <div className="flex text-yellow-400 mb-4">
                     {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-4 h-4 fill-current" />)}
                   </div>
@@ -127,7 +124,7 @@ export default function CaseStudiesPage() {
                     <p className="text-slate-600 text-sm">All 9 portals recovered. Penalty resolved. 6 unwanted permits cancelled.</p>
                   </div>
                 </div>
-                <div className="bg-paper p-6 rounded-xl border border-slate-100">
+                <div className="bg-slate-50 p-6 rounded-xl border border-slate-100">
                   <div className="flex text-yellow-400 mb-4">
                     {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-4 h-4 fill-current" />)}
                   </div>
@@ -141,14 +138,12 @@ export default function CaseStudiesPage() {
           <div className="mt-16 text-center">
             <h3 className="text-2xl font-bold text-slate-900 mb-4">Ready to write your success story?</h3>
             <Link href="/checkout">
-              <Button size="lg" className="bg-gold hover:bg-gold-bright text-white px-8 py-6 text-lg">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 px-8 py-6 text-lg">
                 Start Your Formation
               </Button>
             </Link>
           </div>
         </div>
-
-        </main>
 
         <Footer />
       </div>

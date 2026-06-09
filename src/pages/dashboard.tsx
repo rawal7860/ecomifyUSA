@@ -9,12 +9,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
-import ComplianceRing from "@/components/dashboard/ComplianceRing";
-import { FileText, DollarSign, Clock, CheckCircle2, Mail, Phone, LogOut, User, Package
+import {
+  Building2, FileText, DollarSign, Clock, CheckCircle2,
+  AlertCircle, Download, Mail, Phone, LogOut, User, Package
 } from "lucide-react";
 
-// Fields mirror the Supabase row shapes — nullable columns are typed `string | null`
-// so the query results assign cleanly under strict null checks.
 interface Order {
   id: string;
   order_number: string;
@@ -24,18 +23,18 @@ interface Order {
   status: string;
   amount: number;
   payment_status: string;
-  created_at: string | null;
-  notes?: string | null;
+  created_at: string;
+  notes?: string;
 }
 
 interface Profile {
-  full_name: string | null;
-  phone?: string | null;
-  address?: string | null;
-  city?: string | null;
-  state?: string | null;
-  zip_code?: string | null;
-  business_name?: string | null;
+  full_name: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zip_code?: string;
+  business_name?: string;
 }
 
 export default function Dashboard() {
@@ -47,7 +46,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     checkAuthAndFetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const checkAuthAndFetchData = async () => {
@@ -115,7 +113,7 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-paper flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-slate-600">Loading your dashboard...</p>
@@ -129,10 +127,9 @@ export default function Dashboard() {
       <SEO
         title="Client Dashboard - ecomifyUSA"
         description="Manage your LLC formation orders and track your business setup progress."
-        noIndex
       />
-      <div className="min-h-screen bg-paper">
-        <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
+      <div className="min-h-screen bg-slate-50">
+        <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
             <Logo />
             <div className="flex items-center gap-4">
@@ -151,33 +148,6 @@ export default function Dashboard() {
             </h1>
             <p className="text-slate-600">Track your orders and manage your business formation journey.</p>
           </div>
-
-          {/* Compliance/progress showpiece */}
-          {(() => {
-            const total = orders.length;
-            const completed = orders.filter((o) => o.status === "completed").length;
-            const paid = orders.filter((o) => o.payment_status === "paid").length;
-            const score = total === 0 ? 0 : Math.round(((completed + paid) / (total * 2)) * 100);
-            const label =
-              total === 0
-                ? "Let's get started"
-                : score >= 80
-                ? "Your account is in great shape"
-                : score >= 50
-                ? "Formation in progress"
-                : "A few steps to complete";
-            const sublabel =
-              total === 0
-                ? "Start your first formation to begin tracking your compliance health."
-                : `${completed} of ${total} order${total === 1 ? "" : "s"} completed · ${paid} paid.`;
-            return (
-              <Card className="mb-12 border-hairline">
-                <CardContent className="py-8">
-                  <ComplianceRing score={score} label={label} sublabel={sublabel} />
-                </CardContent>
-              </Card>
-            );
-          })()}
 
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             <Card>
@@ -309,7 +279,7 @@ export default function Dashboard() {
                         <div className="flex items-center gap-4 text-sm text-slate-600">
                           <span className="flex items-center gap-1">
                             <Clock className="w-4 h-4" />
-                            {order.created_at ? new Date(order.created_at).toLocaleDateString() : "—"}
+                            {new Date(order.created_at).toLocaleDateString()}
                           </span>
                           <Badge className={getPaymentStatusColor(order.payment_status)}>
                             {order.payment_status}

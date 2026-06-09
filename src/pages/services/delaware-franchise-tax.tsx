@@ -1,4 +1,4 @@
-import { SEO, serviceJsonLd } from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,24 +7,17 @@ import { ArrowLeft, Check, FileCheck, ShieldCheck, AlertTriangle, Calendar } fro
 export default function DelawareFranchiseTaxPage() {
   return (
     <>
-      <SEO
-        title="Delaware Franchise Tax Filing | ecomifyUSA"
+      <SEO 
+        title="Delaware Franchise Tax Filing | Salestaxus"
         description="Expert, timely filing of Delaware Franchise Tax and annual reports to maintain good standing."
-        url="https://ecomifyusa.com/services/delaware-franchise-tax"
-        jsonLd={serviceJsonLd({
-          name: "Delaware Franchise Tax Filing",
-          description:
-            "Expert, timely filing of Delaware Franchise Tax and annual reports to maintain good standing.",
-          url: "https://ecomifyusa.com/services/delaware-franchise-tax",
-        })}
       />
 
-      <div className="min-h-screen bg-paper">
-        <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
+      <div className="min-h-screen bg-slate-50">
+        <header className="bg-white border-b sticky top-0 z-10">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <Link href="/" className="font-bold text-xl text-blue-900 flex items-center gap-2">
               <ShieldCheck className="h-6 w-6 text-blue-600" />
-              ecomifyUSA LLC
+              Salestaxus LLC
             </Link>
             <Link href="/">
               <Button variant="ghost" size="sm" className="gap-2">
@@ -34,7 +27,7 @@ export default function DelawareFranchiseTaxPage() {
           </div>
         </header>
 
-        <main id="main-content" className="container mx-auto px-4 py-16 max-w-5xl">
+        <main className="container mx-auto px-4 py-16 max-w-5xl">
           <div className="text-center mb-16">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-amber-100 rounded-full mb-6">
               <FileCheck className="h-10 w-10 text-amber-600" />
@@ -105,12 +98,12 @@ export default function DelawareFranchiseTaxPage() {
             </CardHeader>
             <CardContent className="pt-6">
               <div className="grid md:grid-cols-2 gap-6">
-                <div className="text-center p-6 bg-paper rounded-lg border-2 border-blue-300">
+                <div className="text-center p-6 bg-slate-50 rounded-lg border-2 border-blue-300">
                   <h3 className="font-bold text-lg mb-2">LLC Filing</h3>
                   <p className="text-4xl font-bold text-blue-600 mb-2">$250</p>
                   <p className="text-sm text-slate-600">Includes $300 state franchise tax</p>
                 </div>
-                <div className="text-center p-6 bg-paper rounded-lg border-2 border-blue-300">
+                <div className="text-center p-6 bg-slate-50 rounded-lg border-2 border-blue-300">
                   <h3 className="font-bold text-lg mb-2">Corporation Filing</h3>
                   <p className="text-4xl font-bold text-blue-600 mb-2">$350</p>
                   <p className="text-sm text-slate-600">Tax calculated based on shares</p>

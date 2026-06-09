@@ -1,4 +1,4 @@
-import { SEO, serviceJsonLd } from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,24 +7,17 @@ import { ArrowLeft, Check, Globe2, ShieldCheck, FileCheck } from "lucide-react";
 export default function GlobalEcommerceSupportPage() {
   return (
     <>
-      <SEO
-        title="Global E-commerce Support | ecomifyUSA"
+      <SEO 
+        title="Global E-commerce Support | Salestaxus"
         description="Handling HMRC filings and providing tailored document approval support for international sellers."
-        url="https://ecomifyusa.com/services/global-ecommerce-support"
-        jsonLd={serviceJsonLd({
-          name: "Global E-commerce Support",
-          description:
-            "Handling HMRC filings and providing tailored document approval support for international sellers.",
-          url: "https://ecomifyusa.com/services/global-ecommerce-support",
-        })}
       />
 
-      <div className="min-h-screen bg-paper">
-        <header className="bg-paper/85 backdrop-blur-md sticky top-0 z-50 border-b border-hairline">
+      <div className="min-h-screen bg-slate-50">
+        <header className="bg-white border-b sticky top-0 z-10">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <Link href="/" className="font-bold text-xl text-blue-900 flex items-center gap-2">
               <ShieldCheck className="h-6 w-6 text-blue-600" />
-              ecomifyUSA LLC
+              Salestaxus LLC
             </Link>
             <Link href="/">
               <Button variant="ghost" size="sm" className="gap-2">
@@ -34,7 +27,7 @@ export default function GlobalEcommerceSupportPage() {
           </div>
         </header>
 
-        <main id="main-content" className="container mx-auto px-4 py-16 max-w-5xl">
+        <main className="container mx-auto px-4 py-16 max-w-5xl">
           <div className="text-center mb-16">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-cyan-100 rounded-full mb-6">
               <Globe2 className="h-10 w-10 text-cyan-600" />

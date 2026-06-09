@@ -4,7 +4,7 @@ import { SEO } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { authService } from "@/services/authService";
 import { CheckCircle2, ArrowLeft } from "lucide-react";
@@ -24,8 +24,8 @@ export default function ResetPasswordPage() {
     try {
       await authService.resetPassword(email);
       setSuccess(true);
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Failed to send reset email");
+    } catch (err: any) {
+      setError(err.message || "Failed to send reset email");
     } finally {
       setLoading(false);
     }
@@ -34,15 +34,14 @@ export default function ResetPasswordPage() {
   return (
     <>
       <SEO 
-        title="Reset Password - ecomifyUSA LLC"
-        description="Reset your ecomifyUSA LLC account password"
-        noIndex
+        title="Reset Password - Salestaxus LLC"
+        description="Reset your Salestaxus LLC account password"
       />
       
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 flex items-center justify-center p-4">
         <Card className="w-full max-w-md border-slate-200 shadow-xl">
           <CardHeader className="space-y-2">
-            <h1 className="text-2xl font-bold text-slate-900 leading-none tracking-tight">Reset Password</h1>
+            <CardTitle className="text-2xl font-bold text-slate-900">Reset Password</CardTitle>
             <CardDescription className="text-slate-600">
               Enter your email address and we&apos;ll send you a password reset link
             </CardDescription>
@@ -82,7 +81,7 @@ export default function ResetPasswordPage() {
             <CardFooter className="flex flex-col gap-4">
               <Button 
                 type="submit" 
-                className="w-full bg-gold hover:bg-gold-bright text-white"
+                className="w-full bg-blue-600 hover:bg-blue-700"
                 disabled={loading || success}
               >
                 {loading ? "Sending..." : "Send Reset Link"}
