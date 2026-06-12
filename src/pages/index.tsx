@@ -224,110 +224,125 @@ export default function HomePage() {
                     </div>
                 </header>
 
-                {/* Hero Section with Globe */}
-                <section className="pt-32 pb-20 lg:pt-48 lg:pb-32 bg-slate-50 relative overflow-hidden">
-                    <div className="absolute top-0 left-0 w-1/2 h-full z-0 overflow-hidden">
-                        <div
-                            className="w-full h-full bg-cover bg-center bg-no-repeat opacity-40"
-                            style={{
-                                backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/1200px-The_Earth_seen_from_Apollo_17.jpg')",
-                                maskImage: 'linear-gradient(to right, black 0%, black 30%, transparent 100%)',
-                                WebkitMaskImage: 'linear-gradient(to right, black 0%, black 30%, transparent 100%)'
-                            }}
-                        ></div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/40 via-blue-400/30 to-transparent mix-blend-overlay"></div>
+                {/* Hero Section */}
+                <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 pt-32 pb-20">
+                    {/* Animated Background Elements */}
+                    <div className="absolute inset-0 overflow-hidden">
+                        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
+                        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl animate-pulse delay-700"></div>
+                        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
                     </div>
 
-                    <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/3"></div>
-                    <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-indigo-100 rounded-full blur-3xl opacity-50 translate-y-1/3 -translate-x-1/4"></div>
-
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                        <div className="text-center max-w-3xl mx-auto mb-20">
-                            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 shadow-sm text-slate-600 text-sm font-medium mb-8 hover:shadow-md transition-shadow cursor-default">
-                                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                                <span>Rated 5.0 by 500+ E-commerce Founders</span>
-                            </div>
-                            <h1 className="text-5xl lg:text-8xl font-bold text-slate-900 mb-8 tracking-tight leading-[1.1]">
-                                Launch your global <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600">
-                                    business in minutes.
-                                </span>
-                            </h1>
-                            <p className="text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
-                                We handle the LLC formation, tax IDs, and compliance.
-                                You handle the growth. <span className="font-semibold text-slate-900">No hidden fees. Ever.</span>
-                            </p>
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                <Link href="#maps-section">
-                                    <Button
-                                        size="lg"
-                                        className="bg-slate-900 text-white hover:bg-slate-800 px-8 py-7 text-lg rounded-xl shadow-xl shadow-slate-900/20 transition-all hover:scale-105"
-                                    >
-                                        Start Your Formation
-                                    </Button>
-                                </Link>
-                                <Link href="/services">
-                                    <Button size="lg" variant="outline" className="px-8 py-7 text-lg rounded-xl border-slate-200 hover:bg-white bg-white/50 backdrop-blur-sm">
-                                        View Services
-                                    </Button>
-                                </Link>
-                            </div>
-                        </div>
-
-                        {/* Bento Grid */}
-                        <div className="grid md:grid-cols-3 gap-6 auto-rows-[280px]">
-                            <div className="md:col-span-2 bg-white rounded-3xl p-8 shadow-sm border border-slate-100 relative overflow-hidden group hover:shadow-xl transition-all duration-500">
-                                <div className="relative z-10">
-                                    <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-4">
-                                        <Globe className="w-6 h-6" />
+                    <div className="max-w-7xl mx-auto px-4 relative z-10">
+                        <div className="grid lg:grid-cols-2 gap-12 items-center">
+                            {/* Left Column - Main Content */}
+                            <div className="text-center lg:text-left">
+                                {/* Trust Badge */}
+                                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6">
+                                    <div className="flex gap-0.5">
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <svg key={star} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                        ))}
                                     </div>
-                                    <h3 className="text-2xl font-bold text-slate-900 mb-2">USA & UK Coverage</h3>
-                                    <p className="text-slate-500 max-w-sm">Form your company in Wyoming, Delaware, London, or anywhere in between with full tax compliance.</p>
+                                    <span className="text-white text-sm font-medium">5.0 Rating • 500+ Happy Clients</span>
+                                </div>
+
+                                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+                                    Launch Your
+                                    <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400">
+                                        Global Business
+                                    </span>
+                                    in 24 Hours
+                                </h1>
+
+                                <p className="text-xl text-blue-100 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                                    US & UK LLC formation, tax compliance, and business services for international entrepreneurs. <span className="font-semibold text-white">No travel required.</span>
+                                </p>
+
+                                {/* CTA Buttons */}
+                                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
+                                    <Link href="/checkout">
+                                        <Button size="lg" className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-6 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                                            Get Started Now
+                                            <ArrowRight className="ml-2 w-5 h-5" />
+                                        </Button>
+                                    </Link>
                                     <Link href="/services">
-                                        <Button className="mt-6 bg-slate-900 text-white hover:bg-slate-800">Explore States</Button>
+                                        <Button size="lg" variant="outline" className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-6 text-lg font-semibold backdrop-blur-sm">
+                                            View Services
+                                        </Button>
                                     </Link>
                                 </div>
-                                <div className="absolute right-0 bottom-0 w-3/4 h-3/4 bg-blue-50 rounded-tl-3xl opacity-50 group-hover:scale-105 transition-transform duration-700">
-                                    <div className="w-full h-full opacity-20 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-cover bg-center"></div>
-                                </div>
-                            </div>
 
-                            <div className="bg-blue-600 rounded-3xl p-8 shadow-xl shadow-blue-900/20 text-white flex flex-col justify-between group hover:scale-[1.02] transition-transform duration-300">
-                                <div>
-                                    <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mb-6 backdrop-blur-sm group-hover:bg-white/30 transition-colors">
-                                        <Zap className="w-6 h-6 text-white" />
+                                {/* Quick Stats */}
+                                <div className="grid grid-cols-3 gap-6 max-w-lg mx-auto lg:mx-0">
+                                    <div className="text-center lg:text-left">
+                                        <p className="text-3xl font-bold text-white mb-1">24h</p>
+                                        <p className="text-sm text-blue-200">Fast Delivery</p>
                                     </div>
-                                    <h3 className="text-3xl font-bold mb-2">24-Hour<br />Processing</h3>
-                                    <p className="text-blue-100">Fast-track filing options available for urgent business needs.</p>
-                                </div>
-                                <div className="text-6xl font-bold opacity-10 -mb-4">01</div>
-                            </div>
-
-                            <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 flex flex-col justify-center items-center text-center group hover:shadow-lg transition-all">
-                                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 mb-4 group-hover:scale-110 transition-transform">
-                                    <Shield className="w-6 h-6" />
-                                </div>
-                                <h3 className="text-4xl font-bold text-slate-900 mb-2">100%</h3>
-                                <p className="text-slate-600 font-medium">Compliance Guarantee</p>
-                                <p className="text-sm text-slate-400 mt-2">IRS & HMRC Approved</p>
-                            </div>
-
-                            <div className="md:col-span-2 bg-slate-900 rounded-3xl p-8 shadow-sm text-white flex items-center justify-between relative overflow-hidden group">
-                                <div className="relative z-10">
-                                    <h3 className="text-2xl font-bold mb-2">Transparent Pricing</h3>
-                                    <p className="text-slate-400">No hidden fees. State fees included.</p>
-                                    <div className="flex gap-2 mt-4">
-                                        <span className="px-3 py-1 bg-white/10 rounded-full text-xs text-white">Wyoming $100</span>
-                                        <span className="px-3 py-1 bg-white/10 rounded-full text-xs text-white">Delaware $90</span>
+                                    <div className="text-center lg:text-left">
+                                        <p className="text-3xl font-bold text-white mb-1">50+</p>
+                                        <p className="text-sm text-blue-200">Countries</p>
+                                    </div>
+                                    <div className="text-center lg:text-left">
+                                        <p className="text-3xl font-bold text-white mb-1">$150</p>
+                                        <p className="text-sm text-blue-200">Starting Price</p>
                                     </div>
                                 </div>
-                                <div className="text-right relative z-10">
-                                    <div className="text-4xl font-bold text-green-400">$0/mo</div>
-                                    <div className="text-sm text-slate-500">after formation</div>
+                            </div>
+
+                            {/* Right Column - Service Cards */}
+                            <div className="grid grid-cols-2 gap-4">
+                                {/* LLC Formation */}
+                                <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                        <Building2 className="w-6 h-6 text-white" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-white mb-2">LLC Formation</h3>
+                                    <p className="text-sm text-blue-100 mb-3">US & UK company setup in 24 hours</p>
+                                    <p className="text-2xl font-bold text-white">$150</p>
                                 </div>
-                                <div className="absolute right-0 top-0 w-64 h-64 bg-blue-500 rounded-full blur-[80px] opacity-20 group-hover:opacity-30 transition-opacity"></div>
+
+                                {/* EIN Services */}
+                                <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                        <FileText className="w-6 h-6 text-white" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-white mb-2">EIN Services</h3>
+                                    <p className="text-sm text-blue-100 mb-3">Tax ID for your US business</p>
+                                    <p className="text-2xl font-bold text-white">$100</p>
+                                </div>
+
+                                {/* Sales Tax Compliance */}
+                                <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                        <DollarSign className="w-6 h-6 text-white" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-white mb-2">Tax Compliance</h3>
+                                    <p className="text-sm text-blue-100 mb-3">Multi-state sales tax filing</p>
+                                    <p className="text-2xl font-bold text-white">$200</p>
+                                </div>
+
+                                {/* Tax Exemptions */}
+                                <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 hover:bg-white/15 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl group">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                        <CheckCircle2 className="w-6 h-6 text-white" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-white mb-2">Tax Exemptions</h3>
+                                    <p className="text-sm text-blue-100 mb-3">Save on e-commerce taxes</p>
+                                    <p className="text-2xl font-bold text-white">$175</p>
+                                </div>
                             </div>
                         </div>
+                    </div>
+
+                    {/* Bottom Wave Divider */}
+                    <div className="absolute bottom-0 left-0 right-0">
+                        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+                            <path d="M0 0L60 10C120 20 240 40 360 46.7C480 53 600 47 720 43.3C840 40 960 40 1080 46.7C1200 53 1320 67 1380 73.3L1440 80V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V0Z" fill="#F8FAFC"/>
+                        </svg>
                     </div>
                 </section>
 
