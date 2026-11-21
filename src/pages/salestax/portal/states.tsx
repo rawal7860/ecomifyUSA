@@ -1,0 +1,26 @@
+import { useEffect, useState } from "react";
+import Head from "next/head";
+import { ExternalLink, Eye, EyeOff, KeyRound, MapPinned } from "lucide-react";
+import { LoadingPanel, PortalShell } from "@/components/salestax/PortalShell";
+import { useSalesTaxClient } from "@/hooks/useSalesTaxClient";
+import { formatDate, getSalesTaxSupabase, type SalesTaxRegistration } from "@/lib/salestax";
+
+export default function SalesTaxStatesPage() {
+  const { client, loading, error } = useSalesTaxClient();
+  const [registrations, setRegistrations] = useState<SalesTaxRegistration[]>([]);
+  const [visible, setVisible] = useState<Record<string, boolean>>({});
+  const [passwords, setPasswords] = useState<Record<string, string>>({});
+  const [message, setMessage] = useState("");
+  useEffect(() => { if (!client) return; let active = true; void getSalesTaxSupabase().from("salestax_registrations").select("*").eq("client_id", client.id).order("state").then(({ data }) => { if (active) setRegistrations((data || []) as SalesTaxRegistration[]); }); return () => { active = false; }; }, [client]);
+  const reveal = async (item: SalesTaxRegistration) => {
+    if (visible[item.id]) { setVisible((current) => ({ ...current, [item.id]: false })); return; }
+    if (!passwords[item.id]) {
+      try { const session = (await getSalesTaxSupabase().auth.getSession()).data.session; const response = await fetch("/api/salestax/client-credentials", { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token || ""}` }, body: JSON.stringify({ registrationId: item.id }) }); const result = await response.json(); if (!response.ok) throw new Error(result.error || "Credential access is unavailable."); setPasswords((current) => ({ ...current, [item.id]: result.password || "" })); }
+      catch (revealError) { setMessage(revealError instanceof Error ? revealError.message : "Unable to show password."); return; }
+    }
+    setVisible((current) => ({ ...current, [item.id]: true }));
+  };
+  if (loading) return <PortalShell title="My states"><LoadingPanel /></PortalShell>;
+  if (!client) return <PortalShell title="My states"><LoadingPanel error={error} /></PortalShell>;
+  return <><Head><title>State Registrations | ecomifyUSA</title></Head><PortalShell title="My states"><div className="space-y-6"><div className="flex items-end justify-between gap-4"><div><p className="text-sm font-semibold text-blue-700">Compliance records</p><h2 className="mt-1 text-2xl font-black">State registrations</h2><p className="mt-2 text-sm text-slate-500">Review your registration details and access information.</p></div><span className="rounded-full bg-blue-50 px-3 py-1.5 text-sm font-bold text-blue-700">{registrations.length} states</span></div>{message && <p role="alert" className="rounded-xl bg-amber-50 p-4 text-sm text-amber-800">{message}</p>}<div className="grid gap-5 lg:grid-cols-2">{registrations.map((item) => <article key={item.id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:p-6"><div className="flex items-start justify-between gap-3"><div className="flex gap-3"><span className="rounded-xl bg-blue-50 p-3 text-blue-700"><MapPinned className="h-5 w-5" /></span><div><h3 className="text-lg font-bold">{item.state}</h3><p className="mt-1 text-sm text-slate-500">{item.filing_frequency} filing</p></div></div><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${item.is_active ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500"}`}>{item.is_active ? "Active" : "Inactive"}</span></div><dl className="mt-5 grid grid-cols-2 gap-4 border-t border-slate-100 pt-4 text-sm"><div><dt className="text-slate-400">Registration number</dt><dd className="mt-1 font-semibold text-slate-800">{item.registration_number || "—"}</dd></div><div><dt className="text-slate-400">Start date</dt><dd className="mt-1 font-semibold text-slate-800">{formatDate(item.start_date)}</dd></div><div><dt className="text-slate-400">Portal username</dt><dd className="mt-1 break-all font-semibold text-slate-800">{item.portal_username || "—"}</dd></div><div><dt className="text-slate-400">Portal password</dt><dd className="mt-1 flex items-center gap-2 font-semibold text-slate-800"><KeyRound className="h-4 w-4 text-slate-400" />{visible[item.id] ? passwords[item.id] || "Not set" : "••••••••••••"}<button aria-label={visible[item.id] ? "Hide password" : "Show password"} onClick={() => void reveal(item)} className="rounded-md p-1 text-slate-500 hover:bg-slate-100">{visible[item.id] ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}</button></dd></div></dl>{item.portal_url && <a className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-blue-700 hover:text-blue-900" href={item.portal_url} target="_blank" rel="noreferrer">Open state portal <ExternalLink className="h-4 w-4" /></a>}{item.notes && <p className="mt-4 rounded-lg bg-slate-50 p-3 text-sm leading-6 text-slate-600">{item.notes}</p>}</article>)}{!registrations.length && <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center text-slate-500 lg:col-span-2">No state registrations are attached to your account yet. Contact support for assistance.</div>}</div></div></PortalShell></>;
+}

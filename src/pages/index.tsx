@@ -596,6 +596,31 @@ export default function HomePage() {
                     </div>
                 </section>
 
+                {/* Sales Tax Filing Portal */}
+                <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-slate-50 py-20">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="grid lg:grid-cols-[1fr_auto] items-center gap-10 rounded-3xl border border-blue-100 bg-white p-8 shadow-xl shadow-blue-900/5 md:p-12">
+                            <div>
+                                <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1.5 text-sm font-semibold text-blue-700 mb-4">
+                                    <Shield className="h-4 w-4" /> Sales tax compliance
+                                </div>
+                                <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Track Every Filing. Miss Zero Deadlines.</h2>
+                                <p className="mt-4 max-w-2xl text-slate-600 leading-relaxed">Keep your state registrations, filing history, and upcoming deadlines organized in one easy-to-use portal.</p>
+                                <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                                    {["See upcoming state deadlines", "Keep filing records in one place", "Track registrations across states"].map((benefit) => (
+                                        <div key={benefit} className="flex items-start gap-2 text-sm font-medium text-slate-700">
+                                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-blue-600" /> {benefit}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <Link href="/salestax" className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-4 font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-blue-700">
+                                View Sales Tax Portal <ArrowRight className="h-5 w-5" />
+                            </Link>
+                        </div>
+                    </div>
+                </section>
+
                 {/* Specialized Services Section */}
                 <section className="py-24 bg-gradient-to-br from-slate-50 to-blue-50">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
